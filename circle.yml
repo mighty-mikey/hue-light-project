@@ -1,3 +1,7 @@
+test:
+    override:
+        - hue_light_project\app\src\test
+
 general:
   branches:
     only:
