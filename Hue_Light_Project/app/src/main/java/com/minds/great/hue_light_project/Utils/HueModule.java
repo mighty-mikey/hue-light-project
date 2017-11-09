@@ -1,5 +1,8 @@
 package com.minds.great.hue_light_project.Utils;
 
+import android.content.Context;
+
+import com.minds.great.hue_light_project.BridgeListAdapter;
 import com.minds.great.hue_light_project.Core.BridgeController;
 import com.minds.great.hue_light_project.Core.BridgeListener;
 import com.philips.lighting.hue.sdk.PHHueSDK;
@@ -8,12 +11,18 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-class HueModule {
+public class HueModule {
 
     @Provides
     @Singleton
     BridgeController providesBridgeController(PHHueSDK phHueSDK, BridgeListener bridgeListener){
         return new BridgeController(phHueSDK, bridgeListener);
+    }
+
+    @Provides
+    @Singleton
+    BridgeListAdapter providesBridgeListAdapter(PHHueSDK phHueSDK, BridgeListener bridgeListener){
+        return new BridgeListAdapter();
     }
 
     @Provides

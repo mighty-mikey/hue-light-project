@@ -1,17 +1,20 @@
 package com.minds.great.hue_light_project.Core;
 
+import com.jakewharton.rxrelay2.PublishRelay;
 import com.philips.lighting.hue.sdk.PHAccessPoint;
 import com.philips.lighting.hue.sdk.PHHueSDK;
 import com.philips.lighting.hue.sdk.PHMessageType;
 import com.philips.lighting.hue.sdk.PHSDKListener;
 import com.philips.lighting.model.PHBridge;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class BridgeListener implements PHSDKListener {
 
     private PHHueSDK phHueSDK;
+    private PublishRelay<List<PHAccessPoint>> accessPointRelay = PublishRelay.create();
 
     public BridgeListener(PHHueSDK phHueSDK){
         this.phHueSDK = phHueSDK;
@@ -19,8 +22,11 @@ public class BridgeListener implements PHSDKListener {
 
     @Override
     public void onAccessPointsFound(List accessPoint) {
-        // Handle your bridge search results here.  Typically if multiple results are returned you will want to display them in a list
-        // and let the user select their bridge.   If one is found you may opt to connect automatically to that bridge.
+        List<PHAccessPoint> list = new ArrayList<>();
+        for (Object obj: accessPoint) {
+            list.add((PHAccessPoint)obj);
+        }
+        accessPointRelay.accept(list);
     }
 
     @Override
@@ -67,5 +73,9 @@ public class BridgeListener implements PHSDKListener {
     @Override
     public void onParsingErrors(List parsingErrorsList) {
         // Any JSON parsing errors are returned here.  Typically your program should never return these.
+    }
+
+    public PublishRelay<List<PHAccessPoint>> getAccessPointRelay() {
+        return accessPointRelay;
     }
 }

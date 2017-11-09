@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Hue_Light_Project</string>
     <string name="search_for_hue_bridges">Search for Hue Bridges</string>
+    <string name="new_hue_bridges_found">New Hue Bridges Found</string>
 </resources>
