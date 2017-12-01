@@ -17,7 +17,6 @@ import static junit.framework.Assert.assertNotNull;
 @Config(constants = BuildConfig.class)
 public class ActivityMainTest {
 
-
     private MainActivity activity;
 
     @Before
@@ -27,7 +26,6 @@ public class ActivityMainTest {
                 .resume()
                 .get();
     }
-
 
     @Test
     public void mainActivity_shouldNotBeNull() throws Exception {
