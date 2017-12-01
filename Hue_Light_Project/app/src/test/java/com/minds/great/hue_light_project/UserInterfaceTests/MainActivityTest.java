@@ -15,7 +15,7 @@ import static junit.framework.Assert.assertNotNull;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class ActivityMainTest {
+public class MainActivityTest {
 
     private MainActivity activity;
 
