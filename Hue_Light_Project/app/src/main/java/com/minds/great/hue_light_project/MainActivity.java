@@ -7,8 +7,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.minds.great.hue_light_project.Core.BridgeController;
 import com.minds.great.hue_light_project.Core.BridgeListener;
@@ -39,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     ConstraintLayout bridgeLayout;
     @ViewById
     ListView bridgeList;
+    @ViewById
+    TextView waitingForConnection;
     @Inject
     BridgeController bridgeController;
     @Inject
@@ -46,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     BridgeListAdapter bridgeListAdapter;
     Disposable accessSubscription;
+
+    List<PHAccessPoint> listOfBridges;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +72,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void showBridgeList(List<PHAccessPoint> listOfFoundBridges) {
         this.runOnUiThread(() -> {
+            listOfBridges = listOfFoundBridges;
             bridgeListAdapter.setBridgeList(listOfFoundBridges, this);
             bridgeList.setAdapter(bridgeListAdapter);
-
+            bridgeList.setOnItemClickListener((adapterView, view, index, id) -> {
+                bridgeController.connectToBridge(listOfBridges.get(index));
+                bridgeLayout.setVisibility(View.GONE);
+                waitingForConnection.setVisibility(View.VISIBLE);
+            });
             searchProgressBar.setVisibility(View.GONE);
             searchButton.setVisibility(View.GONE);
             bridgeLayout.setVisibility(View.VISIBLE);
@@ -77,8 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Click(resName = "searchButton")
     public void searchForBridges(){
-        int permissionCheck = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.INTERNET);
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET);
 
         if(permissionCheck != PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,

@@ -53,6 +53,7 @@ public class BridgeListAdapter extends BaseAdapter {
             }
             TextView bridgeName = (TextView) itemView.findViewById(R.id.bridgeName);
             TextView macAddress = (TextView) itemView.findViewById(R.id.bridgeMacAddress);
+
             bridgeName.setText(listOfFoundBridges.get(position).getBridgeId());
             macAddress.setText(listOfFoundBridges.get(position).getMacAddress());
         }
