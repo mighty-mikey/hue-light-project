@@ -1,6 +1,7 @@
 package com.minds.great.hue_light_project.Core;
 
 import com.jakewharton.rxrelay2.PublishRelay;
+import com.minds.great.hue_light_project.Utils.HueViewError;
 import com.philips.lighting.hue.sdk.PHAccessPoint;
 import com.philips.lighting.hue.sdk.PHHueSDK;
 import com.philips.lighting.hue.sdk.PHMessageType;
@@ -15,6 +16,7 @@ public class BridgeListener implements PHSDKListener {
 
     private PHHueSDK phHueSDK;
     private PublishRelay<List<PHAccessPoint>> accessPointRelay = PublishRelay.create();
+    private PublishRelay<HueViewError> errorRelay = PublishRelay.create();
 
     public BridgeListener(PHHueSDK phHueSDK){
         this.phHueSDK = phHueSDK;
@@ -22,6 +24,7 @@ public class BridgeListener implements PHSDKListener {
 
     @Override
     public void onAccessPointsFound(List accessPoint) {
+
         List<PHAccessPoint> list = new ArrayList<>();
         for (Object obj: accessPoint) {
             list.add((PHAccessPoint)obj);
@@ -68,6 +71,8 @@ public class BridgeListener implements PHSDKListener {
     @Override
     public void onError(int code, final String message) {
         // Here you can handle events such as Bridge Not Responding, Authentication Failed and Bridge Not Found
+        HueViewError error = new HueViewError(code, message);
+        errorRelay.accept(error);
     }
 
     @Override
@@ -77,5 +82,9 @@ public class BridgeListener implements PHSDKListener {
 
     public PublishRelay<List<PHAccessPoint>> getAccessPointRelay() {
         return accessPointRelay;
+    }
+
+    public PublishRelay<HueViewError> getErrorRelay() {
+        return errorRelay;
     }
 }

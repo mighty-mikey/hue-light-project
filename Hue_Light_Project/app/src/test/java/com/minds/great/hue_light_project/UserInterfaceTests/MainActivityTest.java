@@ -34,6 +34,6 @@ public class MainActivityTest {
 
     @Test
     public void mainActivity_shouldHaveSearchButton() throws Exception {
-        assertNotNull(activity.findViewById(R.id.searchButton));
+        assertNotNull(activity.findViewById(R.id.connectButton));
     }
 }
