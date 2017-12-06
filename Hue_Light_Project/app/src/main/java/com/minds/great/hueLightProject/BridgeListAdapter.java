@@ -1,4 +1,4 @@
-package com.minds.great.hue_light_project;
+package com.minds.great.hueLightProject;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

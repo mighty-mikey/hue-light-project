@@ -5,7 +5,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion '26.0.2'
     defaultConfig {
-        applicationId "com.minds.great.hue_light_project"
+        applicationId "com.minds.great.hueLightProject"
         minSdkVersion 22
         targetSdkVersion 25
         versionCode 1

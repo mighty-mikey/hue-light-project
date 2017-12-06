@@ -1,7 +1,8 @@
-package com.minds.great.hue_light_project.Core;
+package com.minds.great.hueLightProject.hueImpl;
 
 import com.jakewharton.rxrelay2.PublishRelay;
-import com.minds.great.hue_light_project.Utils.HueViewError;
+import com.minds.great.hueLightProject.core.LightSystemSharedPreferences;
+import com.minds.great.hueLightProject.utils.HueViewError;
 import com.philips.lighting.hue.sdk.PHAccessPoint;
 import com.philips.lighting.hue.sdk.PHHueSDK;
 import com.philips.lighting.hue.sdk.PHMessageType;
@@ -15,8 +16,7 @@ import java.util.List;
 public class BridgeListener implements PHSDKListener {
 
     private PHHueSDK phHueSDK;
-    private PublishRelay<List<PHAccessPoint>> accessPointRelay = PublishRelay.create();
-    private PublishRelay<HueViewError> errorRelay = PublishRelay.create();
+    private PublishRelay<Object> publishRelay = PublishRelay.create();
 
     public BridgeListener(PHHueSDK phHueSDK){
         this.phHueSDK = phHueSDK;
@@ -29,7 +29,7 @@ public class BridgeListener implements PHSDKListener {
         for (Object obj: accessPoint) {
             list.add((PHAccessPoint)obj);
         }
-        accessPointRelay.accept(list);
+        publishRelay.accept(list);
     }
 
     @Override
@@ -42,9 +42,19 @@ public class BridgeListener implements PHSDKListener {
     }
 
     @Override
-    public void onBridgeConnected(PHBridge b, String username) {
-        phHueSDK.setSelectedBridge(b);
-        phHueSDK.enableHeartbeat(b, PHHueSDK.HB_INTERVAL);
+    public void onBridgeConnected(PHBridge foundBridge, String username) {
+        phHueSDK.setSelectedBridge(foundBridge);
+        phHueSDK.enableHeartbeat(foundBridge, PHHueSDK.HB_INTERVAL);
+
+        LightSystemSharedPreferences lightSystem = new LightSystemSharedPreferences.Builder()
+                .userName(username)
+                .ipAddress(foundBridge
+                        .getResourceCache()
+                        .getBridgeConfiguration()
+                        .getIpAddress())
+                .build();
+
+        publishRelay.accept(lightSystem);
         // Here it is recommended to set your connected bridge in your sdk object (as above) and start the heartbeat.
         // At this point you are connected to a bridge so you should pass control to your main program/activity.
         // The username is generated randomly by the bridge.
@@ -72,7 +82,7 @@ public class BridgeListener implements PHSDKListener {
     public void onError(int code, final String message) {
         // Here you can handle events such as Bridge Not Responding, Authentication Failed and Bridge Not Found
         HueViewError error = new HueViewError(code, message);
-        errorRelay.accept(error);
+        publishRelay.accept(error);
     }
 
     @Override
@@ -80,11 +90,7 @@ public class BridgeListener implements PHSDKListener {
         // Any JSON parsing errors are returned here.  Typically your program should never return these.
     }
 
-    public PublishRelay<List<PHAccessPoint>> getAccessPointRelay() {
-        return accessPointRelay;
-    }
-
-    public PublishRelay<HueViewError> getErrorRelay() {
-        return errorRelay;
+    public PublishRelay<Object> getPublishRelay() {
+        return publishRelay;
     }
 }

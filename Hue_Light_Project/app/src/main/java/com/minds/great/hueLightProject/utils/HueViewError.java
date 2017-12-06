@@ -1,10 +1,10 @@
-package com.minds.great.hue_light_project.Utils;
+package com.minds.great.hueLightProject.utils;
 
 /**
  * Class to handle all errors
  */
 public class HueViewError {
-    public static int NO_BRIDGE_FOUND = 1157;
+    public static int NO_BRIDGE_FOUND_CODE = 1157;
 
     private int code;
     private String message;

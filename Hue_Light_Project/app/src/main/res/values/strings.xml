@@ -3,4 +3,5 @@
     <string name="connect_to_hue_bridges">Connect to Hue Bridges</string>
     <string name="select_bridge_for_setup">Select Bridge for Setup</string>
     <string name="wait_for_connection">Press the push-link button on the Hue Bridge to connect to it.</string>
+    <string name="no_bridge_found">No bridges found. Check network connection and try again.</string>
 </resources>

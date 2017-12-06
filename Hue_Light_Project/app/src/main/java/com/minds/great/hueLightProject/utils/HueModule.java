@@ -1,10 +1,8 @@
-package com.minds.great.hue_light_project.Utils;
+package com.minds.great.hueLightProject.utils;
 
-import android.content.Context;
-
-import com.minds.great.hue_light_project.BridgeListAdapter;
-import com.minds.great.hue_light_project.Core.BridgeController;
-import com.minds.great.hue_light_project.Core.BridgeListener;
+import com.minds.great.hueLightProject.BridgeListAdapter;
+import com.minds.great.hueLightProject.hueImpl.BridgeController;
+import com.minds.great.hueLightProject.hueImpl.BridgeListener;
 import com.philips.lighting.hue.sdk.PHHueSDK;
 import javax.inject.Singleton;
 import dagger.Module;

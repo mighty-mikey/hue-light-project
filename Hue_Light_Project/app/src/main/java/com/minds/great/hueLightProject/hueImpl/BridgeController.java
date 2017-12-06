@@ -1,12 +1,8 @@
-package com.minds.great.hue_light_project.Core;
-
-import android.Manifest;
-import android.support.v4.content.ContextCompat;
+package com.minds.great.hueLightProject.hueImpl;
 
 import com.philips.lighting.hue.sdk.PHAccessPoint;
 import com.philips.lighting.hue.sdk.PHBridgeSearchManager;
 import com.philips.lighting.hue.sdk.PHHueSDK;
-import com.philips.lighting.model.PHBridge;
 
 public class BridgeController {
 

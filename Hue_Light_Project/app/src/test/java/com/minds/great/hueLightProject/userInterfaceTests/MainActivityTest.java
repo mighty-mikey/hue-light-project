@@ -1,12 +1,14 @@
-package com.minds.great.hue_light_project.UserInterfaceTests;
+package com.minds.great.hueLightProject.userInterfaceTests;
 
-import com.minds.great.hue_light_project.BuildConfig;
-import com.minds.great.hue_light_project.MainActivity;
-import com.minds.great.hue_light_project.R;
+import com.minds.great.hueLightProject.BuildConfig;
+import com.minds.great.hueLightProject.hueImpl.BridgeListener;
+import com.minds.great.hueLightProject.MainActivity;
+import com.minds.great.hueLightProject.R;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
@@ -17,11 +19,13 @@ import static junit.framework.Assert.assertNotNull;
 @Config(constants = BuildConfig.class)
 public class MainActivityTest {
 
-    private MainActivity activity;
+    private MainActivity subject;
+    @Mock
+    BridgeListener bridgeListenerMock;
 
     @Before
     public void setUp() throws Exception {
-        activity = Robolectric.buildActivity(MainActivity.class)
+        subject = Robolectric.buildActivity(MainActivity.class)
                 .create()
                 .resume()
                 .get();
@@ -29,11 +33,11 @@ public class MainActivityTest {
 
     @Test
     public void mainActivity_shouldNotBeNull() throws Exception {
-        assertNotNull(activity);
+        assertNotNull(subject);
     }
 
     @Test
     public void mainActivity_shouldHaveSearchButton() throws Exception {
-        assertNotNull(activity.findViewById(R.id.connectButton));
+        assertNotNull(subject.findViewById(R.id.connectButton));
     }
 }
