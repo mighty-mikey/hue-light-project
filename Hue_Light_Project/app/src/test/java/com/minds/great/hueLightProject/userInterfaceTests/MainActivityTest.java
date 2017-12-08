@@ -1,13 +1,15 @@
 package com.minds.great.hueLightProject.userInterfaceTests;
 
+
+
 import com.minds.great.hueLightProject.BuildConfig;
-import com.minds.great.hueLightProject.MainActivity;
 import com.minds.great.hueLightProject.R;
+import com.minds.great.hueLightProject.userInterface.MainActivity;
+
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;

@@ -1,6 +1,7 @@
-package com.minds.great.hueLightProject.utils;
+package com.minds.great.hueLightProject.utils.dagger;
 
 import com.minds.great.hueLightProject.BridgeListAdapter;
+import com.minds.great.hueLightProject.core.controllers.ConnectionPoint;
 import com.minds.great.hueLightProject.hueImpl.HueBridgeController;
 import com.philips.lighting.hue.sdk.PHHueSDK;
 import javax.inject.Singleton;
@@ -12,7 +13,7 @@ public class HueModule {
 
     @Provides
     @Singleton
-    HueBridgeController providesBridgeController(PHHueSDK phHueSDK){
+    ConnectionPoint providesBridgeController(PHHueSDK phHueSDK){
         return new HueBridgeController(phHueSDK);
     }
 

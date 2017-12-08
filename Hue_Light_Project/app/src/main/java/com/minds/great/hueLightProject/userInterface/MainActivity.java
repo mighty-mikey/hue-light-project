@@ -1,4 +1,4 @@
-package com.minds.great.hueLightProject;
+package com.minds.great.hueLightProject.userInterface;
 
 import android.Manifest;
 import android.content.Intent;
@@ -10,13 +10,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.minds.great.hueLightProject.core.ConnectionController;
-import com.minds.great.hueLightProject.core.LightSystem;
-import com.minds.great.hueLightProject.utils.DaggerInjector;
+import com.minds.great.hueLightProject.R;
+import com.minds.great.hueLightProject.core.controllers.ConnectionController;
+import com.minds.great.hueLightProject.core.models.LightSystem;
+import com.minds.great.hueLightProject.core.presenters.ConnectionPresenter;
+import com.minds.great.hueLightProject.core.presenters.ConnectionView;
 import com.minds.great.hueLightProject.utils.HueViewError;
+import com.minds.great.hueLightProject.utils.dagger.DaggerInjector;
 import com.philips.lighting.hue.sdk.PHAccessPoint;
 
 import org.androidannotations.annotations.Click;
@@ -30,9 +32,11 @@ import javax.inject.Inject;
 import io.reactivex.disposables.Disposable;
 
 import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ConnectionView {
 
     @ViewById
     View searchProgressBar;
@@ -41,13 +45,13 @@ public class MainActivity extends AppCompatActivity {
     @ViewById
     ConstraintLayout bridgeLayout;
     @ViewById
-    ListView bridgeList;
-    @ViewById
     TextView waitingForConnection;
     @ViewById
     TextView errorMessage;
     @Inject
     ConnectionController controller;
+    @Inject
+    ConnectionPresenter connectionPresenter;
 
     Disposable subscription;
 
@@ -74,12 +78,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        connectionPresenter.viewLoaded(this);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (subscription != null) {
             subscription.dispose();
             subscription = null;
         }
+        connectionPresenter.viewUnloaded();
     }
 
     private void determineRelayObject(Object object) {
@@ -100,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 prefs.putString("ipAddress", lightSystem.getIpAddress());
                 prefs.commit();
             }
-            Intent intent = new Intent(this, LightsActivity_.class);
+            Intent intent = new Intent(this, LightsActivity.class);
             startActivity(intent);
         }
     }
@@ -109,9 +120,9 @@ public class MainActivity extends AppCompatActivity {
         if (error.getCode() == HueViewError.NO_BRIDGE_FOUND_CODE) {
             this.runOnUiThread(() -> {
                 errorMessage.setText(R.string.no_bridge_found);
-                searchProgressBar.setVisibility(View.GONE);
-                errorMessage.setVisibility(View.VISIBLE);
-                connectButton.setVisibility(View.VISIBLE);
+                searchProgressBar.setVisibility(GONE);
+                errorMessage.setVisibility(VISIBLE);
+                connectButton.setVisibility(VISIBLE);
             });
         }
     }
@@ -119,25 +130,39 @@ public class MainActivity extends AppCompatActivity {
     private void connectToFirstBridge(List<LightSystem> listOfFoundBridges) {
         this.runOnUiThread(() -> {
             controller.connectToController(listOfFoundBridges.get(0));
-            bridgeLayout.setVisibility(View.GONE);
-            waitingForConnection.setVisibility(View.VISIBLE);
-            searchProgressBar.setVisibility(View.GONE);
-            connectButton.setVisibility(View.GONE);
+            bridgeLayout.setVisibility(GONE);
+            waitingForConnection.setVisibility(VISIBLE);
+            searchProgressBar.setVisibility(GONE);
+            connectButton.setVisibility(GONE);
         });
     }
 
     @Click(resName = "connectButton")
     public void searchForBridges() {
-        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET);
+        checkInternetPermission();
+        connectionPresenter.search();
+    }
 
+    @Override
+    public void showProgressBar() {
+        searchProgressBar.setVisibility(VISIBLE);
+    }
+
+    @Override
+    public void hideConnectButton() {
+        connectButton.setVisibility(GONE);
+    }
+
+    @Override
+    public void hideErrorMessage() {
+        errorMessage.setVisibility(GONE);
+    }
+
+    private void checkInternetPermission(){
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET);
         if (permissionCheck != PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.INTERNET}, 1);
         }
-
-        searchProgressBar.setVisibility(View.VISIBLE);
-        connectButton.setVisibility(View.GONE);
-        errorMessage.setVisibility(View.GONE);
-        controller.search();
     }
 }

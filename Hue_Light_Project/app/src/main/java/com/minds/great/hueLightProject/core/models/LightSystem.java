@@ -1,4 +1,4 @@
-package com.minds.great.hueLightProject.core;
+package com.minds.great.hueLightProject.core.models;
 
 public class LightSystem {
     private String ipAddress;

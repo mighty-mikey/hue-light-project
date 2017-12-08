@@ -1,8 +1,8 @@
 package com.minds.great.hueLightProject.hueImpl;
 
 import com.jakewharton.rxrelay2.PublishRelay;
-import com.minds.great.hueLightProject.core.ConnectionPoint;
-import com.minds.great.hueLightProject.core.LightSystem;
+import com.minds.great.hueLightProject.core.controllers.ConnectionPoint;
+import com.minds.great.hueLightProject.core.models.LightSystem;
 import com.minds.great.hueLightProject.utils.HueViewError;
 import com.philips.lighting.hue.sdk.PHAccessPoint;
 import com.philips.lighting.hue.sdk.PHBridgeSearchManager;
@@ -80,7 +80,6 @@ public class HueBridgeController implements ConnectionPoint, PHSDKListener {
                         .getIpAddress())
                 .build();
 
-        publishRelay.accept(lightSystem);
         // Here it is recommended to set your connected bridge in your sdk object (as above) and start the heartbeat.
         // At this point you are connected to a bridge so you should pass control to your main program/activity.
         // The username is generated randomly by the bridge.
@@ -108,7 +107,7 @@ public class HueBridgeController implements ConnectionPoint, PHSDKListener {
     public void onError(int code, final String message) {
         // Here you can handle events such as Bridge Not Responding, Authentication Failed and Bridge Not Found
         HueViewError error = new HueViewError(code, message);
-        publishRelay.accept(error);
+
     }
 
     @Override

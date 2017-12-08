@@ -1,6 +1,9 @@
-package com.minds.great.hueLightProject.core;
+package com.minds.great.hueLightProject.core.controllers;
 
 import com.jakewharton.rxrelay2.PublishRelay;
+import com.minds.great.hueLightProject.core.models.LightSystem;
+
+import java.util.List;
 
 public class ConnectionController {
 
@@ -10,7 +13,7 @@ public class ConnectionController {
         this.connectionPoint = connectionPoint;
     }
 
-    public PublishRelay<LightSystem> search(){
+    public PublishRelay<List<LightSystem>> search(){
         connectionPoint.search();
         return connectionPoint.getConnectionPointObservable();
     }
@@ -18,7 +21,5 @@ public class ConnectionController {
     public void connectToController(LightSystem controller) {
         connectionPoint.connectToLightSystem(controller);
     }
-    //disconnect method
-
 
 }

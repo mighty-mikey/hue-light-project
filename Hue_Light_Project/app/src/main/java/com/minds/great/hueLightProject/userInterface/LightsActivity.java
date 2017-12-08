@@ -1,7 +1,9 @@
-package com.minds.great.hueLightProject;
+package com.minds.great.hueLightProject.userInterface;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.minds.great.hueLightProject.R;
 
 import org.androidannotations.annotations.EActivity;
 
