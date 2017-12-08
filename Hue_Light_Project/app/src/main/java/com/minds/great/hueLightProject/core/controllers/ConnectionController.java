@@ -2,24 +2,35 @@ package com.minds.great.hueLightProject.core.controllers;
 
 import com.jakewharton.rxrelay2.PublishRelay;
 import com.minds.great.hueLightProject.core.models.LightSystem;
+import com.minds.great.hueLightProject.core.models.ConnectionError;
 
 import java.util.List;
 
 public class ConnectionController {
 
-    ConnectionPoint connectionPoint;
+    private LightSystemInterface lightSystemInterface;
 
-    public ConnectionController(ConnectionPoint connectionPoint){
-        this.connectionPoint = connectionPoint;
+    public ConnectionController(LightSystemInterface lightSystemInterface){
+        this.lightSystemInterface = lightSystemInterface;
     }
 
-    public PublishRelay<List<LightSystem>> search(){
-        connectionPoint.search();
-        return connectionPoint.getConnectionPointObservable();
+    public void startLightSystemSearch(){
+        lightSystemInterface.searchForLightSystems();
     }
 
-    public void connectToController(LightSystem controller) {
-        connectionPoint.connectToLightSystem(controller);
+    public PublishRelay<List<LightSystem>> getLightSystemListObservable(){
+        return lightSystemInterface.getLightSystemListObservable();
     }
 
+    public PublishRelay<LightSystem> getLightSystemObservable(){
+        return lightSystemInterface.getLightSystemObservable();
+    }
+
+    public void connectToLightSystem(LightSystem controller) {
+        lightSystemInterface.connectToLightSystem(controller);
+    }
+
+    public PublishRelay<ConnectionError> getErrorObservable() {
+        return lightSystemInterface.getErrorObservable();
+    }
 }

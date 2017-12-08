@@ -3,6 +3,8 @@ package com.minds.great.hueLightProject.core.models;
 public class LightSystem {
     private String ipAddress;
     private String userName;
+    private String bridgeId;
+    private String macAddress;
 
     public String getIpAddress() {
         return ipAddress;
@@ -15,10 +17,19 @@ public class LightSystem {
     private LightSystem(){
     }
 
+    public String getBridgeId() {
+        return bridgeId;
+    }
+
+    public String getMacAddress() {
+        return macAddress;
+    }
+
     static public class Builder {
-        private LightSystem lightSystem;
-        String userName;
-        String ipAddress;
+        private String userName;
+        private String ipAddress;
+        private String bridgeId;
+        private String macAddress;
 
         public Builder userName(String userName) {
             this.userName = userName;
@@ -30,11 +41,25 @@ public class LightSystem {
             return this;
         }
 
+        public Builder bridgeId(String ipAddress) {
+            this.bridgeId = ipAddress;
+            return this;
+        }
+
+        public Builder macAddress(String ipAddress) {
+            this.macAddress = ipAddress;
+            return this;
+        }
+
         public LightSystem build() {
-            lightSystem = new LightSystem();
+            LightSystem lightSystem = new LightSystem();
             lightSystem.userName = userName;
             lightSystem.ipAddress = ipAddress;
+            lightSystem.bridgeId = bridgeId;
+            lightSystem.macAddress = macAddress;
             return lightSystem;
         }
     }
+
+
 }

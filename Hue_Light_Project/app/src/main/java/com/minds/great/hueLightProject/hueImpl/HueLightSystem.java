@@ -1,9 +1,9 @@
 package com.minds.great.hueLightProject.hueImpl;
 
 import com.jakewharton.rxrelay2.PublishRelay;
-import com.minds.great.hueLightProject.core.controllers.ConnectionPoint;
+import com.minds.great.hueLightProject.core.controllers.LightSystemInterface;
 import com.minds.great.hueLightProject.core.models.LightSystem;
-import com.minds.great.hueLightProject.utils.HueViewError;
+import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.philips.lighting.hue.sdk.PHAccessPoint;
 import com.philips.lighting.hue.sdk.PHBridgeSearchManager;
 import com.philips.lighting.hue.sdk.PHHueSDK;
@@ -15,47 +15,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HueBridgeController implements ConnectionPoint, PHSDKListener {
+public class HueLightSystem implements LightSystemInterface, PHSDKListener {
 
     private PHHueSDK phHueSDK;
-    private PublishRelay<List<LightSystem>> publishRelay = PublishRelay.create();
+    private PublishRelay<List<LightSystem>> accessPointRelay = PublishRelay.create();
+    private PublishRelay<ConnectionError> errorRelay = PublishRelay.create();
+    private PublishRelay<LightSystem> lightSystemRelay = PublishRelay.create();
 
-    public HueBridgeController(PHHueSDK phHueSDK) {
+    public HueLightSystem(PHHueSDK phHueSDK) {
         this.phHueSDK = phHueSDK;
         phHueSDK.getNotificationManager().registerSDKListener(this);
     }
 
-    public void search() {
+    public void searchForLightSystems() {
         PHBridgeSearchManager searchManager = (PHBridgeSearchManager) phHueSDK.getSDKService(PHHueSDK.SEARCH_BRIDGE);
         searchManager.search(true, true);
     }
 
     @Override
-    public PublishRelay<List<LightSystem>> getConnectionPointObservable() {
-        return publishRelay;
+    public PublishRelay<List<LightSystem>> getLightSystemListObservable() {
+        return accessPointRelay;
     }
 
     @Override
     public void connectToLightSystem(LightSystem lightSystem) {
-
+        PHAccessPoint phAccessPoint = new PHAccessPoint();
+        phAccessPoint.setIpAddress(lightSystem.getIpAddress());
+        phAccessPoint.setUsername(lightSystem.getUserName());
+        phAccessPoint.setBridgeId(lightSystem.getBridgeId());
+        phAccessPoint.setMacAddress(lightSystem.getMacAddress());
+        phHueSDK.connect(phAccessPoint);
     }
 
-    public void connectToBridge(PHAccessPoint bridge) {
-        phHueSDK.connect(bridge);
+    @Override
+    public PublishRelay<ConnectionError> getErrorObservable() {
+        return errorRelay;
+    }
+
+    @Override
+    public PublishRelay<LightSystem> getLightSystemObservable() {
+        return lightSystemRelay;
     }
 
     @Override
     public void onAccessPointsFound(List accessPointList) {
-
         List<LightSystem> list = new ArrayList<>();
         for (Object obj : accessPointList) {
             PHAccessPoint accessPoint = (PHAccessPoint) obj;
             list.add(new LightSystem.Builder()
                     .ipAddress(accessPoint.getIpAddress())
                     .userName(accessPoint.getUsername())
+                    .macAddress(accessPoint.getMacAddress())
+                    .bridgeId(accessPoint.getBridgeId())
                     .build());
         }
-        publishRelay.accept(list);
+        accessPointRelay.accept(list);
     }
 
     @Override
@@ -80,11 +94,8 @@ public class HueBridgeController implements ConnectionPoint, PHSDKListener {
                         .getIpAddress())
                 .build();
 
-        // Here it is recommended to set your connected bridge in your sdk object (as above) and start the heartbeat.
-        // At this point you are connected to a bridge so you should pass control to your main program/activity.
-        // The username is generated randomly by the bridge.
-        // Also it is recommended you store the connected IP Address/ Username in your app here.  This will allow easy automatic connection on subsequent use.
-    }
+        lightSystemRelay.accept(lightSystem);
+     }
 
     @Override
     public void onAuthenticationRequired(PHAccessPoint accessPoint) {
@@ -106,7 +117,8 @@ public class HueBridgeController implements ConnectionPoint, PHSDKListener {
     @Override
     public void onError(int code, final String message) {
         // Here you can handle events such as Bridge Not Responding, Authentication Failed and Bridge Not Found
-        HueViewError error = new HueViewError(code, message);
+        ConnectionError error = new ConnectionError(code);
+        errorRelay.accept(error);
 
     }
 

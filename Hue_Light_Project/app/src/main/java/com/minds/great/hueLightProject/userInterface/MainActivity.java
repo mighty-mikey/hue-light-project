@@ -17,9 +17,8 @@ import com.minds.great.hueLightProject.core.controllers.ConnectionController;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 import com.minds.great.hueLightProject.core.presenters.ConnectionPresenter;
 import com.minds.great.hueLightProject.core.presenters.ConnectionView;
-import com.minds.great.hueLightProject.utils.HueViewError;
+import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.utils.dagger.DaggerInjector;
-import com.philips.lighting.hue.sdk.PHAccessPoint;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements ConnectionView {
                     .userName(userName)
                     .ipAddress(ipAddress)
                     .build();
-            this.controller.connectToController(controller);
+            this.controller.connectToLightSystem(controller);
         }
     }
 
@@ -94,14 +93,10 @@ public class MainActivity extends AppCompatActivity implements ConnectionView {
     }
 
     private void determineRelayObject(Object object) {
-        if (object instanceof HueViewError) {
-            showError((HueViewError) object);
+        if (object instanceof ConnectionError) {
+            showError((ConnectionError) object);
         } else if (object instanceof List) {
-            if (((List) object).size() > 0) {
-                if (((List) object).get(0) instanceof PHAccessPoint) {
-                    connectToFirstBridge((List) object);
-                }
-            }
+
         } else if (object instanceof LightSystem) {
             LightSystem lightSystem = (LightSystem) object;
             if (!lightSystem.getUserName().equals(userName)
@@ -116,26 +111,6 @@ public class MainActivity extends AppCompatActivity implements ConnectionView {
         }
     }
 
-    private void showError(HueViewError error) {
-        if (error.getCode() == HueViewError.NO_BRIDGE_FOUND_CODE) {
-            this.runOnUiThread(() -> {
-                errorMessage.setText(R.string.no_bridge_found);
-                searchProgressBar.setVisibility(GONE);
-                errorMessage.setVisibility(VISIBLE);
-                connectButton.setVisibility(VISIBLE);
-            });
-        }
-    }
-
-    private void connectToFirstBridge(List<LightSystem> listOfFoundBridges) {
-        this.runOnUiThread(() -> {
-            controller.connectToController(listOfFoundBridges.get(0));
-            bridgeLayout.setVisibility(GONE);
-            waitingForConnection.setVisibility(VISIBLE);
-            searchProgressBar.setVisibility(GONE);
-            connectButton.setVisibility(GONE);
-        });
-    }
 
     @Click(resName = "connectButton")
     public void searchForBridges() {
@@ -149,14 +124,39 @@ public class MainActivity extends AppCompatActivity implements ConnectionView {
     }
 
     @Override
+    public void hideProgressBar() {
+        searchProgressBar.setVisibility(GONE);
+    }
+
+    @Override
+    public void showWaitingForConnection() {
+        waitingForConnection.setVisibility(VISIBLE);
+    }
+
+    @Override
     public void hideConnectButton() {
         connectButton.setVisibility(GONE);
     }
 
     @Override
+    public void showConnectButton() {
+        connectButton.setVisibility(VISIBLE);
+    }
+
+    @Override
     public void hideErrorMessage() {
         errorMessage.setVisibility(GONE);
+        errorMessage.setText("");
     }
+
+    @Override
+    public void showErrorMessage(int code) {
+        if (code == ConnectionError.NO_BRIDGE_FOUND_CODE) {
+            errorMessage.setText(R.string.no_bridge_found);
+            errorMessage.setVisibility(VISIBLE);
+        }
+    }
+
 
     private void checkInternetPermission(){
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET);

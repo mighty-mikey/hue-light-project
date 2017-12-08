@@ -7,4 +7,12 @@ public interface ConnectionView {
     void hideConnectButton();
 
     void hideErrorMessage();
+
+    void hideProgressBar();
+
+    void showWaitingForConnection();
+
+    void showErrorMessage(int code);
+
+    void showConnectButton();
 }
