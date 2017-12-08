@@ -1,6 +1,6 @@
 package com.minds.great.hueLightProject.core;
 
-public class LightSystemSharedPreferences {
+public class LightSystem {
     private String ipAddress;
     private String userName;
 
@@ -12,11 +12,11 @@ public class LightSystemSharedPreferences {
         return userName;
     }
 
-    private LightSystemSharedPreferences(){
+    private LightSystem(){
     }
 
     static public class Builder {
-        private LightSystemSharedPreferences lightSystemSharedPreferences;
+        private LightSystem lightSystem;
         String userName;
         String ipAddress;
 
@@ -30,11 +30,11 @@ public class LightSystemSharedPreferences {
             return this;
         }
 
-        public LightSystemSharedPreferences build() {
-            lightSystemSharedPreferences = new LightSystemSharedPreferences();
-            lightSystemSharedPreferences.userName = userName;
-            lightSystemSharedPreferences.ipAddress = ipAddress;
-            return lightSystemSharedPreferences;
+        public LightSystem build() {
+            lightSystem = new LightSystem();
+            lightSystem.userName = userName;
+            lightSystem.ipAddress = ipAddress;
+            return lightSystem;
         }
     }
 }

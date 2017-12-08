@@ -1,7 +1,6 @@
 package com.minds.great.hueLightProject.userInterfaceTests;
 
 import com.minds.great.hueLightProject.BuildConfig;
-import com.minds.great.hueLightProject.hueImpl.BridgeListener;
 import com.minds.great.hueLightProject.MainActivity;
 import com.minds.great.hueLightProject.R;
 
@@ -20,8 +19,6 @@ import static junit.framework.Assert.assertNotNull;
 public class MainActivityTest {
 
     private MainActivity subject;
-    @Mock
-    BridgeListener bridgeListenerMock;
 
     @Before
     public void setUp() throws Exception {

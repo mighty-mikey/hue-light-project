@@ -13,9 +13,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.minds.great.hueLightProject.core.LightSystemSharedPreferences;
-import com.minds.great.hueLightProject.hueImpl.BridgeController;
-import com.minds.great.hueLightProject.hueImpl.BridgeListener;
+import com.minds.great.hueLightProject.core.ConnectionController;
+import com.minds.great.hueLightProject.core.LightSystem;
 import com.minds.great.hueLightProject.utils.DaggerInjector;
 import com.minds.great.hueLightProject.utils.HueViewError;
 import com.philips.lighting.hue.sdk.PHAccessPoint;
@@ -48,11 +47,7 @@ public class MainActivity extends AppCompatActivity {
     @ViewById
     TextView errorMessage;
     @Inject
-    BridgeController bridgeController;
-    @Inject
-    BridgeListener bridgeListener;
-    @Inject
-    BridgeListAdapter bridgeListAdapter;
+    ConnectionController controller;
 
     Disposable subscription;
 
@@ -64,17 +59,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         DaggerInjector.builder().build().inject(this);
-        subscription = bridgeListener.getPublishRelay().subscribe(this::determineRelayObject);
 
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
         userName = prefs.getString("userName", null);
         ipAddress = prefs.getString("ipAddress", null);
 
-        if(userName != null && ipAddress != null) {
-            PHAccessPoint phAccessPoint = new PHAccessPoint();
-            phAccessPoint.setUsername(userName);
-            phAccessPoint.setIpAddress(ipAddress);
-            bridgeController.connectToBridge(phAccessPoint);
+        if (userName != null && ipAddress != null) {
+            LightSystem controller = new LightSystem.Builder()
+                    .userName(userName)
+                    .ipAddress(ipAddress)
+                    .build();
+            this.controller.connectToController(controller);
         }
     }
 
@@ -96,13 +91,13 @@ public class MainActivity extends AppCompatActivity {
                     connectToFirstBridge((List) object);
                 }
             }
-        } else if (object instanceof LightSystemSharedPreferences) {
-            LightSystemSharedPreferences lightSystemSharedPreferences = (LightSystemSharedPreferences) object;
-            if(!lightSystemSharedPreferences.getUserName().equals(userName)
-                    || !lightSystemSharedPreferences.getIpAddress().equals(ipAddress)) {
+        } else if (object instanceof LightSystem) {
+            LightSystem lightSystem = (LightSystem) object;
+            if (!lightSystem.getUserName().equals(userName)
+                    || !lightSystem.getIpAddress().equals(ipAddress)) {
                 SharedPreferences.Editor prefs = this.getPreferences(MODE_PRIVATE).edit();
-                prefs.putString("userName", lightSystemSharedPreferences.getUserName());
-                prefs.putString("ipAddress", lightSystemSharedPreferences.getIpAddress());
+                prefs.putString("userName", lightSystem.getUserName());
+                prefs.putString("ipAddress", lightSystem.getIpAddress());
                 prefs.commit();
             }
             Intent intent = new Intent(this, LightsActivity_.class);
@@ -121,9 +116,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void connectToFirstBridge(List<PHAccessPoint> listOfFoundBridges) {
+    private void connectToFirstBridge(List<LightSystem> listOfFoundBridges) {
         this.runOnUiThread(() -> {
-            bridgeController.connectToBridge(listOfFoundBridges.get(0));
+            controller.connectToController(listOfFoundBridges.get(0));
             bridgeLayout.setVisibility(View.GONE);
             waitingForConnection.setVisibility(View.VISIBLE);
             searchProgressBar.setVisibility(View.GONE);
@@ -143,6 +138,6 @@ public class MainActivity extends AppCompatActivity {
         searchProgressBar.setVisibility(View.VISIBLE);
         connectButton.setVisibility(View.GONE);
         errorMessage.setVisibility(View.GONE);
-        bridgeController.searchForBridges();
+        controller.search();
     }
 }

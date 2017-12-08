@@ -13,7 +13,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class BridgeControllerTest {
+public class HueBridgeControllerTest {
 
     @Mock
     PHHueSDK phHueSDKMock;
@@ -21,15 +21,13 @@ public class BridgeControllerTest {
     PHNotificationManager phNotificationManager;
     @Mock
     PHBridgeSearchManager phBridgeSearchManager;
-    private BridgeListener bridgeListener;
-    private BridgeController subject;
+    private HueBridgeController subject;
 
     @Before
     public void setUp() {
         when(phHueSDKMock.getNotificationManager()).thenReturn(phNotificationManager);
         when(phHueSDKMock.getSDKService(PHHueSDK.SEARCH_BRIDGE)).thenReturn(phBridgeSearchManager);
-        bridgeListener = new BridgeListener(phHueSDKMock);
-        subject = new BridgeController(phHueSDKMock, bridgeListener);
+        subject = new HueBridgeController(phHueSDKMock);
     }
 
     @Test
@@ -39,18 +37,18 @@ public class BridgeControllerTest {
 
     @Test
     public void bridgeController_registersListener(){
-        verify(phNotificationManager).registerSDKListener(bridgeListener);
+        verify(phNotificationManager).registerSDKListener(subject);
     }
 
     @Test
     public void searchForBridges_callsHueLib() {
-        subject.searchForBridges();
+        subject.search();
         verify(phHueSDKMock).getSDKService(PHHueSDK.SEARCH_BRIDGE);
     }
 
     @Test
     public void searchForBridges_searchesForBridges(){
-        subject.searchForBridges();
+        subject.search();
         verify(phBridgeSearchManager).search(true, true);
     }
 }

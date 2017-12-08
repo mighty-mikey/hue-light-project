@@ -1,9 +1,11 @@
 package com.minds.great.hueLightProject.hueImpl;
 
 import com.jakewharton.rxrelay2.PublishRelay;
-import com.minds.great.hueLightProject.core.LightSystemSharedPreferences;
+import com.minds.great.hueLightProject.core.ConnectionPoint;
+import com.minds.great.hueLightProject.core.LightSystem;
 import com.minds.great.hueLightProject.utils.HueViewError;
 import com.philips.lighting.hue.sdk.PHAccessPoint;
+import com.philips.lighting.hue.sdk.PHBridgeSearchManager;
 import com.philips.lighting.hue.sdk.PHHueSDK;
 import com.philips.lighting.hue.sdk.PHMessageType;
 import com.philips.lighting.hue.sdk.PHSDKListener;
@@ -13,21 +15,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class BridgeListener implements PHSDKListener {
+public class HueBridgeController implements ConnectionPoint, PHSDKListener {
 
     private PHHueSDK phHueSDK;
-    private PublishRelay<Object> publishRelay = PublishRelay.create();
+    private PublishRelay<List<LightSystem>> publishRelay = PublishRelay.create();
 
-    public BridgeListener(PHHueSDK phHueSDK){
+    public HueBridgeController(PHHueSDK phHueSDK) {
         this.phHueSDK = phHueSDK;
+        phHueSDK.getNotificationManager().registerSDKListener(this);
+    }
+
+    public void search() {
+        PHBridgeSearchManager searchManager = (PHBridgeSearchManager) phHueSDK.getSDKService(PHHueSDK.SEARCH_BRIDGE);
+        searchManager.search(true, true);
     }
 
     @Override
-    public void onAccessPointsFound(List accessPoint) {
+    public PublishRelay<List<LightSystem>> getConnectionPointObservable() {
+        return publishRelay;
+    }
 
-        List<PHAccessPoint> list = new ArrayList<>();
-        for (Object obj: accessPoint) {
-            list.add((PHAccessPoint)obj);
+    @Override
+    public void connectToLightSystem(LightSystem lightSystem) {
+
+    }
+
+    public void connectToBridge(PHAccessPoint bridge) {
+        phHueSDK.connect(bridge);
+    }
+
+    @Override
+    public void onAccessPointsFound(List accessPointList) {
+
+        List<LightSystem> list = new ArrayList<>();
+        for (Object obj : accessPointList) {
+            PHAccessPoint accessPoint = (PHAccessPoint) obj;
+            list.add(new LightSystem.Builder()
+                    .ipAddress(accessPoint.getIpAddress())
+                    .userName(accessPoint.getUsername())
+                    .build());
         }
         publishRelay.accept(list);
     }
@@ -46,7 +72,7 @@ public class BridgeListener implements PHSDKListener {
         phHueSDK.setSelectedBridge(foundBridge);
         phHueSDK.enableHeartbeat(foundBridge, PHHueSDK.HB_INTERVAL);
 
-        LightSystemSharedPreferences lightSystem = new LightSystemSharedPreferences.Builder()
+        LightSystem lightSystem = new LightSystem.Builder()
                 .userName(username)
                 .ipAddress(foundBridge
                         .getResourceCache()
@@ -89,8 +115,6 @@ public class BridgeListener implements PHSDKListener {
     public void onParsingErrors(List parsingErrorsList) {
         // Any JSON parsing errors are returned here.  Typically your program should never return these.
     }
-
-    public PublishRelay<Object> getPublishRelay() {
-        return publishRelay;
-    }
 }
+
+
