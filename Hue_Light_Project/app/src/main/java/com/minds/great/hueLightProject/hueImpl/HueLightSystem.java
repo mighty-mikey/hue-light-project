@@ -1,7 +1,7 @@
 package com.minds.great.hueLightProject.hueImpl;
 
 import com.jakewharton.rxrelay2.PublishRelay;
-import com.minds.great.hueLightProject.core.controllers.LightSystemInterface;
+import com.minds.great.hueLightProject.core.presenters.LightSystemInterface;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.philips.lighting.hue.sdk.PHAccessPoint;
@@ -18,7 +18,7 @@ import java.util.List;
 public class HueLightSystem implements LightSystemInterface, PHSDKListener {
 
     private PHHueSDK phHueSDK;
-    private PublishRelay<List<LightSystem>> accessPointRelay = PublishRelay.create();
+    private PublishRelay<List<LightSystem>> lightSystemListRelay = PublishRelay.create();
     private PublishRelay<ConnectionError> errorRelay = PublishRelay.create();
     private PublishRelay<LightSystem> lightSystemRelay = PublishRelay.create();
 
@@ -34,7 +34,7 @@ public class HueLightSystem implements LightSystemInterface, PHSDKListener {
 
     @Override
     public PublishRelay<List<LightSystem>> getLightSystemListObservable() {
-        return accessPointRelay;
+        return lightSystemListRelay;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class HueLightSystem implements LightSystemInterface, PHSDKListener {
                     .bridgeId(accessPoint.getBridgeId())
                     .build());
         }
-        accessPointRelay.accept(list);
+        lightSystemListRelay.accept(list);
     }
 
     @Override

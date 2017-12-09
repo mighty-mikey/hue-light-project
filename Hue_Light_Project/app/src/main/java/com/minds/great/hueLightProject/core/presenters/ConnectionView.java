@@ -15,4 +15,6 @@ public interface ConnectionView {
     void showErrorMessage(int code);
 
     void showConnectButton();
+
+    void navigateToLightActivity();
 }

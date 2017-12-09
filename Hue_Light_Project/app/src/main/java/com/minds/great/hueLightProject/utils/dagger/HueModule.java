@@ -1,10 +1,13 @@
 package com.minds.great.hueLightProject.utils.dagger;
 
-import com.minds.great.hueLightProject.BridgeListAdapter;
-import com.minds.great.hueLightProject.core.controllers.LightSystemInterface;
+import com.minds.great.hueLightProject.core.presenters.LightSystemInterface;
+import com.minds.great.hueLightProject.core.presenters.MemoryInterface;
+import com.minds.great.hueLightProject.data.MemoryActivity;
 import com.minds.great.hueLightProject.hueImpl.HueLightSystem;
 import com.philips.lighting.hue.sdk.PHHueSDK;
+
 import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -19,10 +22,9 @@ public class HueModule {
 
     @Provides
     @Singleton
-    BridgeListAdapter providesBridgeListAdapter(PHHueSDK phHueSDK){
-        return new BridgeListAdapter();
+    MemoryInterface providesMemoryInterface(){
+        return new MemoryActivity();
     }
-
 
     @Provides
     @Singleton
