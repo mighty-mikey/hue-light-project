@@ -16,6 +16,7 @@ import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.presenters.ConnectionPresenter;
 import com.minds.great.hueLightProject.core.presenters.ConnectionView;
 import com.minds.great.hueLightProject.utils.dagger.DaggerInjector;
+import com.minds.great.hueLightProject.utils.dagger.HueModule;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements ConnectionView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        DaggerInjector.builder().build().inject(this);
+        DaggerInjector.builder().hueModule(new HueModule(this)).build().inject(this);
     }
 
     @Override

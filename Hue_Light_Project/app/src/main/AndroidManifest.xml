@@ -25,7 +25,6 @@
         </activity>
         <activity android:name=".userInterface.MainActivity" />
         <activity android:name=".userInterface.LightsActivity" />
-        <activity android:name=".data.MemoryActivity" />
     </application>
 
 </manifest>
