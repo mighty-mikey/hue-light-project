@@ -60,6 +60,4 @@ public class LightSystem {
             return lightSystem;
         }
     }
-
-
 }

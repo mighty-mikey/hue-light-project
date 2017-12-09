@@ -71,27 +71,25 @@ public class MainActivity extends AppCompatActivity implements ConnectionView {
 
     @Override
     public void showProgressBar() {
-        searchProgressBar.setVisibility(VISIBLE);
+        runOnUiThread(() -> runOnUiThread(() -> searchProgressBar.setVisibility(VISIBLE)));
     }
 
     @Override
     public void hideProgressBar() {
-        searchProgressBar.setVisibility(GONE);
+        runOnUiThread(() -> searchProgressBar.setVisibility(GONE));
     }
 
     @Override
-    public void showWaitingForConnection() {
-        waitingForConnection.setVisibility(VISIBLE);
-    }
+    public void showWaitingForConnection() {runOnUiThread(() -> waitingForConnection.setVisibility(VISIBLE));}
 
     @Override
     public void hideConnectButton() {
-        connectButton.setVisibility(GONE);
+        runOnUiThread(() -> connectButton.setVisibility(GONE));
     }
 
     @Override
     public void showConnectButton() {
-        connectButton.setVisibility(VISIBLE);
+        runOnUiThread(() -> connectButton.setVisibility(VISIBLE));
     }
 
     @Override
@@ -102,18 +100,21 @@ public class MainActivity extends AppCompatActivity implements ConnectionView {
 
     @Override
     public void hideErrorMessage() {
-        errorMessage.setVisibility(GONE);
-        errorMessage.setText("");
+        runOnUiThread(() -> {
+            errorMessage.setVisibility(GONE);
+            errorMessage.setText("");
+        });
     }
 
     @Override
     public void showErrorMessage(int code) {
-        if (code == ConnectionError.NO_BRIDGE_FOUND_CODE) {
-            errorMessage.setText(R.string.no_bridge_found);
-            errorMessage.setVisibility(VISIBLE);
-        }
+        runOnUiThread(() -> {
+            if (code == ConnectionError.NO_BRIDGE_FOUND_CODE) {
+                errorMessage.setText(R.string.no_bridge_found);
+                errorMessage.setVisibility(VISIBLE);
+            }
+        });
     }
-
 
     private void checkInternetPermission() {
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET);
