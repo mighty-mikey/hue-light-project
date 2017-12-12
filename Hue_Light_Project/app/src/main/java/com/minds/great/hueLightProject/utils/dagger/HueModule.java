@@ -3,8 +3,8 @@ package com.minds.great.hueLightProject.utils.dagger;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.minds.great.hueLightProject.core.presenters.LightSystemInterface;
-import com.minds.great.hueLightProject.core.presenters.MemoryInterface;
+import com.minds.great.hueLightProject.core.controllers.LightSystemInterface;
+import com.minds.great.hueLightProject.core.controllers.MemoryInterface;
 import com.minds.great.hueLightProject.data.Memory;
 import com.minds.great.hueLightProject.hueImpl.HueLightSystem;
 import com.philips.lighting.hue.sdk.PHHueSDK;

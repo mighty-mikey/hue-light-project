@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
-import com.minds.great.hueLightProject.core.presenters.ConnectionPresenter;
-import com.minds.great.hueLightProject.core.presenters.ConnectionView;
+import com.minds.great.hueLightProject.core.controllers.ConnectionController;
+import com.minds.great.hueLightProject.core.controllers.ConnectionView;
 import com.minds.great.hueLightProject.utils.dagger.DaggerInjector;
 import com.minds.great.hueLightProject.utils.dagger.HueModule;
 
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements ConnectionView {
     @ViewById
     TextView errorMessage;
     @Inject
-    ConnectionPresenter connectionPresenter;
+    ConnectionController connectionController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,24 +54,24 @@ public class MainActivity extends AppCompatActivity implements ConnectionView {
     @Override
     protected void onResume() {
         super.onResume();
-        connectionPresenter.viewLoaded(this);
+        connectionController.viewLoaded(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        connectionPresenter.viewUnloaded();
+        connectionController.viewUnloaded();
     }
 
     @Click(resName = "connectButton")
     public void searchForBridges() {
         checkInternetPermission();
-        connectionPresenter.search();
+        connectionController.search();
     }
 
     @Override
     public void showProgressBar() {
-        runOnUiThread(() -> runOnUiThread(() -> searchProgressBar.setVisibility(VISIBLE)));
+        runOnUiThread(() -> searchProgressBar.setVisibility(VISIBLE));
     }
 
     @Override
@@ -83,19 +83,23 @@ public class MainActivity extends AppCompatActivity implements ConnectionView {
     public void showWaitingForConnection() {runOnUiThread(() -> waitingForConnection.setVisibility(VISIBLE));}
 
     @Override
-    public void hideConnectButton() {
-        runOnUiThread(() -> connectButton.setVisibility(GONE));
-    }
-
-    @Override
     public void showConnectButton() {
         runOnUiThread(() -> connectButton.setVisibility(VISIBLE));
     }
 
     @Override
-    public void navigateToLightActivity() {
-        Intent intent = new Intent(this, LightsActivity.class);
-        startActivity(intent);
+    public void hideConnectButton() {
+        runOnUiThread(() -> connectButton.setVisibility(GONE));
+    }
+
+    @Override
+    public void showErrorMessage(int code) {
+        runOnUiThread(() -> {
+            if (code == ConnectionError.NO_BRIDGE_FOUND_CODE) {
+                errorMessage.setText(R.string.no_bridge_found);
+                errorMessage.setVisibility(VISIBLE);
+            }
+        });
     }
 
     @Override
@@ -107,13 +111,9 @@ public class MainActivity extends AppCompatActivity implements ConnectionView {
     }
 
     @Override
-    public void showErrorMessage(int code) {
-        runOnUiThread(() -> {
-            if (code == ConnectionError.NO_BRIDGE_FOUND_CODE) {
-                errorMessage.setText(R.string.no_bridge_found);
-                errorMessage.setVisibility(VISIBLE);
-            }
-        });
+    public void navigateToLightActivity() {
+        Intent intent = new Intent(this, LightsActivity.class);
+        startActivity(intent);
     }
 
     private void checkInternetPermission() {

@@ -1,4 +1,4 @@
-package com.minds.great.hueLightProject.core.presenters;
+package com.minds.great.hueLightProject.core.controllers;
 
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.models.LightSystem;
@@ -7,14 +7,14 @@ import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public class ConnectionPresenter {
+public class ConnectionController {
 
     private CompositeDisposable compositeDisposable;
     private LightSystemInterface lightSystemInterface;
     private MemoryInterface memory;
     private ConnectionView view;
 
-    public ConnectionPresenter(LightSystemInterface lightSystemInterface, MemoryInterface memory) {
+    public ConnectionController(LightSystemInterface lightSystemInterface, MemoryInterface memory) {
         this.lightSystemInterface = lightSystemInterface;
         this.memory = memory;
         compositeDisposable = new CompositeDisposable();
@@ -74,7 +74,6 @@ public class ConnectionPresenter {
     private void showWaitForConnection(List<LightSystem> lightSystems) {
         view.hideProgressBar();
         view.showWaitingForConnection();
-        view.hideProgressBar();
         view.hideConnectButton();
         lightSystemInterface.connectToLightSystem(lightSystems.get(0));
     }

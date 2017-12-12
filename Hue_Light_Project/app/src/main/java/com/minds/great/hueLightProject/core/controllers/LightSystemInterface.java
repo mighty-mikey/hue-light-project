@@ -1,4 +1,4 @@
-package com.minds.great.hueLightProject.core.presenters;
+package com.minds.great.hueLightProject.core.controllers;
 
 import com.jakewharton.rxrelay2.PublishRelay;
 import com.minds.great.hueLightProject.core.models.ConnectionError;

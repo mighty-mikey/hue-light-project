@@ -5,12 +5,24 @@ public class ConnectionError {
 
     private int code;
 
-
-    public ConnectionError(int code){
-        this.code = code;
-    }
+    private ConnectionError(){}
 
     public int getCode() {
         return code;
+    }
+
+    public static class Builder{
+        private int code;
+
+        public Builder code(int code){
+            this.code = code;
+            return this;
+        }
+
+        public ConnectionError build(){
+            ConnectionError connectionError = new ConnectionError();
+            connectionError.code = this.code;
+            return connectionError;
+        }
     }
 }

@@ -1,7 +1,7 @@
 package com.minds.great.hueLightProject.hueImpl;
 
 import com.jakewharton.rxrelay2.PublishRelay;
-import com.minds.great.hueLightProject.core.presenters.LightSystemInterface;
+import com.minds.great.hueLightProject.core.controllers.LightSystemInterface;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.philips.lighting.hue.sdk.PHAccessPoint;
@@ -117,7 +117,7 @@ public class HueLightSystem implements LightSystemInterface, PHSDKListener {
     @Override
     public void onError(int code, final String message) {
         // Here you can handle events such as Bridge Not Responding, Authentication Failed and Bridge Not Found
-        ConnectionError error = new ConnectionError(code);
+        ConnectionError error = new ConnectionError.Builder().code(code).build();
         errorRelay.accept(error);
 
     }

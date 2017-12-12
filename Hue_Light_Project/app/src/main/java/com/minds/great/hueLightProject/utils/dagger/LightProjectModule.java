@@ -1,8 +1,8 @@
 package com.minds.great.hueLightProject.utils.dagger;
 
-import com.minds.great.hueLightProject.core.presenters.LightSystemInterface;
-import com.minds.great.hueLightProject.core.presenters.ConnectionPresenter;
-import com.minds.great.hueLightProject.core.presenters.MemoryInterface;
+import com.minds.great.hueLightProject.core.controllers.ConnectionController;
+import com.minds.great.hueLightProject.core.controllers.LightSystemInterface;
+import com.minds.great.hueLightProject.core.controllers.MemoryInterface;
 
 import javax.inject.Singleton;
 
@@ -14,7 +14,7 @@ public class LightProjectModule {
 
     @Provides
     @Singleton
-    ConnectionPresenter providesConnectionPresenter(LightSystemInterface lightSystemInterface, MemoryInterface memoryInterface){
-        return new ConnectionPresenter(lightSystemInterface, memoryInterface);
+    ConnectionController providesConnectionPresenter(LightSystemInterface lightSystemInterface, MemoryInterface memoryInterface){
+        return new ConnectionController(lightSystemInterface, memoryInterface);
     }
 }
