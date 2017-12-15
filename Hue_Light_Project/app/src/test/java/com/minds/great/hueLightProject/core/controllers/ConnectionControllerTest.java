@@ -16,7 +16,6 @@ import java.util.List;
 
 import static com.minds.great.hueLightProject.core.models.ConnectionError.NO_BRIDGE_FOUND_CODE;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -110,7 +109,6 @@ public class ConnectionControllerTest {
         verify(viewMock).hideProgressBar();
         verify(viewMock).showWaitingForConnection();
         verify(viewMock).hideConnectButton();
-        verify(lightSystemMock).connectToLightSystem(any());
     }
 
     @Test
@@ -122,7 +120,6 @@ public class ConnectionControllerTest {
 
         verify(memoryMock).saveLightSystem(any());
         verify(lightSystemMock).connectToLightSystem(any());
-        verify(viewMock).navigateToLightActivity();
     }
 
     private void resetMocks() {

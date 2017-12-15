@@ -5,9 +5,9 @@ import android.view.View;
 
 import com.minds.great.hueLightProject.BuildConfig;
 import com.minds.great.hueLightProject.R;
-import com.minds.great.hueLightProject.userInterface.LightsActivity;
+import com.minds.great.hueLightProject.userInterface.ConnectionActivity;
+import com.minds.great.hueLightProject.userInterface.ConnectionActivity_;
 import com.minds.great.hueLightProject.userInterface.MainActivity;
-import com.minds.great.hueLightProject.userInterface.MainActivity_;
 
 
 import org.junit.Before;
@@ -26,30 +26,30 @@ import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class MainActivityTest {
+public class ConnectionActivityTest {
 
-    private MainActivity subject;
+    private ConnectionActivity subject;
 
     @Before
     public void setUp() throws Exception {
-        subject = Robolectric.buildActivity(MainActivity_.class)
+        subject = Robolectric.buildActivity(ConnectionActivity_.class)
                 .create()
                 .resume()
                 .get();
     }
 
     @Test
-    public void mainActivity_shouldNotBeNull() throws Exception {
+    public void connectionActivity_shouldNotBeNull() throws Exception {
         assertNotNull(subject);
     }
 
     @Test
-    public void mainActivity_shouldHaveSearchButton() throws Exception {
+    public void connectionActivity_shouldHaveSearchButton() throws Exception {
         assertNotNull(subject.findViewById(R.id.connectButton));
     }
 
     @Test
-    public void mainActivity_showProgressBar_hideProgressBar() throws Exception {
+    public void connectionActivity_showProgressBar_hideProgressBar() throws Exception {
         View progressBar = subject.findViewById(R.id.searchProgressBar);
         assertThat(progressBar.getVisibility() == View.GONE).isTrue();
         subject.showProgressBar();
@@ -59,15 +59,15 @@ public class MainActivityTest {
     }
 
     @Test
-    public void mainActivity_showWaitingForConnection() throws Exception {
+    public void connectionActivity_showWaitingForConnection() throws Exception {
         View waitingForConnection = subject.findViewById(R.id.waitingForConnection);
         assertThat(waitingForConnection.getVisibility() == View.GONE).isTrue();
         subject.showWaitingForConnection();
         assertThat(waitingForConnection.getVisibility() == View.VISIBLE).isTrue();
-     }
+    }
 
     @Test
-    public void mainActivity_showConnectButton_hideConnectButton() throws Exception {
+    public void connectionActivity_showConnectButton_hideConnectButton() throws Exception {
         View connectButton = subject.findViewById(R.id.connectButton);
         assertThat(connectButton.getVisibility() == View.VISIBLE).isTrue();
         subject.hideConnectButton();
@@ -77,20 +77,12 @@ public class MainActivityTest {
     }
 
     @Test
-    public void mainActivity_showErrorMessage_hideErrorMessage() throws Exception {
+    public void connectionActivity_showErrorMessage_hideErrorMessage() throws Exception {
         View errorMessage = subject.findViewById(R.id.errorMessage);
         assertThat(errorMessage.getVisibility() == View.GONE).isTrue();
         subject.showErrorMessage(NO_BRIDGE_FOUND_CODE);
         assertThat(errorMessage.getVisibility() == View.VISIBLE).isTrue();
         subject.hideErrorMessage();
         assertThat(errorMessage.getVisibility() == View.GONE).isTrue();
-    }
-
-    @Test
-    public void mainActivity_navigateToLightActivity() throws Exception {
-        subject.navigateToLightActivity();
-        Intent intent = shadowOf(subject).getNextStartedActivity();
-        ShadowIntent shadowIntent = shadowOf(intent);
-        assertEquals(LightsActivity.class, shadowIntent.getIntentClass());
     }
 }

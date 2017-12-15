@@ -32,7 +32,7 @@ public class HueModule {
 
     @Provides
     @Singleton
-    LightSystemInterface providesBridgeController(PHHueSDK phHueSDK){
+    LightSystemInterface providesLightSystemInterface(PHHueSDK phHueSDK){
         return new HueLightSystem(phHueSDK);
     }
 

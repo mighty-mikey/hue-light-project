@@ -17,14 +17,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".userInterface.LightsActivity_">
+        <activity android:name=".userInterface.ConnectionActivity_">
             <intent-filter>
-                <action android:name="android.intent.action.LIGHTS" />
+                <action android:name="android.intent.action.CONNECTION" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".userInterface.ConnectionActivity" />
         <activity android:name=".userInterface.MainActivity" />
-        <activity android:name=".userInterface.LightsActivity" />
     </application>
 
 </manifest>
