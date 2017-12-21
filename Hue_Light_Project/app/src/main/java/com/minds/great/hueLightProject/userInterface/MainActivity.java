@@ -3,15 +3,12 @@ package com.minds.great.hueLightProject.userInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-
 import com.minds.great.hueLightProject.R;
-import com.minds.great.hueLightProject.core.controllers.MainActivityInterface;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainActivityInterface;
 import com.minds.great.hueLightProject.core.controllers.MainController;
 import com.minds.great.hueLightProject.utils.dagger.DaggerInjector;
 import com.minds.great.hueLightProject.utils.dagger.HueModule;
-
 import org.androidannotations.annotations.EActivity;
-
 import javax.inject.Inject;
 
 @EActivity(R.layout.activity_main)
@@ -19,30 +16,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
 
     @Inject
     MainController mainController;
+    private final int CONNECTION_ACTIVITY_CODE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         DaggerInjector.builder().hueModule(new HueModule(this)).build().inject(this);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
         mainController.viewLoaded(this);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        mainController.viewUnloaded();
+        super.onPause();
     }
 
     @Override
     public void navigateToConnectionActivity() {
         Intent intent = new Intent(this, ConnectionActivity.class);
-        startActivityForResult(intent, 0);
+        startActivityForResult(intent, CONNECTION_ACTIVITY_CODE);
     }
 
     @Override
     public void finishConnectionActivity() {
-        finishActivity(0);
+        finishActivity(CONNECTION_ACTIVITY_CODE);
     }
-
-
 }

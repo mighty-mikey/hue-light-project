@@ -1,26 +1,22 @@
 package com.minds.great.hueLightProject.userInterface;
 
 import android.Manifest;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.controllers.ConnectionController;
-import com.minds.great.hueLightProject.core.controllers.ConnectionView;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.ConnectionView;
 import com.minds.great.hueLightProject.utils.dagger.DaggerInjector;
 import com.minds.great.hueLightProject.utils.dagger.HueModule;
 
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
 
 import javax.inject.Inject;
 
@@ -31,42 +27,38 @@ import static android.view.View.VISIBLE;
 @EActivity(R.layout.activity_connection)
 public class ConnectionActivity extends AppCompatActivity implements ConnectionView {
 
-    @ViewById
-    View searchProgressBar;
-    @ViewById
-    Button connectButton;
-    @ViewById
-    ConstraintLayout bridgeLayout;
-    @ViewById
-    TextView waitingForConnection;
-    @ViewById
-    TextView errorMessage;
     @Inject
     ConnectionController connectionController;
 
+    private ProgressBar searchProgressBar;
+    private Button connectButton;
+    private TextView waitingForConnection;
+    private TextView errorMessage;
+
+    private final String EMPTY_STRING = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connection);
         DaggerInjector.builder().hueModule(new HueModule(this)).build().inject(this);
+        super.onCreate(savedInstanceState);
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
+        initViews();
+        connectButton.setOnClickListener(view -> {
+            checkInternetPermission();
+            connectionController.search();
+        });
         connectionController.viewLoaded(this);
+        super.onResume();
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         connectionController.viewUnloaded();
-    }
-
-    @Click(resName = "connectButton")
-    public void searchForBridges() {
-        checkInternetPermission();
-        connectionController.search();
+        super.onDestroy();
     }
 
     @Override
@@ -80,7 +72,9 @@ public class ConnectionActivity extends AppCompatActivity implements ConnectionV
     }
 
     @Override
-    public void showWaitingForConnection() {runOnUiThread(() -> waitingForConnection.setVisibility(VISIBLE));}
+    public void showWaitingForConnection() {
+        runOnUiThread(() -> waitingForConnection.setVisibility(VISIBLE));
+    }
 
     @Override
     public void showConnectButton() {
@@ -106,7 +100,7 @@ public class ConnectionActivity extends AppCompatActivity implements ConnectionV
     public void hideErrorMessage() {
         runOnUiThread(() -> {
             errorMessage.setVisibility(GONE);
-            errorMessage.setText("");
+            errorMessage.setText(EMPTY_STRING);
         });
     }
 
@@ -116,5 +110,12 @@ public class ConnectionActivity extends AppCompatActivity implements ConnectionV
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.INTERNET}, 1);
         }
+    }
+
+    private void initViews() {
+        searchProgressBar = (ProgressBar) findViewById(R.id.searchProgressBar);
+        connectButton = (Button) findViewById(R.id.connectButton);
+        waitingForConnection = (TextView) findViewById(R.id.waitingForConnection);
+        errorMessage = (TextView) findViewById(R.id.errorMessage);
     }
 }

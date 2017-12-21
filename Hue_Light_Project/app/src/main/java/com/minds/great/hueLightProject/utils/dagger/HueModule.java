@@ -3,8 +3,8 @@ package com.minds.great.hueLightProject.utils.dagger;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.minds.great.hueLightProject.core.controllers.LightSystemInterface;
-import com.minds.great.hueLightProject.core.controllers.MemoryInterface;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.data.Memory;
 import com.minds.great.hueLightProject.hueImpl.HueLightSystem;
 import com.philips.lighting.hue.sdk.PHHueSDK;
@@ -26,7 +26,7 @@ public class HueModule {
     @Singleton
     @Provides
     @NonNull
-    public Context providesContext(){
+    Context providesContext(){
         return context;
     }
 

@@ -12,6 +12,7 @@ import com.philips.lighting.hue.sdk.PHAccessPoint;
 
 import java.util.List;
 
+//TODO:  convert to light list adapter
 public class BridgeListAdapter extends BaseAdapter {
     private List<PHAccessPoint> listOfFoundBridges;
     private Context context;

@@ -1,9 +1,9 @@
 package com.minds.great.hueLightProject.utils.dagger;
 
 import com.minds.great.hueLightProject.core.controllers.ConnectionController;
-import com.minds.great.hueLightProject.core.controllers.LightSystemInterface;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
 import com.minds.great.hueLightProject.core.controllers.MainController;
-import com.minds.great.hueLightProject.core.controllers.MemoryInterface;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
 
 import javax.inject.Singleton;
 
@@ -11,7 +11,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class LightProjectModule {
+class LightProjectModule {
 
     @Provides
     @Singleton

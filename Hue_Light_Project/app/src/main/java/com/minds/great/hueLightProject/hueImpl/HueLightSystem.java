@@ -1,7 +1,7 @@
 package com.minds.great.hueLightProject.hueImpl;
 
 import com.jakewharton.rxrelay2.PublishRelay;
-import com.minds.great.hueLightProject.core.controllers.LightSystemInterface;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.philips.lighting.hue.sdk.PHAccessPoint;

@@ -1,9 +1,11 @@
 package com.minds.great.hueLightProject.core.controllers;
 
 import com.jakewharton.rxrelay2.PublishRelay;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.ConnectionView;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.models.LightSystem;
-
 import io.reactivex.disposables.CompositeDisposable;
 
 public class ConnectionController {
@@ -23,13 +25,16 @@ public class ConnectionController {
     public void viewLoaded(ConnectionView view) {
         this.view = view;
 
-        LightSystem storedLightSystem = memory.getLightSystem();
+        compositeDisposable.add(lightSystemInterface.getLightSystemListObservable().subscribe(lightSystems -> showWaitForConnection()));
 
-        if (storedLightSystem != null) {
-            connectAndFinishConnectionActivity(storedLightSystem);
-        } else {
-            subscribeToRelays();
-        }
+        compositeDisposable.add(lightSystemInterface.getLightSystemObservable().subscribe(lightSystem -> {
+            memory.saveLightSystem(lightSystem);
+            connectToLightSystem(lightSystem);
+        }));
+
+        compositeDisposable.add(lightSystemInterface.getErrorObservable()
+                .subscribe(this::showErrorMessage)
+        );
     }
 
     public void viewUnloaded() {
@@ -47,17 +52,12 @@ public class ConnectionController {
         lightSystemInterface.searchForLightSystems();
     }
 
-    private void subscribeToRelays() {
-        compositeDisposable.add(lightSystemInterface.getLightSystemListObservable().subscribe(lightSystems -> showWaitForConnection()));
+    PublishRelay<LightSystem> getConnectionSuccessfulRelay() {
+        return connectionSuccessfulRelay;
+    }
 
-        compositeDisposable.add(lightSystemInterface.getLightSystemObservable().subscribe(lightSystem -> {
-            memory.saveLightSystem(lightSystem);
-            connectAndFinishConnectionActivity(lightSystem);
-        }));
-
-        compositeDisposable.add(lightSystemInterface.getErrorObservable()
-                .subscribe(this::showErrorMessage)
-        );
+    void connect(LightSystem lightSystem) {
+        lightSystemInterface.connectToLightSystem(lightSystem);
     }
 
     private void showErrorMessage(ConnectionError connectionError) {
@@ -72,16 +72,8 @@ public class ConnectionController {
         view.hideConnectButton();
     }
 
-    private void connectAndFinishConnectionActivity(LightSystem lightSystem) {
+    private void connectToLightSystem(LightSystem lightSystem) {
         lightSystemInterface.connectToLightSystem(lightSystem);
         connectionSuccessfulRelay.accept(lightSystem);
-    }
-
-    public void connect(LightSystem lightSystem) {
-        lightSystemInterface.connectToLightSystem(lightSystem);
-    }
-
-    public PublishRelay<LightSystem> getConnectionSuccessfulRelay() {
-        return connectionSuccessfulRelay;
     }
 }

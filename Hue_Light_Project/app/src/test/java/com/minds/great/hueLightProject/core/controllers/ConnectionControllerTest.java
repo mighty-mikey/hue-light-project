@@ -1,6 +1,9 @@
 package com.minds.great.hueLightProject.core.controllers;
 
 import com.jakewharton.rxrelay2.PublishRelay;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.ConnectionView;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 
@@ -71,19 +74,6 @@ public class ConnectionControllerTest {
         verify(viewMock).hideConnectButton();
         verify(viewMock).hideErrorMessage();
         verify(lightSystemMock).searchForLightSystems();
-    }
-
-    @Test
-    public void viewLoaded_checksStoredLightSystems() throws Exception {
-        subject.viewLoaded(viewMock);
-        verify(memoryMock).getLightSystem();
-    }
-
-    @Test
-    public void viewLoaded_whenStoredLightSystemFound_callsConnect() throws Exception {
-        when(memoryMock.getLightSystem()).thenReturn(lightSystem);
-        subject.viewLoaded(viewMock);
-        verify(lightSystemMock).connectToLightSystem(any());
     }
 
     @Test

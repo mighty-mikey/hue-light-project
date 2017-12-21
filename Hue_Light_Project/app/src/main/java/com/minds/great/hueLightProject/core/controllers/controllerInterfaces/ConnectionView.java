@@ -1,4 +1,4 @@
-package com.minds.great.hueLightProject.core.controllers;
+package com.minds.great.hueLightProject.core.controllers.controllerInterfaces;
 
 
 public interface ConnectionView {

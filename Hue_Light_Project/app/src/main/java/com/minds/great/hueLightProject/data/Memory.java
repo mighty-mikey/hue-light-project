@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.minds.great.hueLightProject.core.models.LightSystem;
-import com.minds.great.hueLightProject.core.controllers.MemoryInterface;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
 
 public class Memory implements MemoryInterface {
 
@@ -18,7 +18,7 @@ public class Memory implements MemoryInterface {
     }
 
     public void saveLightSystem(LightSystem lightSystem) {
-        if (isLightSystemSaveable(lightSystem)) {
+        if (isLightSystemSavable(lightSystem)) {
             SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(context).edit();
             prefs.putString(USER_NAME, lightSystem.getUserName());
             prefs.putString(IP_ADDRESS, lightSystem.getIpAddress());
@@ -44,7 +44,7 @@ public class Memory implements MemoryInterface {
         return lightSystem;
     }
 
-    private boolean isLightSystemSaveable(LightSystem lightSystem) {
+    private boolean isLightSystemSavable(LightSystem lightSystem) {
         return null != lightSystem &&
                 null != lightSystem.getUserName() &&
                 null != lightSystem.getIpAddress();
