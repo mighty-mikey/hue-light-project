@@ -35,7 +35,7 @@ public class MainActivityTest {
 
     @Test
     public void navigateToLightActivity_checkIntentFired() throws Exception {
-        subject.navigateToLightActivity();
+        subject.navigateToLightListActivity();
         Intent intent = shadowOf(subject).getNextStartedActivity();
         ShadowIntent shadowIntent = shadowOf(intent);
         assertEquals(LightsListActivity.class, shadowIntent.getIntentClass());

@@ -5,5 +5,5 @@ public interface MainActivityInterface {
 
     void finishConnectionActivity();
 
-    void navigateToLightActivity();
+    void navigateToLightListActivity();
 }

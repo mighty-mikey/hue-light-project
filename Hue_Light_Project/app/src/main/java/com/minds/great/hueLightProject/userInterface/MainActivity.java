@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
-    public void navigateToLightActivity() {
+    public void navigateToLightListActivity() {
         Intent intent = new Intent(this, LightsListActivity.class);
         startActivityForResult(intent, LIGHT_ACTIVITY_CODE);
     }
