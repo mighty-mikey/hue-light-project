@@ -4,4 +4,6 @@ public interface MainActivityInterface {
     void navigateToConnectionActivity();
 
     void finishConnectionActivity();
+
+    void navigateToLightActivity();
 }

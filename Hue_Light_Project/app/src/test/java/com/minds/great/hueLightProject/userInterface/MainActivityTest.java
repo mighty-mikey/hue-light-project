@@ -20,14 +20,11 @@ import static org.robolectric.Shadows.shadowOf;
 @Config(constants = BuildConfig.class)
 public class MainActivityTest {
 
-
     private MainActivity subject;
 
     @Before
     public void setUp() throws Exception {
         subject = Robolectric.buildActivity(MainActivity_.class)
-                .create()
-                .resume()
                 .get();
     }
 
@@ -37,12 +34,18 @@ public class MainActivityTest {
     }
 
     @Test
+    public void navigateToLightActivity_checkIntentFired() throws Exception {
+        subject.navigateToLightActivity();
+        Intent intent = shadowOf(subject).getNextStartedActivity();
+        ShadowIntent shadowIntent = shadowOf(intent);
+        assertEquals(LightsListActivity.class, shadowIntent.getIntentClass());
+    }
+
+    @Test
     public void navigateToConnectionActivity_checkIntentFired() throws Exception {
         subject.navigateToConnectionActivity();
         Intent intent = shadowOf(subject).getNextStartedActivity();
         ShadowIntent shadowIntent = shadowOf(intent);
         assertEquals(ConnectionActivity.class, shadowIntent.getIntentClass());
     }
-
-
 }

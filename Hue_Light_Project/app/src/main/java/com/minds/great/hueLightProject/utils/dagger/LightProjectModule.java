@@ -16,7 +16,7 @@ class LightProjectModule {
     @Provides
     @Singleton
     ConnectionController providesConnectionController(LightSystemInterface lightSystemInterface, MemoryInterface memoryInterface){
-        return new ConnectionController(lightSystemInterface, memoryInterface);
+        return new ConnectionController(lightSystemInterface);
     }
 
     @Provides

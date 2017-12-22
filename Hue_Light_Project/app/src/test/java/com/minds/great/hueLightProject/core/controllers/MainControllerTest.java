@@ -43,14 +43,14 @@ public class MainControllerTest {
 
     @Test
     public void viewLoaded_callsCheckMemory(){
-        subject.viewLoaded(view);
+        subject.viewCreated(view);
         verify(memory).getLightSystem();
     }
 
     @Test
     public void viewLoaded_whenLightSystemIsNull_navigatesToConnectionActivity() throws Exception {
         when(memory.getLightSystem()).thenReturn(null);
-        subject.viewLoaded(view);
+        subject.viewCreated(view);
         verify(view).navigateToConnectionActivity();
     }
 
@@ -58,16 +58,39 @@ public class MainControllerTest {
     public void viewLoaded_whenLightSystemIsNotNull_connectsToLightSystem() throws Exception {
         LightSystem lightSystem = new LightSystem.Builder().build();
         when(memory.getLightSystem()).thenReturn(lightSystem);
-        subject.viewLoaded(view);
+        subject.viewCreated(view);
         verify(connectionController).connect(lightSystem);
     }
 
     @Test
-    public void viewLoaded_whenConnectionSuccessful_finishesActivity() throws Exception {
-        subject.viewLoaded(view);
+    public void viewLoaded_whenConnectionSuccessful_savesSystemAndFinishesActivity() throws Exception {
+        subject.viewCreated(view);
         verify(view, never()).finishConnectionActivity();
         connectionSuccessfulRelay.accept(new LightSystem.Builder().build());
+        verify(memory).saveLightSystem(any());
         verify(view).finishConnectionActivity();
+    }
+
+    @Test
+    public void viewLoaded_whenConnectionSuccessful_navigatesToLightActivity() throws Exception {
+        subject.viewCreated(view);
+        verify(view, never()).navigateToLightActivity();
+        connectionSuccessfulRelay.accept(new LightSystem.Builder().build());
+        verify(view).navigateToLightActivity();
+    }
+
+    @Test
+    public void viewCreated_whenSystemInMemory_doNotSubscribe() throws Exception {
+        when(memory.getLightSystem()).thenReturn(new LightSystem.Builder().build());
+        subject.viewCreated(view);
+        verify(connectionController, never()).getConnectionSuccessfulRelay();
+    }
+
+    @Test
+    public void viewCreated_whenSystemInMemory_navigateToLights() throws Exception {
+        when(memory.getLightSystem()).thenReturn(new LightSystem.Builder().build());
+        subject.viewCreated(view);
+        verify(view).navigateToLightActivity();
     }
 
     @After

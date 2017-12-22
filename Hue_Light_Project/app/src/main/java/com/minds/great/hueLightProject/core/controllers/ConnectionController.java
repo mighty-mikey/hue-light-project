@@ -12,25 +12,21 @@ public class ConnectionController {
 
     private CompositeDisposable compositeDisposable;
     private LightSystemInterface lightSystemInterface;
-    private MemoryInterface memory;
     private ConnectionView view;
-    private PublishRelay<LightSystem> connectionSuccessfulRelay = PublishRelay.create();
 
-    public ConnectionController(LightSystemInterface lightSystemInterface, MemoryInterface memory) {
+    public ConnectionController(LightSystemInterface lightSystemInterface) {
         this.lightSystemInterface = lightSystemInterface;
-        this.memory = memory;
         compositeDisposable = new CompositeDisposable();
     }
 
     public void viewLoaded(ConnectionView view) {
         this.view = view;
 
-        compositeDisposable.add(lightSystemInterface.getLightSystemListObservable().subscribe(lightSystems -> showWaitForConnection()));
-
-        compositeDisposable.add(lightSystemInterface.getLightSystemObservable().subscribe(lightSystem -> {
-            memory.saveLightSystem(lightSystem);
-            connectToLightSystem(lightSystem);
-        }));
+        compositeDisposable.add(lightSystemInterface.getLightSystemListObservable()
+                .subscribe(lightSystems -> {
+                    showWaitForConnection();
+                    lightSystemInterface.connectToLightSystem(lightSystems.get(0));
+                }));
 
         compositeDisposable.add(lightSystemInterface.getErrorObservable()
                 .subscribe(this::showErrorMessage)
@@ -53,7 +49,7 @@ public class ConnectionController {
     }
 
     PublishRelay<LightSystem> getConnectionSuccessfulRelay() {
-        return connectionSuccessfulRelay;
+        return lightSystemInterface.getLightSystemObservable();
     }
 
     void connect(LightSystem lightSystem) {
@@ -70,10 +66,5 @@ public class ConnectionController {
         view.hideProgressBar();
         view.showWaitingForConnection();
         view.hideConnectButton();
-    }
-
-    private void connectToLightSystem(LightSystem lightSystem) {
-        lightSystemInterface.connectToLightSystem(lightSystem);
-        connectionSuccessfulRelay.accept(lightSystem);
     }
 }

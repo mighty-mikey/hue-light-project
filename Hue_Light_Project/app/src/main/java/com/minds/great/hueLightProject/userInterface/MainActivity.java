@@ -17,24 +17,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Inject
     MainController mainController;
     private final int CONNECTION_ACTIVITY_CODE = 0;
+    private final int LIGHT_ACTIVITY_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
         DaggerInjector.builder().hueModule(new HueModule(this)).build().inject(this);
+        mainController.viewCreated(this);
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    protected void onResume() {
-        mainController.viewLoaded(this);
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
+    protected void onDestroy() {
         mainController.viewUnloaded();
-        super.onPause();
+        super.onDestroy();
     }
 
     @Override
@@ -46,5 +42,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     @Override
     public void finishConnectionActivity() {
         finishActivity(CONNECTION_ACTIVITY_CODE);
+    }
+
+    @Override
+    public void navigateToLightActivity() {
+        Intent intent = new Intent(this, LightsListActivity.class);
+        startActivityForResult(intent, LIGHT_ACTIVITY_CODE);
     }
 }

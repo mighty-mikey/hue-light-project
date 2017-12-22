@@ -62,7 +62,7 @@ public class ConnectionControllerTest {
         when(lightSystemMock.getLightSystemListObservable()).thenReturn(lightSystemListRelay);
         when(lightSystemMock.getLightSystemObservable()).thenReturn(lightSystemRelay);
 
-        subject = new ConnectionController(lightSystemMock, memoryMock);
+        subject = new ConnectionController(lightSystemMock);
     }
 
     @Test
@@ -82,7 +82,6 @@ public class ConnectionControllerTest {
         subject.viewLoaded(viewMock);
         verify(lightSystemMock, never()).connectToLightSystem(any());
         verify(lightSystemMock).getLightSystemListObservable();
-        verify(lightSystemMock).getLightSystemObservable();
         verify(lightSystemMock).getErrorObservable();
     }
 
@@ -99,17 +98,6 @@ public class ConnectionControllerTest {
         verify(viewMock).hideProgressBar();
         verify(viewMock).showWaitingForConnection();
         verify(viewMock).hideConnectButton();
-    }
-
-    @Test
-    public void viewLoaded_whenLightSystemFound_savesAndConnectsToSystem() throws Exception {
-        when(memoryMock.getLightSystem()).thenReturn(null);
-        subject.viewLoaded(viewMock);
-        resetMocks();
-        lightSystemRelay.accept(lightSystem);
-
-        verify(memoryMock).saveLightSystem(any());
-        verify(lightSystemMock).connectToLightSystem(any());
     }
 
     private void resetMocks() {
