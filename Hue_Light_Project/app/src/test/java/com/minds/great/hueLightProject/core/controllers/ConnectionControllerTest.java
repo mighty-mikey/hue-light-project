@@ -78,7 +78,7 @@ public class ConnectionControllerTest {
 
     @Test
     public void viewLoaded_whenStoredLightSystemNotFound_doesNotCallConnect() throws Exception {
-        when(memoryMock.getLightSystem()).thenReturn(null);
+        when(memoryMock.getLightSystemIpAddress()).thenReturn(null);
         subject.viewLoaded(viewMock);
         verify(lightSystemMock, never()).connectToLightSystem(any());
         verify(lightSystemMock).getLightSystemListObservable();
@@ -87,7 +87,7 @@ public class ConnectionControllerTest {
 
     @Test
     public void viewLoaded_whenLightSystemListFound_showsWaitForConnection() throws Exception {
-        when(memoryMock.getLightSystem()).thenReturn(null);
+        when(memoryMock.getLightSystemIpAddress()).thenReturn(null);
         subject.viewLoaded(viewMock);
         ArrayList<LightSystem> lightSystemList = new ArrayList<>();
         lightSystemList.add(lightSystem);
@@ -108,7 +108,7 @@ public class ConnectionControllerTest {
 
     @Test
     public void viewLoaded_whenErrorFound_informsViewOfError() throws Exception {
-        when(memoryMock.getLightSystem()).thenReturn(null);
+        when(memoryMock.getLightSystemIpAddress()).thenReturn(null);
         subject.viewLoaded(viewMock);
 
         ConnectionError error = new ConnectionError.Builder()

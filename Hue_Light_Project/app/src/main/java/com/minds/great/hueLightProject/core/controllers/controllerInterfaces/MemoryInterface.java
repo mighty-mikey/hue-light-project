@@ -7,6 +7,6 @@ public interface MemoryInterface {
 
     void saveLightSystem(LightSystem lightSystem);
 
-    LightSystem getLightSystem();
+    String getLightSystemIpAddress();
 
 }

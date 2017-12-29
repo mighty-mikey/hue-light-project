@@ -41,24 +41,21 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.4.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
-    testCompile "org.robolectric:robolectric:3.3.2"
-    compile files('libs/huelocalsdk.jar')
-    compile files('libs/huesdkresources.jar')
+    testCompile 'org.robolectric:robolectric:3.3.2'
     annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
-
     //Mockito
     testCompile 'org.mockito:mockito-core:1.10.19'
-
     //Dagger 2 - injection framework
     compile 'com.google.dagger:dagger-android:2.11'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
-
     //Rxjava
     compile 'io.reactivex.rxjava2:rxjava:2.1.1'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
+    implementation files('libs/huecppsdk-wrapper.jar')
+    implementation files('libs/huecppsdk-wrapper-javadoc.jar')
 }
 
 buildscript {

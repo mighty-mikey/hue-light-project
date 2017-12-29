@@ -27,7 +27,7 @@ public class Memory implements MemoryInterface {
     }
 
     @Override
-    public LightSystem getLightSystem() {
+    public String getLightSystemIpAddress() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String userName = prefs.getString(USER_NAME, null);
         String ipAddress = prefs.getString(IP_ADDRESS, null);
@@ -41,7 +41,11 @@ public class Memory implements MemoryInterface {
                     .build();
         }
 
-        return lightSystem;
+        if (lightSystem != null) {
+            return lightSystem.getIpAddress();
+        }else{
+            return null;
+        }
     }
 
     private boolean isLightSystemSavable(LightSystem lightSystem) {

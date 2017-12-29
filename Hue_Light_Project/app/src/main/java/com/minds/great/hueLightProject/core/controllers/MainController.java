@@ -17,14 +17,14 @@ public class MainController {
     }
 
     public void viewCreated(@Nonnull MainActivityInterface view) {
-        LightSystem storedLightSystem = memory.getLightSystem();
-        if (null != storedLightSystem) {
-            connectionController.connect(storedLightSystem);
+        String storedLightSystemIpAddress = memory.getLightSystemIpAddress();
+        if (null != storedLightSystemIpAddress) {
+            connectionController.connect(storedLightSystemIpAddress);
             view.navigateToLightListActivity();
         } else {
             connectionSuccessDisposable = connectionController.getConnectionSuccessfulRelay()
                     .subscribe(lightSystem -> {
-                        memory.saveLightSystem(lightSystem);
+//                        memory.saveLightSystem(lightSystem);
                         view.finishConnectionActivity();
                         view.navigateToLightListActivity();
                     });

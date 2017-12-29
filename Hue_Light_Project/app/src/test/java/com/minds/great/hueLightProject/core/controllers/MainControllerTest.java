@@ -44,22 +44,21 @@ public class MainControllerTest {
     @Test
     public void viewCreated_callsCheckMemory(){
         subject.viewCreated(view);
-        verify(memory).getLightSystem();
+        verify(memory).getLightSystemIpAddress();
     }
 
     @Test
     public void viewCreated_whenLightSystemIsNull_navigatesToConnectionActivity() throws Exception {
-        when(memory.getLightSystem()).thenReturn(null);
+        when(memory.getLightSystemIpAddress()).thenReturn(null);
         subject.viewCreated(view);
         verify(view).navigateToConnectionActivity();
     }
 
     @Test
     public void viewCreated_whenLightSystemIsNotNull_connectsToLightSystem() throws Exception {
-        LightSystem lightSystem = new LightSystem.Builder().build();
-        when(memory.getLightSystem()).thenReturn(lightSystem);
+        when(memory.getLightSystemIpAddress()).thenReturn("1");
         subject.viewCreated(view);
-        verify(connectionController).connect(lightSystem);
+        verify(connectionController).connect("1");
     }
 
     @Test
@@ -81,14 +80,14 @@ public class MainControllerTest {
 
     @Test
     public void viewCreated_whenSystemInMemory_doNotSubscribe() throws Exception {
-        when(memory.getLightSystem()).thenReturn(new LightSystem.Builder().build());
+        when(memory.getLightSystemIpAddress()).thenReturn("2");
         subject.viewCreated(view);
         verify(connectionController, never()).getConnectionSuccessfulRelay();
     }
 
     @Test
     public void viewCreated_whenSystemInMemory_navigateToLights() throws Exception {
-        when(memory.getLightSystem()).thenReturn(new LightSystem.Builder().build());
+        when(memory.getLightSystemIpAddress()).thenReturn("3");
         subject.viewCreated(view);
         verify(view).navigateToLightListActivity();
     }

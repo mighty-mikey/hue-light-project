@@ -25,7 +25,7 @@ public class ConnectionController {
         compositeDisposable.add(lightSystemInterface.getLightSystemListObservable()
                 .subscribe(lightSystems -> {
                     showWaitForConnection();
-                    lightSystemInterface.connectToLightSystem(lightSystems.get(0));
+                    lightSystemInterface.connectToLightSystem(lightSystems.get(0).getIpAddress());
                 }));
 
         compositeDisposable.add(lightSystemInterface.getErrorObservable()
@@ -52,8 +52,8 @@ public class ConnectionController {
         return lightSystemInterface.getLightSystemObservable();
     }
 
-    void connect(LightSystem lightSystem) {
-        lightSystemInterface.connectToLightSystem(lightSystem);
+    void connect(String lightSystemIpAddress) {
+        lightSystemInterface.connectToLightSystem(lightSystemIpAddress);
     }
 
     private void showErrorMessage(ConnectionError connectionError) {
