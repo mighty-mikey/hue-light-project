@@ -1,5 +1,6 @@
 package com.minds.great.hueLightProject.core.controllers;
 
+import com.jakewharton.rxrelay2.PublishRelay;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainActivityInterface;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.core.models.LightSystem;
@@ -22,7 +23,8 @@ public class MainController {
             connectionController.connect(storedLightSystemIpAddress);
             view.navigateToLightListActivity();
         } else {
-            connectionSuccessDisposable = connectionController.getConnectionSuccessfulRelay()
+            PublishRelay<LightSystem> connectionSuccessfulRelay = connectionController.getConnectionSuccessfulRelay();
+            connectionSuccessDisposable = connectionSuccessfulRelay
                     .subscribe(lightSystem -> {
 //                        memory.saveLightSystem(lightSystem);
                         view.finishConnectionActivity();

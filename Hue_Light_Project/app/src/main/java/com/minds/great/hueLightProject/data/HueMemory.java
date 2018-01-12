@@ -16,10 +16,6 @@ import java.util.List;
 public class HueMemory implements MemoryInterface {
 
     public HueMemory(Context context) {
-        // Configure the storage location and log level for the Hue SDK
-
-        // Load the huesdk native library before calling any SDK method
-        System.loadLibrary("huesdk");
         Persistence.setStorageLocation(context.getFilesDir().getAbsolutePath(), "hueLightProject");
         HueLog.setConsoleLogLevel(HueLog.LogLevel.DEBUG);
     }

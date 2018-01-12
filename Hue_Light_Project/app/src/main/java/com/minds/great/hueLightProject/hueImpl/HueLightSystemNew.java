@@ -6,18 +6,14 @@ import com.jakewharton.rxrelay2.PublishRelay;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.models.LightSystem;
-import com.philips.lighting.hue.sdk.wrapper.connection.BridgeConnection;
-import com.philips.lighting.hue.sdk.wrapper.connection.BridgeConnectionCallback;
 import com.philips.lighting.hue.sdk.wrapper.connection.BridgeConnectionType;
 import com.philips.lighting.hue.sdk.wrapper.connection.BridgeStateUpdatedCallback;
 import com.philips.lighting.hue.sdk.wrapper.connection.BridgeStateUpdatedEvent;
-import com.philips.lighting.hue.sdk.wrapper.connection.ConnectionEvent;
 import com.philips.lighting.hue.sdk.wrapper.discovery.BridgeDiscovery;
 import com.philips.lighting.hue.sdk.wrapper.discovery.BridgeDiscoveryCallback;
 import com.philips.lighting.hue.sdk.wrapper.discovery.BridgeDiscoveryResult;
 import com.philips.lighting.hue.sdk.wrapper.domain.Bridge;
 import com.philips.lighting.hue.sdk.wrapper.domain.BridgeBuilder;
-import com.philips.lighting.hue.sdk.wrapper.domain.HueError;
 import com.philips.lighting.hue.sdk.wrapper.domain.ReturnCode;
 
 import java.util.ArrayList;
@@ -30,16 +26,14 @@ public class HueLightSystemNew implements LightSystemInterface {
 
     private Bridge bridge;
     private BridgeDiscovery bridgeDiscovery;
-    private PublishRelay<List<LightSystem>> lightSystemListRelay = PublishRelay.create();
-    private PublishRelay<ConnectionError> errorRelay = PublishRelay.create();
+    //TODO: remove static
+    private static PublishRelay<List<LightSystem>> lightSystemListRelay = PublishRelay.create();
+    private static PublishRelay<ConnectionError> errorRelay = PublishRelay.create();
     private static PublishRelay<LightSystem> lightSystemRelay = PublishRelay.create();
 
-//    static{
-
-        // Load the huesdk native library before calling any SDK method
-//        System.loadLibrary("huesdk");
-//    }
-
+    static{
+        System.loadLibrary("huesdk");
+    }
     @Override
     public void searchForLightSystems() {
         disconnectFromBridge();
@@ -60,7 +54,7 @@ public class HueLightSystemNew implements LightSystemInterface {
         bridge = new BridgeBuilder("app name", "device name")
                 .setIpAddress(lightSystemIpAddress)
                 .setConnectionType(BridgeConnectionType.LOCAL)
-                .setBridgeConnectionCallback(bridgeConnectionCallback)
+                .setBridgeConnectionCallback(new HueConnectionCallback(lightSystemRelay, errorRelay))
                 .addBridgeStateUpdatedCallback(bridgeStateUpdatedCallback)
                 .build();
 
@@ -153,57 +147,7 @@ public class HueLightSystemNew implements LightSystemInterface {
         }
     };
 
-    /**
-     * The callback that receives bridge connection events
-     */
-    private BridgeConnectionCallback bridgeConnectionCallback = new BridgeConnectionCallback() {
-        @Override
-        public void onConnectionEvent(BridgeConnection bridgeConnection, ConnectionEvent connectionEvent) {
-
-            switch (connectionEvent) {
-                case LINK_BUTTON_NOT_PRESSED:
-                    //TODO:  enter correct error code;
-//                    errorRelay.accept(new ConnectionError.Builder().build());
-                    break;
-
-                case COULD_NOT_CONNECT:
-                    //TODO:  enter correct error code;
-                    errorRelay.accept(new ConnectionError.Builder().build());
-                    break;
-
-                case CONNECTION_LOST:
-                    //TODO:  enter correct error code;
-                    errorRelay.accept(new ConnectionError.Builder().build());
-                    break;
-
-                case CONNECTION_RESTORED:
-                    break;
-
-                case DISCONNECTED:
-                    // User-initiated disconnection.
-                    break;
-
-                case CONNECTED:
-                    break;
-
-                default:
-                    lightSystemRelay.accept(convertBridgeConnectionToLightSystem(bridgeConnection));
-                    break;
-            }
-        }
-
-        private LightSystem convertBridgeConnectionToLightSystem(BridgeConnection bridgeConnection) {
-            return new LightSystem.Builder()
-                    .userName(bridgeConnection.getBridge().getName())
-                    .build();
-        }
-
-        @Override
-        public void onConnectionError(BridgeConnection bridgeConnection, List<HueError> list) {
-            for (HueError error : list) {
-                //TODO:  figure this out
-                errorRelay.accept(new ConnectionError.Builder().build());
-            }
-        }
-    };
+    public void loadLib() {
+        System.loadLibrary("huesdk");
+    }
 }

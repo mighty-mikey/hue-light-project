@@ -14,15 +14,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
-public class MemoryTest {
+public class HueMemoryTest {
 
-    private Memory subject;
-    private String testUserName = "testUserName";;
-    private String ipAddress = "1";;
+    private HueMemory subject;
 
     @Before
     public void setUp() throws Exception {
-        subject = new Memory(RuntimeEnvironment.application);
+        subject = new HueMemory(RuntimeEnvironment.application);
     }
 
     @Test
@@ -32,7 +30,8 @@ public class MemoryTest {
     }
 
     @Test
-    public void saveLigthSystem_whenUserNameIsNull_doesNotSave() throws Exception {
+    public void saveLightSystem_whenUserNameIsNull_doesNotSave() throws Exception {
+        String ipAddress = "1";
         LightSystem lightSystem = new LightSystem.Builder()
                 .userName(null)
                 .ipAddress(ipAddress)
@@ -44,6 +43,7 @@ public class MemoryTest {
 
     @Test
     public void saveLigthSystem_whenIpAddressIsNull_doesNotSave() throws Exception {
+        String testUserName = "testUserName";
         LightSystem lightSystem = new LightSystem.Builder()
                 .userName(testUserName)
                 .ipAddress(null)
