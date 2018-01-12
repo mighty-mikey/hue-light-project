@@ -1,6 +1,7 @@
 package com.minds.great.hueLightProject.utils.dagger;
 
 import com.minds.great.hueLightProject.userInterface.ConnectionActivity;
+import com.minds.great.hueLightProject.userInterface.LightsListActivity;
 import com.minds.great.hueLightProject.userInterface.MainActivity;
 
 import javax.inject.Singleton;
@@ -13,4 +14,6 @@ public interface Injector {
     void inject(ConnectionActivity activity);
 
     void inject(MainActivity mainActivity);
+
+    void inject(LightsListActivity lightsListActivity);
 }

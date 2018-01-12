@@ -9,24 +9,26 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.philips.lighting.hue.sdk.PHAccessPoint;
+import com.philips.lighting.model.PHLight;
 
 import java.util.List;
+import java.util.Map;
 
 //TODO:  convert to light list adapter
-public class BridgeListAdapter extends BaseAdapter {
-    private List<PHAccessPoint> listOfFoundBridges;
+public class LightsListAdapter extends BaseAdapter {
+    private List<PHLight> lightsList;
     private Context context;
     final private int HEADER_CODE = 1;
     final private int FOOTER_CODE = -1;
 
     @Override
     public int getCount() {
-        return listOfFoundBridges.size();
+        return lightsList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return listOfFoundBridges.get(position);
+        return lightsList.get(position);
     }
 
     @Override
@@ -46,17 +48,15 @@ public class BridgeListAdapter extends BaseAdapter {
 
         if (inflater != null) {
             if (itemViewType == HEADER_CODE) {
-                itemView = inflater.inflate(R.layout.bridge_list_header, null);
+                itemView = inflater.inflate(R.layout.lights_list_header, null);
             } else if (itemViewType == FOOTER_CODE) {
-                itemView = inflater.inflate(R.layout.bridge_list_footer, null);
+                itemView = inflater.inflate(R.layout.lights_list_footer, null);
             } else {
-                itemView = inflater.inflate(R.layout.bridge_list_item, null);
+                itemView = inflater.inflate(R.layout.lights_list_item, null);
             }
-            TextView bridgeName = (TextView) itemView.findViewById(R.id.bridgeName);
-            TextView macAddress = (TextView) itemView.findViewById(R.id.bridgeMacAddress);
+            TextView bridgeName = (TextView) itemView.findViewById(R.id.lightName);
 
-            bridgeName.setText(listOfFoundBridges.get(position).getBridgeId());
-            macAddress.setText(listOfFoundBridges.get(position).getMacAddress());
+            bridgeName.setText(lightsList.get(position).getName());
         }
         return itemView;
     }
@@ -65,14 +65,14 @@ public class BridgeListAdapter extends BaseAdapter {
     public int getItemViewType(int position) {
         if (position == 0) {
             return HEADER_CODE;
-        } else if (position == listOfFoundBridges.size() - 1) {
+        } else if (position == lightsList.size() - 1) {
             return FOOTER_CODE;
         }
         return 0;
     }
 
-    void setBridgeList(List<PHAccessPoint> listOfFoundBridges, Context context) {
-        this.listOfFoundBridges = listOfFoundBridges;
+    public void setLightsList(List<PHLight> lightsList, Context context) {
         this.context = context;
+        this.lightsList = lightsList;
     }
 }

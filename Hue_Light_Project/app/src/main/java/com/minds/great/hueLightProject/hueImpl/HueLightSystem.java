@@ -85,13 +85,14 @@ public class HueLightSystem implements LightSystemInterface, PHSDKListener {
     public void onBridgeConnected(PHBridge foundBridge, String username) {
         phHueSDK.setSelectedBridge(foundBridge);
         phHueSDK.enableHeartbeat(foundBridge, PHHueSDK.HB_INTERVAL);
-
+        //TODO: Convert phBridge to custom bridge object
         LightSystem lightSystem = new LightSystem.Builder()
                 .userName(username)
                 .ipAddress(foundBridge
                         .getResourceCache()
                         .getBridgeConfiguration()
                         .getIpAddress())
+                .phBridge(foundBridge)
                 .build();
 
         lightSystemRelay.accept(lightSystem);

@@ -30,7 +30,7 @@
         <item name="android:layout_centerVertical">true</item>
     </style>
 
-    <style name="bridgeListLabel">
+    <style name="lightsListTitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/orange</item>
@@ -38,6 +38,7 @@
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_marginBottom">15dp</item>
         <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginStart">15dp</item>
         <item name="android:textSize">25sp</item>
     </style>
 
@@ -54,7 +55,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="bridgeList">
+    <style name="lightsList">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>

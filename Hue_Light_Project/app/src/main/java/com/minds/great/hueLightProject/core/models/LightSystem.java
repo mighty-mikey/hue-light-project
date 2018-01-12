@@ -1,10 +1,17 @@
 package com.minds.great.hueLightProject.core.models;
 
+import com.philips.lighting.model.PHBridge;
+
 public class LightSystem {
     private String ipAddress;
     private String userName;
     private String bridgeId;
     private String macAddress;
+
+    private PHBridge phBridge;
+
+    private LightSystem() {
+    }
 
     public String getIpAddress() {
         return ipAddress;
@@ -12,9 +19,6 @@ public class LightSystem {
 
     public String getUserName() {
         return userName;
-    }
-
-    private LightSystem(){
     }
 
     public String getBridgeId() {
@@ -25,11 +29,16 @@ public class LightSystem {
         return macAddress;
     }
 
+    public PHBridge getPhBridge() {
+        return phBridge;
+    }
+
     static public class Builder {
         private String userName;
         private String ipAddress;
         private String bridgeId;
         private String macAddress;
+        private PHBridge phBridge;
 
         public Builder userName(String userName) {
             this.userName = userName;
@@ -51,12 +60,18 @@ public class LightSystem {
             return this;
         }
 
+        public Builder phBridge(PHBridge phBridge){
+            this.phBridge = phBridge;
+            return this;
+        }
+
         public LightSystem build() {
             LightSystem lightSystem = new LightSystem();
             lightSystem.userName = userName;
             lightSystem.ipAddress = ipAddress;
             lightSystem.bridgeId = bridgeId;
             lightSystem.macAddress = macAddress;
+            lightSystem.phBridge = phBridge;
             return lightSystem;
         }
     }

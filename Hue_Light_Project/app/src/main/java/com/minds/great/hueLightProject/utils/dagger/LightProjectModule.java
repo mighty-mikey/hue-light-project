@@ -1,6 +1,7 @@
 package com.minds.great.hueLightProject.utils.dagger;
 
 import com.minds.great.hueLightProject.core.controllers.ConnectionController;
+import com.minds.great.hueLightProject.core.controllers.LightsListController;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
 import com.minds.great.hueLightProject.core.controllers.MainController;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
@@ -23,5 +24,11 @@ class LightProjectModule {
     @Singleton
     MainController providesMainController(MemoryInterface memory, ConnectionController connectionController){
         return new MainController(memory, connectionController);
+    }
+
+    @Provides
+    @Singleton
+    LightsListController providesLightsListController(MemoryInterface memory){
+        return new LightsListController(memory);
     }
 }

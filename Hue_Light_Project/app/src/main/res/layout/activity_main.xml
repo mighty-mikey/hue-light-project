@@ -9,9 +9,9 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/done"
+        android:id="@+id/logo"
         style="@style/errorMessage"
-        android:text="done"
+        android:text="Main Activity Logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -20,5 +20,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.2"/>
+
+    <TextView
+        android:id="@+id/lightsListTitle"
+        style="@style/lightsListTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/lights_list_title"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ListView
+        android:id="@+id/lightsList"
+        android:headerDividersEnabled="true"
+        style="@style/lightsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="2dp"
+        android:divider="@color/white"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lightsListTitle"
+        />
 
 </android.support.constraint.ConstraintLayout>
