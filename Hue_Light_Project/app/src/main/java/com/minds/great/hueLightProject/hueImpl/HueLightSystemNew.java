@@ -1,11 +1,14 @@
 package com.minds.great.hueLightProject.hueImpl;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.jakewharton.rxrelay2.PublishRelay;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.models.LightSystem;
+import com.philips.lighting.hue.sdk.wrapper.HueLog;
+import com.philips.lighting.hue.sdk.wrapper.Persistence;
 import com.philips.lighting.hue.sdk.wrapper.connection.BridgeConnectionType;
 import com.philips.lighting.hue.sdk.wrapper.connection.BridgeStateUpdatedCallback;
 import com.philips.lighting.hue.sdk.wrapper.connection.BridgeStateUpdatedEvent;
@@ -31,9 +34,16 @@ public class HueLightSystemNew implements LightSystemInterface {
     private static PublishRelay<ConnectionError> errorRelay = PublishRelay.create();
     private static PublishRelay<LightSystem> lightSystemRelay = PublishRelay.create();
 
-    static{
-        System.loadLibrary("huesdk");
+    public HueLightSystemNew(Context context) {
+        try {
+            System.loadLibrary("huesdk");
+            HueLog.setConsoleLogLevel(HueLog.LogLevel.DEBUG);
+            Persistence.setStorageLocation(context.getFilesDir().getAbsolutePath(), "hueLightProject");
+        } catch (UnsatisfiedLinkError e) {
+            Log.e("HueLightSystem", "Hue library not found.");
+        }
     }
+
     @Override
     public void searchForLightSystems() {
         disconnectFromBridge();
@@ -146,8 +156,4 @@ public class HueLightSystemNew implements LightSystemInterface {
             }
         }
     };
-
-    public void loadLib() {
-        System.loadLibrary("huesdk");
-    }
 }

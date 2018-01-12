@@ -15,16 +15,6 @@ import java.util.List;
 
 public class HueMemory implements MemoryInterface {
 
-    public HueMemory(Context context) {
-        Persistence.setStorageLocation(context.getFilesDir().getAbsolutePath(), "hueLightProject");
-        HueLog.setConsoleLogLevel(HueLog.LogLevel.DEBUG);
-    }
-
-    @Override
-    public void saveLightSystem(LightSystem lightSystem) {
-
-    }
-
     @Override
     public String getLightSystemIpAddress() {
         List<KnownBridge> bridges = KnownBridges.getAll();

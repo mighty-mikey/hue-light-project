@@ -26,7 +26,6 @@ public class MainController {
             PublishRelay<LightSystem> connectionSuccessfulRelay = connectionController.getConnectionSuccessfulRelay();
             connectionSuccessDisposable = connectionSuccessfulRelay
                     .subscribe(lightSystem -> {
-//                        memory.saveLightSystem(lightSystem);
                         view.finishConnectionActivity();
                         view.navigateToLightListActivity();
                     });

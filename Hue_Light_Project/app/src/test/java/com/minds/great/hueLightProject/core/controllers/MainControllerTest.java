@@ -66,7 +66,6 @@ public class MainControllerTest {
         subject.viewCreated(view);
         verify(view, never()).finishConnectionActivity();
         connectionSuccessfulRelay.accept(new LightSystem.Builder().build());
-        verify(memory).saveLightSystem(any());
         verify(view).finishConnectionActivity();
     }
 

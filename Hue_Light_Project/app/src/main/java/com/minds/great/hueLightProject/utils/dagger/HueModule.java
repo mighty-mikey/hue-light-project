@@ -33,12 +33,12 @@ public class HueModule {
     @Provides
     @Singleton
     LightSystemInterface providesLightSystemInterface(){
-        return new HueLightSystemNew();
+        return new HueLightSystemNew(context);
     }
 
     @Provides
     @Singleton
-    MemoryInterface providesMemoryInterface(Context context){
-        return new HueMemory(context);
+    MemoryInterface providesMemoryInterface(){
+        return new HueMemory();
     }
 }
