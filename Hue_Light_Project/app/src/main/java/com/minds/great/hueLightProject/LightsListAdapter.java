@@ -6,10 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import com.minds.great.hueLightProject.core.models.LightSystem;
 import com.philips.lighting.hue.sdk.PHAccessPoint;
+import com.philips.lighting.model.PHBridge;
 import com.philips.lighting.model.PHLight;
+import com.philips.lighting.model.PHLightState;
 
 import java.util.List;
 import java.util.Map;
@@ -17,6 +22,7 @@ import java.util.Map;
 //TODO:  convert to light list adapter
 public class LightsListAdapter extends BaseAdapter {
     private List<PHLight> lightsList;
+    private PHBridge phBridge;
     private Context context;
     final private int HEADER_CODE = 1;
     final private int FOOTER_CODE = -1;
@@ -39,6 +45,7 @@ public class LightsListAdapter extends BaseAdapter {
     @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        PHLight phLight = lightsList.get(position);
         LayoutInflater inflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -55,8 +62,18 @@ public class LightsListAdapter extends BaseAdapter {
                 itemView = inflater.inflate(R.layout.lights_list_item, null);
             }
             TextView bridgeName = (TextView) itemView.findViewById(R.id.lightName);
+            Switch onOffSwitch = (Switch) itemView.findViewById(R.id.onOffSwitch);
 
-            bridgeName.setText(lightsList.get(position).getName());
+            bridgeName.setText(phLight.getName());
+            onOffSwitch.setChecked(phLight.getLastKnownLightState().isOn());
+            onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    PHLightState phLightState = phLight.getLastKnownLightState();
+                    phLightState.setOn(b);
+                    phBridge.updateLightState(phLight, phLightState);
+                }
+            });
         }
         return itemView;
     }
@@ -71,8 +88,9 @@ public class LightsListAdapter extends BaseAdapter {
         return 0;
     }
 
-    public void setLightsList(List<PHLight> lightsList, Context context) {
+    public void setLightsList(LightSystem lightSystem, Context context) {
         this.context = context;
-        this.lightsList = lightsList;
+        this.lightsList = lightSystem.getPhBridge().getResourceCache().getAllLights();
+        this.phBridge = lightSystem.getPhBridge();
     }
 }

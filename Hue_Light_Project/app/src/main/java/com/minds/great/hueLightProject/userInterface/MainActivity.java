@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     public void switchToLightsList() {
         LightsListAdapter lightsListAdapter = new LightsListAdapter();
         runOnUiThread(() -> {
-            lightsListAdapter.setLightsList(mainLightSystem.getPhBridge().getResourceCache().getAllLights(), this);
+            lightsListAdapter.setLightsList(mainLightSystem, this);
             lightsList.setAdapter(lightsListAdapter);
             logo.setVisibility(View.GONE);
             lightsListView.setVisibility(View.VISIBLE);
