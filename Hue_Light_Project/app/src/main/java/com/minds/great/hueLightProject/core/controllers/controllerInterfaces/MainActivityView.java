@@ -7,8 +7,6 @@ public interface MainActivityView {
 
     void finishConnectionActivity();
 
-    void navigateToLightListActivity(LightSystem lightSystem);
-
     void switchToLightsList();
 
     void setMainLightSystem(LightSystem lightSystem);

@@ -2,6 +2,7 @@ package com.minds.great.hueLightProject.userInterface;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
@@ -9,15 +10,15 @@ import android.widget.TextView;
 
 import com.minds.great.hueLightProject.LightsListAdapter;
 import com.minds.great.hueLightProject.R;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainActivityView;
 import com.minds.great.hueLightProject.core.controllers.MainController;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainActivityView;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 import com.minds.great.hueLightProject.utils.dagger.DaggerInjector;
 import com.minds.great.hueLightProject.utils.dagger.HueModule;
-import org.androidannotations.annotations.EActivity;
-import javax.inject.Inject;
 
-import static android.view.View.VISIBLE;
+import org.androidannotations.annotations.EActivity;
+
+import javax.inject.Inject;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements MainActivityView {
@@ -28,15 +29,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     private LightSystem mainLightSystem;
 
     private final int CONNECTION_ACTIVITY_CODE = 0;
-    private final int LIGHT_ACTIVITY_CODE = 1;
 
     private ListView lightsList;
-    private TextView lightsListTitle;
+    private ConstraintLayout lightsListView;
     private TextView logo;
 
     private void initViews() {
         lightsList = (ListView) findViewById(R.id.lightsList);
-        lightsListTitle = (TextView) findViewById(R.id.lightsListTitle);
+        lightsListView = (ConstraintLayout) findViewById(R.id.lightsListView);
         logo = (TextView) findViewById(R.id.logo);
     }
 
@@ -72,20 +72,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     }
 
     @Override
-    public void navigateToLightListActivity(LightSystem lightSystem) {
-        Intent intent = new Intent(this, LightsListActivity.class);
-        startActivityForResult(intent, LIGHT_ACTIVITY_CODE);
-    }
-
-    @Override
     public void switchToLightsList() {
         LightsListAdapter lightsListAdapter = new LightsListAdapter();
         runOnUiThread(() -> {
             lightsListAdapter.setLightsList(mainLightSystem.getPhBridge().getResourceCache().getAllLights(), this);
             lightsList.setAdapter(lightsListAdapter);
             logo.setVisibility(View.GONE);
-            lightsListTitle.setVisibility(View.VISIBLE);
-            lightsList.setVisibility(View.VISIBLE);
+            lightsListView.setVisibility(View.VISIBLE);
         });
     }
 

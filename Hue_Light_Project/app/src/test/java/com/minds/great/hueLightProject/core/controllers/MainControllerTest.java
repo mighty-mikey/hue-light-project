@@ -14,6 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -72,29 +73,43 @@ public class MainControllerTest {
     }
 
     @Test
-    public void viewCreated_whenConnectionSuccessful_navigatesToLightActivity() throws Exception {
+    public void viewCreated_whenConnectionSuccessful_switchToLightListAndCloseConnectionActivity() throws Exception {
+        LightSystem lightSystem = new LightSystem.Builder().build();
+        when(memory.getLightSystem()).thenReturn(lightSystem);
         subject.viewCreated(view);
-        verify(view, never()).navigateToLightListActivity();
-        connectionSuccessfulRelay.accept(new LightSystem.Builder().build());
-        verify(view).navigateToLightListActivity();
+
+        verify(view, never()).setMainLightSystem(lightSystem);
+        verify(view, never()).switchToLightsList();
+        verify(view, never()).finishConnectionActivity();
+        connectionSuccessfulRelay.accept(lightSystem);
+        verify(view).setMainLightSystem(lightSystem);
+        verify(view).switchToLightsList();
+        verify(view).finishConnectionActivity();
     }
 
     @Test
-    public void viewCreated_whenSystemInMemory_doNotSubscribe() throws Exception {
-        when(memory.getLightSystem()).thenReturn(new LightSystem.Builder().build());
+    public void viewCreated_whenSystemNotInMemory_callNavigateToConnectionActivity() throws Exception {
+        when(memory.getLightSystem()).thenReturn(null);
+        verify(view, never()).navigateToConnectionActivity();
         subject.viewCreated(view);
-        verify(connectionController, never()).getConnectionSuccessfulRelay();
+        verify(view).navigateToConnectionActivity();
     }
+
 
     @Test
     public void viewCreated_whenSystemInMemory_navigateToLights() throws Exception {
-        when(memory.getLightSystem()).thenReturn(new LightSystem.Builder().build());
+        LightSystem lightSystem = new LightSystem.Builder().build();
+        when(memory.getLightSystem()).thenReturn(lightSystem);
+        verify(connectionController, never()).connect(lightSystem);
         subject.viewCreated(view);
-        verify(view).navigateToLightListActivity();
+        verify(connectionController).connect(lightSystem);
     }
 
     @After
     public void tearDown() throws Exception {
         connectionSuccessfulRelay = null;
+        reset(view);
+        reset(memory);
+        reset(connectionController);
     }
 }

@@ -1,14 +1,11 @@
 package com.minds.great.hueLightProject.userInterfaceTests;
 
-import android.content.Intent;
 import android.view.View;
 
 import com.minds.great.hueLightProject.BuildConfig;
 import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.userInterface.ConnectionActivity;
 import com.minds.great.hueLightProject.userInterface.ConnectionActivity_;
-import com.minds.great.hueLightProject.userInterface.MainActivity;
-
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,13 +13,10 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowIntent;
 
 import static com.minds.great.hueLightProject.core.models.ConnectionError.NO_BRIDGE_FOUND_CODE;
 import static junit.framework.Assert.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)
