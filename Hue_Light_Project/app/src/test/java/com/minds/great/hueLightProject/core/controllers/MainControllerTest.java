@@ -62,14 +62,6 @@ public class MainControllerTest {
     }
 
     @Test
-    public void viewCreated_whenConnectionSuccessful_savesSystemAndFinishesActivity() throws Exception {
-        subject.viewCreated(view);
-        verify(view, never()).finishConnectionActivity();
-        connectionSuccessfulRelay.accept(new LightSystem.Builder().build());
-        verify(view).finishConnectionActivity();
-    }
-
-    @Test
     public void viewCreated_whenConnectionSuccessful_navigatesToLightActivity() throws Exception {
         subject.viewCreated(view);
         verify(view, never()).navigateToLightListActivity();

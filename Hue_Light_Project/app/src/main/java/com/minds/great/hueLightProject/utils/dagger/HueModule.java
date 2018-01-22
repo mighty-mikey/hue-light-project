@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.data.HueMemory;
-import com.minds.great.hueLightProject.hueImpl.HueLightSystemNew;
+import com.minds.great.hueLightProject.hueImpl.HueLightSystem;
 
 import javax.inject.Singleton;
 
@@ -23,17 +23,10 @@ public class HueModule {
         this.context = context;
     }
 
-    @Singleton
-    @Provides
-    @NonNull
-    Context providesContext(){
-        return context;
-    }
-
     @Provides
     @Singleton
     LightSystemInterface providesLightSystemInterface(){
-        return new HueLightSystemNew(context);
+        return new HueLightSystem(context);
     }
 
     @Provides

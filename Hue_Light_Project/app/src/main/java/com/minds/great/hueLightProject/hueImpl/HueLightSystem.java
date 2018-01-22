@@ -25,20 +25,19 @@ import java.util.List;
 import static android.content.ContentValues.TAG;
 
 
-public class HueLightSystemNew implements LightSystemInterface {
+public class HueLightSystem implements LightSystemInterface {
 
     private Bridge bridge;
     private BridgeDiscovery bridgeDiscovery;
-    //TODO: remove static
-    private static PublishRelay<List<LightSystem>> lightSystemListRelay = PublishRelay.create();
-    private static PublishRelay<ConnectionError> errorRelay = PublishRelay.create();
-    private static PublishRelay<LightSystem> lightSystemRelay = PublishRelay.create();
+    private PublishRelay<List<LightSystem>> lightSystemListRelay = PublishRelay.create();
+    private PublishRelay<ConnectionError> errorRelay = PublishRelay.create();
+    private PublishRelay<LightSystem> lightSystemRelay = PublishRelay.create();
 
-    public HueLightSystemNew(Context context) {
+    public HueLightSystem(Context context) {
         try {
             System.loadLibrary("huesdk");
             HueLog.setConsoleLogLevel(HueLog.LogLevel.DEBUG);
-            Persistence.setStorageLocation(context.getFilesDir().getAbsolutePath(), "hueLightProject");
+            Persistence.setStorageLocation(context.getFilesDir().getPath(), "hueLightProject");
         } catch (UnsatisfiedLinkError e) {
             Log.e("HueLightSystem", "Hue library not found.");
         }
@@ -113,7 +112,7 @@ public class HueLightSystemNew implements LightSystemInterface {
             // Set to null to prevent stopBridgeDiscovery from stopping it
             bridgeDiscovery = null;
 
-            if (returnCode == ReturnCode.SUCCESS) {
+            if (returnCode == ReturnCode.SUCCESS && !results.isEmpty()) {
                 lightSystemListRelay.accept(convertResultsToLightSystem(results));
             } else if (returnCode == ReturnCode.STOPPED) {
                 Log.i(TAG, "Bridge discovery stopped.");

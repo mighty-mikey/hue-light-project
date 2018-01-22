@@ -14,14 +14,14 @@ import dagger.Provides;
 @Module
 class LightProjectModule {
 
-    @Provides
     @Singleton
+    @Provides
     ConnectionController providesConnectionController(LightSystemInterface lightSystemInterface){
         return new ConnectionController(lightSystemInterface);
     }
 
-    @Provides
     @Singleton
+    @Provides
     MainController providesMainController(MemoryInterface memory, ConnectionController connectionController){
         return new MainController(memory, connectionController);
     }

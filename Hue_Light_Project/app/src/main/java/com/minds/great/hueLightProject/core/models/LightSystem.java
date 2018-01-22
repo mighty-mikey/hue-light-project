@@ -14,7 +14,7 @@ public class LightSystem {
         return userName;
     }
 
-    private LightSystem(){
+    private LightSystem() {
     }
 
     public String getBridgeId() {

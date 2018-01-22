@@ -4,7 +4,9 @@ import com.jakewharton.rxrelay2.PublishRelay;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainActivityInterface;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.core.models.LightSystem;
+
 import javax.annotation.Nonnull;
+
 import io.reactivex.disposables.Disposable;
 
 public class MainController {
@@ -18,17 +20,17 @@ public class MainController {
     }
 
     public void viewCreated(@Nonnull MainActivityInterface view) {
+
         String storedLightSystemIpAddress = memory.getLightSystemIpAddress();
+
         if (null != storedLightSystemIpAddress) {
             connectionController.connect(storedLightSystemIpAddress);
             view.navigateToLightListActivity();
         } else {
             PublishRelay<LightSystem> connectionSuccessfulRelay = connectionController.getConnectionSuccessfulRelay();
             connectionSuccessDisposable = connectionSuccessfulRelay
-                    .subscribe(lightSystem -> {
-                        view.finishConnectionActivity();
-                        view.navigateToLightListActivity();
-                    });
+                    .subscribe(lightSystem -> view.navigateToLightListActivity());
+
             view.navigateToConnectionActivity();
         }
     }

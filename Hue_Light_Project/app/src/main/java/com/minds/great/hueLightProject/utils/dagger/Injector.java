@@ -1,7 +1,7 @@
 package com.minds.great.hueLightProject.utils.dagger;
 
-import com.minds.great.hueLightProject.userInterface.ConnectionActivity;
-import com.minds.great.hueLightProject.userInterface.MainActivity;
+import com.minds.great.hueLightProject.userInterface.LightProjectActivity;
+import com.minds.great.hueLightProject.userInterface.ConnectionFragment;
 
 import javax.inject.Singleton;
 
@@ -10,7 +10,7 @@ import dagger.Component;
 @Singleton
 @Component(modules={HueModule.class, LightProjectModule.class})
 public interface Injector {
-    void inject(ConnectionActivity activity);
+    void inject(ConnectionFragment activity);
 
-    void inject(MainActivity mainActivity);
+    void inject(LightProjectActivity lightProjectActivity);
 }
