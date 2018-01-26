@@ -1,7 +1,7 @@
 package com.minds.great.hueLightProject.core.controllers;
 
 import com.jakewharton.rxrelay2.PublishRelay;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainActivityView;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainFragmentView;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 
@@ -25,7 +25,7 @@ public class MainControllerTest {
     private MainController subject;
 
     @Mock
-    private MainActivityView view;
+    private MainFragmentView view;
 
     @Mock
     private MemoryInterface memory;
@@ -45,64 +45,49 @@ public class MainControllerTest {
     @Test
     public void viewCreated_callsCheckMemory(){
         subject.viewCreated(view);
-        verify(memory).getLightSystem();
+        verify(memory).getLightSystemIpAddress();
     }
 
     @Test
     public void viewCreated_whenLightSystemIsNull_navigatesToConnectionActivity() throws Exception {
-        when(memory.getLightSystem()).thenReturn(null);
+        when(memory.getLightSystemIpAddress()).thenReturn(null);
         subject.viewCreated(view);
-        verify(view).navigateToConnectionActivity();
+        verify(view).navigateToConnectionFragment();
     }
 
     @Test
     public void viewCreated_whenLightSystemIsNotNull_connectsToLightSystem() throws Exception {
-        LightSystem lightSystem = new LightSystem.Builder().build();
-        when(memory.getLightSystem()).thenReturn(lightSystem);
+        when(memory.getLightSystemIpAddress()).thenReturn("1");
         subject.viewCreated(view);
-        verify(connectionController).connect(lightSystem);
+        verify(connectionController).connect("1");
     }
 
     @Test
-    public void viewCreated_whenConnectionSuccessful_savesSystemAndFinishesActivity() throws Exception {
-        subject.viewCreated(view);
-        verify(view, never()).finishConnectionActivity();
-        connectionSuccessfulRelay.accept(new LightSystem.Builder().build());
-        verify(memory).saveLightSystem(any());
-        verify(view).finishConnectionActivity();
-    }
-
-    @Test
-    public void viewCreated_whenConnectionSuccessful_switchToLightListAndCloseConnectionActivity() throws Exception {
+    public void viewCreated_whenConnectionSuccessful_switchToLightList() throws Exception {
         LightSystem lightSystem = new LightSystem.Builder().build();
-        when(memory.getLightSystem()).thenReturn(lightSystem);
+        when(memory.getLightSystemIpAddress()).thenReturn("1");
         subject.viewCreated(view);
 
-        verify(view, never()).setMainLightSystem(lightSystem);
-        verify(view, never()).switchToLightsList();
-        verify(view, never()).finishConnectionActivity();
+        verify(view, never()).navigateToLightListFragment();
         connectionSuccessfulRelay.accept(lightSystem);
-        verify(view).setMainLightSystem(lightSystem);
-        verify(view).switchToLightsList();
-        verify(view).finishConnectionActivity();
+        verify(view).navigateToLightListFragment();
     }
 
     @Test
     public void viewCreated_whenSystemNotInMemory_callNavigateToConnectionActivity() throws Exception {
-        when(memory.getLightSystem()).thenReturn(null);
-        verify(view, never()).navigateToConnectionActivity();
+        when(memory.getLightSystemIpAddress()).thenReturn(null);
+        verify(view, never()).navigateToConnectionFragment();
         subject.viewCreated(view);
-        verify(view).navigateToConnectionActivity();
+        verify(view).navigateToConnectionFragment();
     }
 
 
     @Test
     public void viewCreated_whenSystemInMemory_navigateToLights() throws Exception {
-        LightSystem lightSystem = new LightSystem.Builder().build();
-        when(memory.getLightSystem()).thenReturn(lightSystem);
-        verify(connectionController, never()).connect(lightSystem);
+        when(memory.getLightSystemIpAddress()).thenReturn("1");
+        verify(connectionController, never()).connect(any());
         subject.viewCreated(view);
-        verify(connectionController).connect(lightSystem);
+        verify(connectionController).connect(any());
     }
 
     @After

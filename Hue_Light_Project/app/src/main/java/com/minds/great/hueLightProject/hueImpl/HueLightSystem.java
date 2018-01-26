@@ -1,35 +1,53 @@
 package com.minds.great.hueLightProject.hueImpl;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.jakewharton.rxrelay2.PublishRelay;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
-import com.minds.great.hueLightProject.core.models.LightSystem;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
-import com.philips.lighting.hue.sdk.PHAccessPoint;
-import com.philips.lighting.hue.sdk.PHBridgeSearchManager;
-import com.philips.lighting.hue.sdk.PHHueSDK;
-import com.philips.lighting.hue.sdk.PHMessageType;
-import com.philips.lighting.hue.sdk.PHSDKListener;
-import com.philips.lighting.model.PHBridge;
+import com.minds.great.hueLightProject.core.models.LightSystem;
+import com.philips.lighting.hue.sdk.wrapper.HueLog;
+import com.philips.lighting.hue.sdk.wrapper.Persistence;
+import com.philips.lighting.hue.sdk.wrapper.connection.BridgeConnectionType;
+import com.philips.lighting.hue.sdk.wrapper.connection.BridgeStateUpdatedCallback;
+import com.philips.lighting.hue.sdk.wrapper.connection.BridgeStateUpdatedEvent;
+import com.philips.lighting.hue.sdk.wrapper.discovery.BridgeDiscovery;
+import com.philips.lighting.hue.sdk.wrapper.discovery.BridgeDiscoveryCallback;
+import com.philips.lighting.hue.sdk.wrapper.discovery.BridgeDiscoveryResult;
+import com.philips.lighting.hue.sdk.wrapper.domain.Bridge;
+import com.philips.lighting.hue.sdk.wrapper.domain.BridgeBuilder;
+import com.philips.lighting.hue.sdk.wrapper.domain.ReturnCode;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
 
-public class HueLightSystem implements LightSystemInterface, PHSDKListener {
 
-    private PHHueSDK phHueSDK;
+public class HueLightSystem implements LightSystemInterface {
+
+    private Bridge bridge;
+    private BridgeDiscovery bridgeDiscovery;
     private PublishRelay<List<LightSystem>> lightSystemListRelay = PublishRelay.create();
     private PublishRelay<ConnectionError> errorRelay = PublishRelay.create();
     private PublishRelay<LightSystem> lightSystemRelay = PublishRelay.create();
 
-    public HueLightSystem(PHHueSDK phHueSDK) {
-        this.phHueSDK = phHueSDK;
-        phHueSDK.getNotificationManager().registerSDKListener(this);
+    public HueLightSystem(Context context) {
+        try {
+            System.loadLibrary("huesdk");
+            HueLog.setConsoleLogLevel(HueLog.LogLevel.DEBUG);
+            Persistence.setStorageLocation(context.getFilesDir().getPath(), "hueLightProject");
+        } catch (UnsatisfiedLinkError e) {
+            Log.e("HueLightSystem", "Hue library not found.");
+        }
     }
 
+    @Override
     public void searchForLightSystems() {
-        PHBridgeSearchManager searchManager = (PHBridgeSearchManager) phHueSDK.getSDKService(PHHueSDK.SEARCH_BRIDGE);
-        searchManager.search(true, true);
+        disconnectFromBridge();
+        bridgeDiscovery = new BridgeDiscovery();
+        bridgeDiscovery.search(BridgeDiscovery.BridgeDiscoveryOption.UPNP, bridgeDiscoveryCallback);
     }
 
     @Override
@@ -38,14 +56,42 @@ public class HueLightSystem implements LightSystemInterface, PHSDKListener {
     }
 
     @Override
-    public void connectToLightSystem(LightSystem lightSystem) {
-        PHAccessPoint phAccessPoint = new PHAccessPoint();
-        phAccessPoint.setIpAddress(lightSystem.getIpAddress());
-        phAccessPoint.setUsername(lightSystem.getUserName());
-        phAccessPoint.setBridgeId(lightSystem.getBridgeId());
-        phAccessPoint.setMacAddress(lightSystem.getMacAddress());
-        phHueSDK.connect(phAccessPoint);
+    public void connectToLightSystem(String lightSystemIpAddress) {
+        stopBridgeDiscovery();
+        disconnectFromBridge();
+
+        bridge = new BridgeBuilder("app name", "device name")
+                .setIpAddress(lightSystemIpAddress)
+                .setConnectionType(BridgeConnectionType.LOCAL)
+                .setBridgeConnectionCallback(new HueConnectionCallback(lightSystemRelay, errorRelay))
+                .addBridgeStateUpdatedCallback(bridgeStateUpdatedCallback)
+                .build();
+
+        bridge.connect();
     }
+
+    /**
+     * Stops the bridge discovery if it is still running
+     */
+    private void stopBridgeDiscovery() {
+        if (bridgeDiscovery != null) {
+            bridgeDiscovery.stop();
+            bridgeDiscovery = null;
+        }
+    }
+
+    /**
+     * Disconnect a bridge
+     * The hue SDK supports multiple bridge connections at the same time,
+     * but for the purposes of this demo we only connect to one bridge at a time.
+     */
+    private void disconnectFromBridge() {
+        if (bridge != null) {
+            bridge.disconnect();
+            bridge = null;
+        }
+    }
+
 
     @Override
     public PublishRelay<ConnectionError> getErrorObservable() {
@@ -57,76 +103,56 @@ public class HueLightSystem implements LightSystemInterface, PHSDKListener {
         return lightSystemRelay;
     }
 
-    @Override
-    public void onAccessPointsFound(List accessPointList) {
-        List<LightSystem> list = new ArrayList<>();
-        for (Object obj : accessPointList) {
-            PHAccessPoint accessPoint = (PHAccessPoint) obj;
-            list.add(new LightSystem.Builder()
-                    .ipAddress(accessPoint.getIpAddress())
-                    .userName(accessPoint.getUsername())
-                    .macAddress(accessPoint.getMacAddress())
-                    .bridgeId(accessPoint.getBridgeId())
-                    .build());
+    /**
+     * The callback that receives the results of the bridge discovery
+     */
+    private BridgeDiscoveryCallback bridgeDiscoveryCallback = new BridgeDiscoveryCallback() {
+        @Override
+        public void onFinished(final List<BridgeDiscoveryResult> results, final ReturnCode returnCode) {
+            // Set to null to prevent stopBridgeDiscovery from stopping it
+            bridgeDiscovery = null;
+
+            if (returnCode == ReturnCode.SUCCESS && !results.isEmpty()) {
+                lightSystemListRelay.accept(convertResultsToLightSystem(results));
+            } else if (returnCode == ReturnCode.STOPPED) {
+                Log.i(TAG, "Bridge discovery stopped.");
+            } else {
+                //TODO:  enter error code here.
+                errorRelay.accept(new ConnectionError.Builder().build());
+            }
         }
-        lightSystemListRelay.accept(list);
-    }
 
-    @Override
-    public void onCacheUpdated(List cacheNotificationsList, PHBridge bridge) {
-        // Here you receive notifications that the BridgeResource Cache was updated. Use the PHMessageType to
-        // check which cache was updated, e.g.
-        if (cacheNotificationsList.contains(PHMessageType.LIGHTS_CACHE_UPDATED)) {
-            System.out.println("Lights Cache Updated ");
+        private List<LightSystem> convertResultsToLightSystem(List<BridgeDiscoveryResult> results) {
+            List<LightSystem> returnList = new ArrayList<>();
+
+            for (BridgeDiscoveryResult result : results) {
+                returnList.add(new LightSystem.Builder().ipAddress(result.getIP()).build());
+            }
+
+            return returnList;
         }
-    }
+    };
 
-    @Override
-    public void onBridgeConnected(PHBridge foundBridge, String username) {
-        phHueSDK.setSelectedBridge(foundBridge);
-        phHueSDK.enableHeartbeat(foundBridge, PHHueSDK.HB_INTERVAL);
-        //TODO: Convert phBridge to custom bridge object
-        LightSystem lightSystem = new LightSystem.Builder()
-                .userName(username)
-                .ipAddress(foundBridge
-                        .getResourceCache()
-                        .getBridgeConfiguration()
-                        .getIpAddress())
-                .phBridge(foundBridge)
-                .build();
+    /**
+     * The callback the receives bridge state update events
+     */
+    private BridgeStateUpdatedCallback bridgeStateUpdatedCallback = new BridgeStateUpdatedCallback() {
 
-        lightSystemRelay.accept(lightSystem);
-     }
+        @Override
+        public void onBridgeStateUpdated(Bridge bridge, BridgeStateUpdatedEvent bridgeStateUpdatedEvent) {
+            switch (bridgeStateUpdatedEvent) {
+                case INITIALIZED:
+                    // The bridge state was fully initialized for the first time.
+                    // It is now safe to perform operations on the bridge state.
+                    break;
 
-    @Override
-    public void onAuthenticationRequired(PHAccessPoint accessPoint) {
-        phHueSDK.startPushlinkAuthentication(accessPoint);
-        // Arriving here indicates that Pushlinking is required (to prove the User has physical access to the bridge).  Typically here
-        // you will display a pushlink image (with a timer) indicating to to the user they need to push the button on their bridge within 30 seconds.
-    }
+                case LIGHTS_AND_GROUPS:
+                    // At least one light was updated.
+                    break;
 
-    @Override
-    public void onConnectionResumed(PHBridge bridge) {
-
-    }
-
-    @Override
-    public void onConnectionLost(PHAccessPoint accessPoint) {
-        // Here you would handle the loss of connection to your bridge.
-    }
-
-    @Override
-    public void onError(int code, final String message) {
-        // Here you can handle events such as Bridge Not Responding, Authentication Failed and Bridge Not Found
-        ConnectionError error = new ConnectionError.Builder().code(code).build();
-        errorRelay.accept(error);
-
-    }
-
-    @Override
-    public void onParsingErrors(List parsingErrorsList) {
-        // Any JSON parsing errors are returned here.  Typically your program should never return these.
-    }
+                default:
+                    break;
+            }
+        }
+    };
 }
-
-

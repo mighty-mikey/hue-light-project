@@ -1,38 +1,40 @@
 package com.minds.great.hueLightProject.core.controllers;
 
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainActivityView;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainFragmentView;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.core.models.LightSystem;
+import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
+
+import java.util.List;
+
 import javax.annotation.Nonnull;
+
 import io.reactivex.disposables.Disposable;
 
 public class MainController {
+
     private MemoryInterface memory;
     private ConnectionController connectionController;
     private Disposable connectionSuccessDisposable;
 
-
+    private LightSystem mainLightSystem;
 
     public MainController(MemoryInterface memory, ConnectionController connectionController) {
         this.memory = memory;
         this.connectionController = connectionController;
     }
 
-    public void viewCreated(@Nonnull MainActivityView view) {
-        LightSystem storedLightSystem = memory.getLightSystem();
+    public void viewCreated(@Nonnull MainFragmentView view) {
+        String lightSystemIpAddress = memory.getLightSystemIpAddress();
         connectionSuccessDisposable = connectionController.getConnectionSuccessfulRelay()
                 .subscribe(lightSystem -> {
-                    if (null == storedLightSystem) {
-                        memory.saveLightSystem(lightSystem);
-                    }
-                    view.setMainLightSystem(lightSystem);
-                    view.switchToLightsList();
-                    view.finishConnectionActivity();
+                    this.mainLightSystem = lightSystem;
+                    view.navigateToLightListFragment();
                 });
-        if (null != storedLightSystem) {
-            connectionController.connect(storedLightSystem);
+        if (null != lightSystemIpAddress) {
+            connectionController.connect(lightSystemIpAddress);
         } else {
-            view.navigateToConnectionActivity();
+            view.navigateToConnectionFragment();
         }
     }
 
@@ -41,5 +43,13 @@ public class MainController {
             connectionSuccessDisposable.dispose();
             connectionSuccessDisposable = null;
         }
+    }
+
+    public List<LightPoint> getLightList() {
+        List<LightPoint> lights = null;
+        if (null != mainLightSystem && null != mainLightSystem.getBridge()) {
+            lights = mainLightSystem.getBridge().getBridgeState().getLights();
+        }
+        return lights;
     }
 }

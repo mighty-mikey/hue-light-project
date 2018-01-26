@@ -3,9 +3,9 @@ package com.minds.great.hueLightProject.core.controllers;
 import com.jakewharton.rxrelay2.PublishRelay;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.ConnectionView;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.models.LightSystem;
+
 import io.reactivex.disposables.CompositeDisposable;
 
 public class ConnectionController {
@@ -16,16 +16,19 @@ public class ConnectionController {
 
     public ConnectionController(LightSystemInterface lightSystemInterface) {
         this.lightSystemInterface = lightSystemInterface;
-        compositeDisposable = new CompositeDisposable();
     }
 
     public void viewLoaded(ConnectionView view) {
         this.view = view;
 
+        if(null == compositeDisposable){
+            compositeDisposable = new CompositeDisposable();
+        }
+
         compositeDisposable.add(lightSystemInterface.getLightSystemListObservable()
                 .subscribe(lightSystems -> {
                     showWaitForConnection();
-                    lightSystemInterface.connectToLightSystem(lightSystems.get(0));
+                    lightSystemInterface.connectToLightSystem(lightSystems.get(0).getIpAddress());
                 }));
 
         compositeDisposable.add(lightSystemInterface.getErrorObservable()
@@ -52,8 +55,8 @@ public class ConnectionController {
         return lightSystemInterface.getLightSystemObservable();
     }
 
-    void connect(LightSystem lightSystem) {
-        lightSystemInterface.connectToLightSystem(lightSystem);
+    void connect(String lightSystemIpAddress) {
+        lightSystemInterface.connectToLightSystem(lightSystemIpAddress);
     }
 
     private void showErrorMessage(ConnectionError connectionError) {

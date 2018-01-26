@@ -12,7 +12,7 @@ public interface LightSystemInterface {
 
     PublishRelay<List<LightSystem>> getLightSystemListObservable();
 
-    void connectToLightSystem(LightSystem lightSystem);
+    void connectToLightSystem(String lightSystemIpAddress);
 
     PublishRelay<ConnectionError> getErrorObservable();
 
