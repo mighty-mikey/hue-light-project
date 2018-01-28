@@ -8,8 +8,8 @@ import android.view.View;
 
 import com.minds.great.hueLightProject.BuildConfig;
 import com.minds.great.hueLightProject.R;
-import com.minds.great.hueLightProject.userInterface.ConnectionFragment;
-import com.minds.great.hueLightProject.userInterface.LightProjectActivity;
+import com.minds.great.hueLightProject.userInterface.fragments.ConnectionFragment;
+import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
 
 import org.junit.Before;
 import org.junit.Test;

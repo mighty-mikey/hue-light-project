@@ -1,4 +1,4 @@
-package com.minds.great.hueLightProject.userInterface;
+package com.minds.great.hueLightProject.userInterface.fragments.lightListFragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

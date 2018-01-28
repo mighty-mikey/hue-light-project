@@ -1,4 +1,4 @@
-package com.minds.great.hueLightProject.userInterface;
+package com.minds.great.hueLightProject.userInterface.fragments;
 
 import android.Manifest;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.core.controllers.ConnectionController;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.ConnectionView;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
+import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
 
 import javax.inject.Inject;
 

@@ -17,20 +17,15 @@ public class MainController {
     private ConnectionController connectionController;
     private Disposable connectionSuccessDisposable;
 
-    private LightSystem mainLightSystem;
-
     public MainController(MemoryInterface memory, ConnectionController connectionController) {
         this.memory = memory;
         this.connectionController = connectionController;
     }
 
-    public void viewCreated(@Nonnull MainFragmentView view) {
+    public void viewLoaded(@Nonnull MainFragmentView view) {
         String lightSystemIpAddress = memory.getLightSystemIpAddress();
         connectionSuccessDisposable = connectionController.getConnectionSuccessfulRelay()
-                .subscribe(lightSystem -> {
-                    this.mainLightSystem = lightSystem;
-                    view.navigateToLightListFragment();
-                });
+                .subscribe(lightSystem -> view.navigateToLightListFragment());
         if (null != lightSystemIpAddress) {
             connectionController.connect(lightSystemIpAddress);
         } else {
@@ -43,13 +38,5 @@ public class MainController {
             connectionSuccessDisposable.dispose();
             connectionSuccessDisposable = null;
         }
-    }
-
-    public List<LightPoint> getLightList() {
-        List<LightPoint> lights = null;
-        if (null != mainLightSystem && null != mainLightSystem.getBridge()) {
-            lights = mainLightSystem.getBridge().getBridgeState().getLights();
-        }
-        return lights;
     }
 }

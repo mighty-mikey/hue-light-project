@@ -1,8 +1,8 @@
 package com.minds.great.hueLightProject.utils.dagger;
 
-import com.minds.great.hueLightProject.userInterface.ConnectionFragment;
-import com.minds.great.hueLightProject.userInterface.LightProjectActivity;
-import com.minds.great.hueLightProject.userInterface.LightsListFragment;
+import com.minds.great.hueLightProject.userInterface.fragments.ConnectionFragment;
+import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
+import com.minds.great.hueLightProject.userInterface.fragments.lightListFragment.LightsListFragment;
 
 import javax.inject.Singleton;
 

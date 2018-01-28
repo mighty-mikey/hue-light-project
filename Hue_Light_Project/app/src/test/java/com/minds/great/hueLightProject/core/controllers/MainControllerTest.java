@@ -44,21 +44,21 @@ public class MainControllerTest {
 
     @Test
     public void viewCreated_callsCheckMemory(){
-        subject.viewCreated(view);
+        subject.viewLoaded(view);
         verify(memory).getLightSystemIpAddress();
     }
 
     @Test
     public void viewCreated_whenLightSystemIsNull_navigatesToConnectionActivity() throws Exception {
         when(memory.getLightSystemIpAddress()).thenReturn(null);
-        subject.viewCreated(view);
+        subject.viewLoaded(view);
         verify(view).navigateToConnectionFragment();
     }
 
     @Test
     public void viewCreated_whenLightSystemIsNotNull_connectsToLightSystem() throws Exception {
         when(memory.getLightSystemIpAddress()).thenReturn("1");
-        subject.viewCreated(view);
+        subject.viewLoaded(view);
         verify(connectionController).connect("1");
     }
 
@@ -66,7 +66,7 @@ public class MainControllerTest {
     public void viewCreated_whenConnectionSuccessful_switchToLightList() throws Exception {
         LightSystem lightSystem = new LightSystem.Builder().build();
         when(memory.getLightSystemIpAddress()).thenReturn("1");
-        subject.viewCreated(view);
+        subject.viewLoaded(view);
 
         verify(view, never()).navigateToLightListFragment();
         connectionSuccessfulRelay.accept(lightSystem);
@@ -77,7 +77,7 @@ public class MainControllerTest {
     public void viewCreated_whenSystemNotInMemory_callNavigateToConnectionActivity() throws Exception {
         when(memory.getLightSystemIpAddress()).thenReturn(null);
         verify(view, never()).navigateToConnectionFragment();
-        subject.viewCreated(view);
+        subject.viewLoaded(view);
         verify(view).navigateToConnectionFragment();
     }
 
@@ -86,7 +86,7 @@ public class MainControllerTest {
     public void viewCreated_whenSystemInMemory_navigateToLights() throws Exception {
         when(memory.getLightSystemIpAddress()).thenReturn("1");
         verify(connectionController, never()).connect(any());
-        subject.viewCreated(view);
+        subject.viewLoaded(view);
         verify(connectionController).connect(any());
     }
 

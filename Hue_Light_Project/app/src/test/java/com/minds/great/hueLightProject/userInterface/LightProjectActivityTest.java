@@ -4,6 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.minds.great.hueLightProject.BuildConfig;
+import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
+import com.minds.great.hueLightProject.userInterface.fragments.ConnectionFragment;
+import com.minds.great.hueLightProject.userInterface.fragments.lightListFragment.LightsListFragment;
 
 import org.junit.Before;
 import org.junit.Test;
