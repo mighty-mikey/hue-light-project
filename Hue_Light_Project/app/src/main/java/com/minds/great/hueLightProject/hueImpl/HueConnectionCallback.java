@@ -11,6 +11,8 @@ import com.philips.lighting.hue.sdk.wrapper.domain.HueError;
 
 import java.util.List;
 
+import static com.minds.great.hueLightProject.core.models.ConnectionError.NO_BRIDGE_FOUND_CODE;
+
 
 public class HueConnectionCallback extends BridgeConnectionCallback {
 
@@ -26,18 +28,14 @@ public class HueConnectionCallback extends BridgeConnectionCallback {
     public void onConnectionEvent(BridgeConnection bridgeConnection, ConnectionEvent connectionEvent) {
         switch (connectionEvent) {
             case LINK_BUTTON_NOT_PRESSED:
-                //TODO:  enter correct error code;
-//                    errorRelay.accept(new ConnectionError.Builder().build());
                 break;
 
             case COULD_NOT_CONNECT:
-                //TODO:  enter correct error code;
-                errorRelay.accept(new ConnectionError.Builder().build());
+                errorRelay.accept(new ConnectionError.Builder().code(NO_BRIDGE_FOUND_CODE).build());
                 break;
 
             case CONNECTION_LOST:
-                //TODO:  enter correct error code;
-                errorRelay.accept(new ConnectionError.Builder().build());
+                errorRelay.accept(new ConnectionError.Builder().code(NO_BRIDGE_FOUND_CODE).build());
                 break;
 
             case CONNECTION_RESTORED:

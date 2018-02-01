@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
+import static com.minds.great.hueLightProject.core.models.ConnectionError.NO_BRIDGE_FOUND_CODE;
 
 
 public class HueLightSystem implements LightSystemInterface {
@@ -118,8 +119,7 @@ public class HueLightSystem implements LightSystemInterface {
             } else if (returnCode == ReturnCode.STOPPED) {
                 Log.i(TAG, "Bridge discovery stopped.");
             } else {
-                //TODO:  enter error code here.
-                errorRelay.accept(new ConnectionError.Builder().build());
+                errorRelay.accept(new ConnectionError.Builder().code(NO_BRIDGE_FOUND_CODE).build());
             }
         }
 
