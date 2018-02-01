@@ -56,6 +56,10 @@ public class ConnectionController {
         return lightSystemInterface.getLightSystemObservable();
     }
 
+    PublishRelay<LightSystem> getLightsAndGroupsHeartbeatRelay() {
+        return lightSystemInterface.getLightsAndGroupsHeartbeatRelayObservable();
+    }
+
     void connect(String lightSystemIpAddress) {
         lightSystemInterface.connectToLightSystem(lightSystemIpAddress);
     }

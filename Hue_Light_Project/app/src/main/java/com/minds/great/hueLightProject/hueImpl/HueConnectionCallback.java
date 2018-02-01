@@ -6,6 +6,7 @@ import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 import com.philips.lighting.hue.sdk.wrapper.connection.BridgeConnection;
 import com.philips.lighting.hue.sdk.wrapper.connection.BridgeConnectionCallback;
+import com.philips.lighting.hue.sdk.wrapper.connection.BridgeStateCacheType;
 import com.philips.lighting.hue.sdk.wrapper.connection.ConnectionEvent;
 import com.philips.lighting.hue.sdk.wrapper.domain.HueError;
 
@@ -50,6 +51,7 @@ public class HueConnectionCallback extends BridgeConnectionCallback {
 
             case AUTHENTICATED:
                 lightSystemRelay.accept(HueUtil.convertBridgeConnectionToLightSystem(bridgeConnection));
+                bridgeConnection.getHeartbeatManager().startHeartbeat(BridgeStateCacheType.LIGHTS_AND_GROUPS, 5000);
                 break;
 
             default:

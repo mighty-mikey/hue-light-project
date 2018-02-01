@@ -10,6 +10,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.minds.great.hueLightProject.R;
+import com.minds.great.hueLightProject.core.models.LightSystem;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
 
@@ -46,7 +47,6 @@ public class LightsListAdapter extends BaseAdapter {
         LightPoint light = lightsList.get(position);
         LayoutInflater inflater = (LayoutInflater) context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
 
         @SuppressLint("ViewHolder") View itemView = null;
         int itemViewType = getItemViewType(position);
@@ -86,5 +86,10 @@ public class LightsListAdapter extends BaseAdapter {
     public void setLightsList(List<LightPoint> lightPoints, Context context) {
         this.context = context;
         this.lightsList = lightPoints;
+    }
+
+    public void lightsAndGroupsHeartbeat(List<LightPoint> lightPoints) {
+        this.lightsList = lightPoints;
+        notifyDataSetChanged();
     }
 }

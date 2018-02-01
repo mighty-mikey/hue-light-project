@@ -18,4 +18,6 @@ public interface LightSystemInterface {
     PublishRelay<ConnectionError> getErrorObservable();
 
     BehaviorRelay<LightSystem> getLightSystemObservable();
+
+    PublishRelay<LightSystem> getLightsAndGroupsHeartbeatRelayObservable();
 }

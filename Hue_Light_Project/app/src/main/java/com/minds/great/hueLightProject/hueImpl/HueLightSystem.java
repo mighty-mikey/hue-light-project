@@ -34,6 +34,7 @@ public class HueLightSystem implements LightSystemInterface {
     private PublishRelay<List<LightSystem>> lightSystemListRelay = PublishRelay.create();
     private PublishRelay<ConnectionError> errorRelay = PublishRelay.create();
     private BehaviorRelay<LightSystem> lightSystemRelay = BehaviorRelay.create();
+    private PublishRelay<LightSystem> lightsAndGroupsHeartbeatRelay = PublishRelay.create();
 
     public HueLightSystem(Context context) {
         try {
@@ -55,6 +56,11 @@ public class HueLightSystem implements LightSystemInterface {
     @Override
     public PublishRelay<List<LightSystem>> getLightSystemListObservable() {
         return lightSystemListRelay;
+    }
+
+    @Override
+    public PublishRelay<LightSystem> getLightsAndGroupsHeartbeatRelayObservable() {
+        return lightsAndGroupsHeartbeatRelay;
     }
 
     @Override
@@ -149,6 +155,8 @@ public class HueLightSystem implements LightSystemInterface {
 
                 case LIGHTS_AND_GROUPS:
                     // At least one light was updated.
+                    LightSystem lightSystem = new LightSystem.Builder().bridge(bridge).build();
+                    lightsAndGroupsHeartbeatRelay.accept(lightSystem);
                     break;
 
                 default:
