@@ -1,5 +1,6 @@
 package com.minds.great.hueLightProject.core.controllers;
 
+import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.jakewharton.rxrelay2.PublishRelay;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.ConnectionView;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
@@ -51,7 +52,7 @@ public class ConnectionController {
         lightSystemInterface.searchForLightSystems();
     }
 
-    PublishRelay<LightSystem> getConnectionSuccessfulRelay() {
+    BehaviorRelay<LightSystem> getConnectionSuccessfulRelay() {
         return lightSystemInterface.getLightSystemObservable();
     }
 

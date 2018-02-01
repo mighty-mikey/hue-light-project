@@ -1,5 +1,6 @@
 package com.minds.great.hueLightProject.hueImpl;
 
+import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.jakewharton.rxrelay2.PublishRelay;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.models.LightSystem;
@@ -13,10 +14,10 @@ import java.util.List;
 
 public class HueConnectionCallback extends BridgeConnectionCallback {
 
-    private PublishRelay<LightSystem>  lightSystemRelay;
+    private BehaviorRelay<LightSystem> lightSystemRelay;
     private PublishRelay<ConnectionError> errorRelay;
 
-    public HueConnectionCallback(PublishRelay<LightSystem> lightSystemRelay, PublishRelay<ConnectionError> errorRelay) {
+    public HueConnectionCallback(BehaviorRelay<LightSystem> lightSystemRelay, PublishRelay<ConnectionError> errorRelay) {
         this.lightSystemRelay = lightSystemRelay;
         this.errorRelay = errorRelay;
     }

@@ -2,6 +2,7 @@ package com.minds.great.hueLightProject.userInterface.fragments.lightListFragmen
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,9 @@ import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.core.controllers.LightSystemController;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightsListView;
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
+import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -37,7 +41,8 @@ public class LightsListFragment extends Fragment implements LightsListView{
         super.onResume();
         ListView lightsList = (ListView) getActivity().findViewById(R.id.lightsList);
         lightsList.setAdapter(lightsListAdapter);
-        lightsListAdapter.setLightsList(lightSystemController.getLightList(), getContext());
+        List<LightPoint> lightList = lightSystemController.getLightList();
+        lightsListAdapter.setLightsList(lightList, getContext());
         lightsListAdapter.notifyDataSetChanged();
     }
 }

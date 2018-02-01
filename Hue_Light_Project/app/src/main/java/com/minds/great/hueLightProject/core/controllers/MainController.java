@@ -1,5 +1,7 @@
 package com.minds.great.hueLightProject.core.controllers;
 
+import android.util.Log;
+
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainFragmentView;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.core.models.LightSystem;

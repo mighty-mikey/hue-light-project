@@ -1,5 +1,6 @@
 package com.minds.great.hueLightProject.core.controllers;
 
+import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.jakewharton.rxrelay2.PublishRelay;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainFragmentView;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
@@ -32,11 +33,11 @@ public class MainControllerTest {
 
     @Mock
     private ConnectionController connectionController;
-    private PublishRelay<LightSystem> connectionSuccessfulRelay;
+    private BehaviorRelay<LightSystem> connectionSuccessfulRelay;
 
     @Before
     public void setUp() throws Exception {
-        connectionSuccessfulRelay = PublishRelay.create();
+        connectionSuccessfulRelay = BehaviorRelay.create();
         when(connectionController.getConnectionSuccessfulRelay()).thenReturn(connectionSuccessfulRelay);
 
         subject = new MainController(memory, connectionController);

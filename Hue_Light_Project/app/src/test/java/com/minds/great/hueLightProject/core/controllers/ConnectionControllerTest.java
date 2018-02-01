@@ -1,5 +1,6 @@
 package com.minds.great.hueLightProject.core.controllers;
 
+import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.jakewharton.rxrelay2.PublishRelay;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.ConnectionView;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.minds.great.hueLightProject.core.models.ConnectionError.NO_BRIDGE_FOUND_CODE;
+import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.reset;
@@ -40,7 +42,7 @@ public class ConnectionControllerTest {
 
     private PublishRelay<List<LightSystem>> lightSystemListRelay;
     private PublishRelay<ConnectionError> errorRelay;
-    private PublishRelay<LightSystem> lightSystemRelay;
+    private BehaviorRelay<LightSystem> lightSystemRelay;
     private LightSystem lightSystem;
 
 
@@ -48,7 +50,7 @@ public class ConnectionControllerTest {
     public void setUp() {
         lightSystemListRelay = PublishRelay.create();
         errorRelay = PublishRelay.create();
-        lightSystemRelay = PublishRelay.create();
+        lightSystemRelay = BehaviorRelay.create();
 
         String testIpAddress = "testIpAddress";
 
@@ -118,6 +120,16 @@ public class ConnectionControllerTest {
         verify(viewMock).showErrorMessage(NO_BRIDGE_FOUND_CODE);
         verify(viewMock).hideProgressBar();
         verify(viewMock).showConnectButton();
+    }
+
+    @Test
+    public void getConnectionSuccessfulRelay_whenItemAlreadyOnRelay_getsItem() throws Exception {
+
+        BehaviorRelay<LightSystem> relay = subject.getConnectionSuccessfulRelay();
+        relay.accept(lightSystem);
+        LightSystem returnedSystem = relay.blockingFirst();
+
+        assertThat(returnedSystem.equals(lightSystem)).isTrue();
     }
 
     @After

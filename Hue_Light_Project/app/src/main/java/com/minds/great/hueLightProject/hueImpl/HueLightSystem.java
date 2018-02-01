@@ -3,6 +3,7 @@ package com.minds.great.hueLightProject.hueImpl;
 import android.content.Context;
 import android.util.Log;
 
+import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.jakewharton.rxrelay2.PublishRelay;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
@@ -31,7 +32,7 @@ public class HueLightSystem implements LightSystemInterface {
     private BridgeDiscovery bridgeDiscovery;
     private PublishRelay<List<LightSystem>> lightSystemListRelay = PublishRelay.create();
     private PublishRelay<ConnectionError> errorRelay = PublishRelay.create();
-    private PublishRelay<LightSystem> lightSystemRelay = PublishRelay.create();
+    private BehaviorRelay<LightSystem> lightSystemRelay = BehaviorRelay.create();
 
     public HueLightSystem(Context context) {
         try {
@@ -99,7 +100,7 @@ public class HueLightSystem implements LightSystemInterface {
     }
 
     @Override
-    public PublishRelay<LightSystem> getLightSystemObservable() {
+    public BehaviorRelay<LightSystem> getLightSystemObservable() {
         return lightSystemRelay;
     }
 
