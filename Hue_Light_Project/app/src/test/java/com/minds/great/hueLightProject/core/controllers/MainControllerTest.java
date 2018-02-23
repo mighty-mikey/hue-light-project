@@ -1,8 +1,7 @@
 package com.minds.great.hueLightProject.core.controllers;
 
 import com.jakewharton.rxrelay2.BehaviorRelay;
-import com.jakewharton.rxrelay2.PublishRelay;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainFragmentView;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainInterface;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 
@@ -26,7 +25,7 @@ public class MainControllerTest {
     private MainController subject;
 
     @Mock
-    private MainFragmentView view;
+    private MainInterface view;
 
     @Mock
     private MemoryInterface memory;

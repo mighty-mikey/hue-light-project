@@ -2,7 +2,7 @@ package com.minds.great.hueLightProject.core.controllers;
 
 import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.jakewharton.rxrelay2.PublishRelay;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.ConnectionView;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.ConnectionInterface;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
@@ -18,6 +18,8 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+
 import static com.minds.great.hueLightProject.core.models.ConnectionError.NO_BRIDGE_FOUND_CODE;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -30,7 +32,7 @@ import static org.mockito.Mockito.when;
 public class ConnectionControllerTest {
 
     @Mock
-    private ConnectionView viewMock;
+    private ConnectionInterface viewMock;
 
     @Mock
     private LightSystemInterface lightSystemMock;
@@ -132,8 +134,15 @@ public class ConnectionControllerTest {
         assertThat(returnedSystem.equals(lightSystem)).isTrue();
     }
 
+    @Test
+    public void viewLoaded_whenLightSystemIsEmpty_doesNotThrowException() throws Exception {
+        List<LightSystem> emptyList = new ArrayList<>();
+        subject.viewLoaded(viewMock);
+        lightSystemListRelay.accept(emptyList);
+    }
+
     @After
-    public void cleanUp(){
+    public void cleanUp() {
         lightSystemListRelay = null;
         errorRelay = null;
         lightSystemRelay = null;

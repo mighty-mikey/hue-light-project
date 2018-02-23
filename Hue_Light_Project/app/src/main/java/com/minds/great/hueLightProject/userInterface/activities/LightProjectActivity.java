@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 
 import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.core.controllers.MainController;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainFragmentView;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainInterface;
 import com.minds.great.hueLightProject.userInterface.fragments.ConnectionFragment;
 import com.minds.great.hueLightProject.userInterface.fragments.MainFragment;
 import com.minds.great.hueLightProject.userInterface.fragments.lightListFragment.LightsListFragment;
@@ -19,7 +19,7 @@ import org.androidannotations.annotations.EActivity;
 import javax.inject.Inject;
 
 @EActivity(R.layout.fragment_container)
-public class LightProjectActivity extends FragmentActivity implements MainFragmentView {
+public class LightProjectActivity extends FragmentActivity implements MainInterface {
 
     @Inject
     MainController mainController;

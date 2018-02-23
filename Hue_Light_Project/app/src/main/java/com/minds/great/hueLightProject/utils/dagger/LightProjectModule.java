@@ -32,5 +32,4 @@ class LightProjectModule {
     LightSystemController providesLightSystemController(ConnectionController connectionController){
         return new LightSystemController(connectionController);
     }
-
 }

@@ -1,6 +1,6 @@
 package com.minds.great.hueLightProject.core.controllers.controllerInterfaces;
 
-public interface MainFragmentView {
+public interface MainInterface {
     void navigateToConnectionFragment();
 
     void navigateToLightListFragment();

@@ -1,13 +1,7 @@
 package com.minds.great.hueLightProject.core.controllers;
 
-import android.util.Log;
-
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainFragmentView;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainInterface;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
-import com.minds.great.hueLightProject.core.models.LightSystem;
-import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
-
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -24,7 +18,7 @@ public class MainController {
         this.connectionController = connectionController;
     }
 
-    public void viewLoaded(@Nonnull MainFragmentView view) {
+    public void viewLoaded(@Nonnull MainInterface view) {
         String lightSystemIpAddress = memory.getLightSystemIpAddress();
         connectionSuccessDisposable = connectionController.getConnectionSuccessfulRelay()
                 .subscribe(lightSystem -> view.navigateToLightListFragment());

@@ -2,7 +2,7 @@ package com.minds.great.hueLightProject.core.controllers;
 
 import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.jakewharton.rxrelay2.PublishRelay;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.ConnectionView;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.ConnectionInterface;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.models.LightSystem;
@@ -13,14 +13,14 @@ public class ConnectionController {
 
     private CompositeDisposable compositeDisposable;
     private LightSystemInterface lightSystemInterface;
-    private ConnectionView view;
+    private ConnectionInterface connectionView;
 
     public ConnectionController(LightSystemInterface lightSystemInterface) {
         this.lightSystemInterface = lightSystemInterface;
     }
 
-    public void viewLoaded(ConnectionView view) {
-        this.view = view;
+    public void viewLoaded(ConnectionInterface view) {
+        this.connectionView = view;
 
         if(null == compositeDisposable){
             compositeDisposable = new CompositeDisposable();
@@ -29,7 +29,9 @@ public class ConnectionController {
         compositeDisposable.add(lightSystemInterface.getLightSystemListObservable()
                 .subscribe(lightSystems -> {
                     showWaitForConnection();
-                    lightSystemInterface.connectToLightSystem(lightSystems.get(0).getIpAddress());
+                    if(!lightSystems.isEmpty()) {
+                        lightSystemInterface.connectToLightSystem(lightSystems.get(0).getIpAddress());
+                    }
                 }));
 
         compositeDisposable.add(lightSystemInterface.getErrorObservable()
@@ -42,13 +44,13 @@ public class ConnectionController {
             compositeDisposable.dispose();
             compositeDisposable = null;
         }
-        view = null;
+        connectionView = null;
     }
 
     public void search() {
-        view.showProgressBar();
-        view.hideConnectButton();
-        view.hideErrorMessage();
+        connectionView.showProgressBar();
+        connectionView.hideConnectButton();
+        connectionView.hideErrorMessage();
         lightSystemInterface.searchForLightSystems();
     }
 
@@ -65,14 +67,14 @@ public class ConnectionController {
     }
 
     private void showErrorMessage(ConnectionError connectionError) {
-        view.showErrorMessage(connectionError.getCode());
-        view.hideProgressBar();
-        view.showConnectButton();
+        connectionView.showErrorMessage(connectionError.getCode());
+        connectionView.hideProgressBar();
+        connectionView.showConnectButton();
     }
 
     private void showWaitForConnection() {
-        view.hideProgressBar();
-        view.showWaitingForConnection();
-        view.hideConnectButton();
+        connectionView.hideProgressBar();
+        connectionView.showWaitingForConnection();
+        connectionView.hideConnectButton();
     }
 }

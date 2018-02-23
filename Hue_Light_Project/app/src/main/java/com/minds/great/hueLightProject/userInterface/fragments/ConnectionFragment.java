@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.core.controllers.ConnectionController;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.ConnectionView;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.ConnectionInterface;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
 
@@ -24,7 +24,7 @@ import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
-public class ConnectionFragment extends Fragment implements ConnectionView {
+public class ConnectionFragment extends Fragment implements ConnectionInterface {
 
     @Inject
     ConnectionController connectionController;

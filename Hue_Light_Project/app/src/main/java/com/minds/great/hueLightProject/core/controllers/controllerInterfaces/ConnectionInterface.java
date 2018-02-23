@@ -1,7 +1,7 @@
 package com.minds.great.hueLightProject.core.controllers.controllerInterfaces;
 
 
-public interface ConnectionView {
+public interface ConnectionInterface {
     void showProgressBar();
 
     void hideConnectButton();

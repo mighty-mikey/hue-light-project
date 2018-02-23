@@ -22,7 +22,7 @@
             app:layout_constraintVertical_bias="0.2"/>
 
         <!--<android.support.constraint.ConstraintLayout-->
-            <!--android:id="@+id/lightsListView"-->
+            <!--android:id="@lightsListInterfaceView"-->
             <!--android:layout_height="match_parent"-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_marginStart="18dp"-->

@@ -2,6 +2,9 @@ package com.minds.great.hueLightProject.userInterface.fragments.lightListFragmen
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.ColorMatrixColorFilter;
+import android.support.annotation.ColorInt;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +14,14 @@ import android.widget.TextView;
 
 import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.core.models.LightSystem;
+import com.minds.great.hueLightProject.hueImpl.HueUtil;
+import com.philips.lighting.hue.sdk.wrapper.domain.clip.ColorMode;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
+import com.philips.lighting.hue.sdk.wrapper.domain.device.sensor.environment.TemperatureSensor;
+import com.philips.lighting.hue.sdk.wrapper.domain.device.sensor.environment.TemperatureSensorConfiguration;
+import com.philips.lighting.hue.sdk.wrapper.domain.device.sensor.environment.TemperatureSensorState;
+import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 
 import java.util.List;
 
@@ -61,9 +70,19 @@ public class LightsListAdapter extends BaseAdapter {
             }
             TextView bridgeName = (TextView) itemView.findViewById(R.id.lightName);
             Switch onOffSwitch = (Switch) itemView.findViewById(R.id.onOffSwitch);
-
+            View color = itemView.findViewById(R.id.color);
             bridgeName.setText(light.getName());
             onOffSwitch.setChecked(light.getLightState().isOn());
+            if (light.getLightState().isOn()) {
+                if (light.getLightState().getColormode() == ColorMode.XY) {
+                    HueColor.RGB rgb = light.getLightState().getColor().getRGB();
+                    color.setBackgroundColor(Color.argb(light.getLightState().getBrightness(), rgb.r, rgb.g, rgb.b));
+                } else if (light.getLightState().getColormode() == ColorMode.COLOR_TEMPERATURE) {
+                    color.setBackgroundColor(HueUtil.getRGBFromColorTemperature(light.getLightState().getCT(), light.getLightState().getBrightness()));
+                }
+            } else {
+                color.setBackgroundColor(Color.BLACK);
+            }
             onOffSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
                 LightState lightState = light.getLightState();
                 lightState.setOn(b);
