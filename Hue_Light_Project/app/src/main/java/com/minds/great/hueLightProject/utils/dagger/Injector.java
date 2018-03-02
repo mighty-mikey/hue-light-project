@@ -2,6 +2,7 @@ package com.minds.great.hueLightProject.utils.dagger;
 
 import com.minds.great.hueLightProject.userInterface.fragments.ConnectionFragment;
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
+import com.minds.great.hueLightProject.userInterface.fragments.SingleLightFragment;
 import com.minds.great.hueLightProject.userInterface.fragments.lightListFragment.LightsListFragment;
 
 import javax.inject.Singleton;
@@ -16,4 +17,6 @@ public interface Injector {
     void inject(LightProjectActivity lightProjectActivity);
 
     void inject(LightsListFragment lightsListFragment);
+
+    void inject(SingleLightFragment singleLightFragment);
 }

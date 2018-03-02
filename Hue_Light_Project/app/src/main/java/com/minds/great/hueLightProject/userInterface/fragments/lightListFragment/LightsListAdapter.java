@@ -11,6 +11,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.minds.great.hueLightProject.R;
+import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainInterface;
 import com.minds.great.hueLightProject.hueImpl.HueUtil;
 import com.philips.lighting.hue.sdk.wrapper.domain.clip.ColorMode;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
@@ -59,11 +60,10 @@ public class LightsListAdapter extends BaseAdapter {
         View itemView = inflateView(itemViewType);
 
         if (itemView != null) {
-            TextView bridgeName = (TextView) itemView.findViewById(R.id.lightName);
+            TextView lightName = (TextView) itemView.findViewById(R.id.lightName);
             Switch onOffSwitch = (Switch) itemView.findViewById(R.id.onOffSwitch);
             View color = itemView.findViewById(R.id.color);
-
-            bridgeName.setText(light.getName());
+            lightName.setText(light.getName());
             onOffSwitch.setChecked(light.getLightState().isOn());
 
             int lightColor = Color.BLACK;
@@ -83,6 +83,15 @@ public class LightsListAdapter extends BaseAdapter {
                 lightState.setOn(b);
                 light.updateState(lightState);
             });
+
+            color.setOnClickListener(view -> {
+                ((MainInterface)view.getContext()).navigateToSingleLightFragment();
+            });
+
+            lightName.setOnClickListener(view -> {
+                ((MainInterface)view.getContext()).navigateToSingleLightFragment();
+            });
+
         }
         return itemView;
     }

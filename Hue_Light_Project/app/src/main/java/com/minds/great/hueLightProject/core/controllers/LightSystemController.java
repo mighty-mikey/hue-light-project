@@ -7,10 +7,13 @@ import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 
 import java.util.List;
 
+import io.reactivex.disposables.Disposable;
+
 public class LightSystemController {
 
     private LightSystem lightSystem;
     private ConnectionController connectionController;
+    private Disposable subscribe;
 
     public LightSystemController(ConnectionController connectionController) {
         this.connectionController = connectionController;
@@ -19,9 +22,14 @@ public class LightSystemController {
     }
 
     public void viewLoaded(LightsListInterface lightsListInterface) {
-        connectionController.getLightsAndGroupsHeartbeatRelay().subscribe(lightsListInterface::updateLights);
+        subscribe = connectionController.getLightsAndGroupsHeartbeatRelay().subscribe(lightsListInterface::updateLights);
     }
-
+    public void viewUnloaded(){
+        if(subscribe != null){
+            subscribe.dispose();
+            subscribe = null;
+        }
+    }
     public List<LightPoint> getLightList() {
         List<LightPoint> lights = null;
         if (null != lightSystem && null != lightSystem.getBridge()) {

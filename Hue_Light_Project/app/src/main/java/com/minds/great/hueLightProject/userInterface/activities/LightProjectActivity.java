@@ -9,6 +9,7 @@ import com.minds.great.hueLightProject.core.controllers.MainController;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainInterface;
 import com.minds.great.hueLightProject.userInterface.fragments.ConnectionFragment;
 import com.minds.great.hueLightProject.userInterface.fragments.MainFragment;
+import com.minds.great.hueLightProject.userInterface.fragments.SingleLightFragment;
 import com.minds.great.hueLightProject.userInterface.fragments.lightListFragment.LightsListFragment;
 import com.minds.great.hueLightProject.utils.dagger.DaggerInjector;
 import com.minds.great.hueLightProject.utils.dagger.HueModule;
@@ -59,6 +60,12 @@ public class LightProjectActivity extends FragmentActivity implements MainInterf
     public void navigateToLightListFragment() {
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, new LightsListFragment()).commit();
+    }
+
+    @Override
+    public void navigateToSingleLightFragment() {
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, new SingleLightFragment()).commit();
     }
 
     public Injector getInjector() {

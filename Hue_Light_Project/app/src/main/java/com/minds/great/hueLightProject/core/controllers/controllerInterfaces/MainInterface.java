@@ -4,4 +4,6 @@ public interface MainInterface {
     void navigateToConnectionFragment();
 
     void navigateToLightListFragment();
+
+    void navigateToSingleLightFragment();
 }
