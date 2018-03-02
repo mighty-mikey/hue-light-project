@@ -32,7 +32,7 @@ public class LightsListFragment extends Fragment implements LightsListInterface 
         if(getActivity() instanceof LightProjectActivity) {
             ((LightProjectActivity) getActivity()).getInjector().inject(this);
         }
-        lightsListAdapter = new LightsListAdapter();
+        lightsListAdapter = new LightsListAdapter(lightSystemController);
         return inflater.inflate(R.layout.fragment_lights_list, container, false);
     }
 

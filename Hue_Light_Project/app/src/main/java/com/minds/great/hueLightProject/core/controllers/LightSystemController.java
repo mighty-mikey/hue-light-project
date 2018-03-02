@@ -4,6 +4,8 @@ package com.minds.great.hueLightProject.core.controllers;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightsListInterface;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
+import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
+import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ public class LightSystemController {
     private LightSystem lightSystem;
     private ConnectionController connectionController;
     private Disposable subscribe;
+    private int position = 0;
 
     public LightSystemController(ConnectionController connectionController) {
         this.connectionController = connectionController;
@@ -36,5 +39,16 @@ public class LightSystemController {
             lights = lightSystem.getBridge().getBridgeState().getLights();
         }
         return lights;
+    }
+
+    public void setSelectedLightPosition(int position) {
+        this.position = position;
+    }
+
+    public void setColor(HueColor hueColor) {
+        LightPoint lightPoint = getLightList().get(position);
+        LightState lightState = lightPoint.getLightState();
+        lightState.setXYWithColor(hueColor);
+        lightPoint.updateState(lightState);
     }
 }

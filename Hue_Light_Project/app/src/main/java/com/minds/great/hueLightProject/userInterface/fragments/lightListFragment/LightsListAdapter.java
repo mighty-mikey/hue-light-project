@@ -11,6 +11,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.minds.great.hueLightProject.R;
+import com.minds.great.hueLightProject.core.controllers.LightSystemController;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainInterface;
 import com.minds.great.hueLightProject.hueImpl.HueUtil;
 import com.philips.lighting.hue.sdk.wrapper.domain.clip.ColorMode;
@@ -20,23 +21,23 @@ import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class LightsListAdapter extends BaseAdapter {
     private List<LightPoint> lightsList;
     private Context context;
     final private int HEADER_CODE = 1;
     final private int FOOTER_CODE = -1;
 
-    @Inject
+    private LightSystemController lightSystemController;
 
+    LightsListAdapter(LightSystemController lightSystemController) {
+        this.lightSystemController = lightSystemController;
+    }
 
     @Override
     public int getCount() {
         if (null != lightsList) {
             return lightsList.size();
         }
-
         return 0;
     }
 
@@ -85,13 +86,14 @@ public class LightsListAdapter extends BaseAdapter {
             });
 
             color.setOnClickListener(view -> {
-                ((MainInterface)view.getContext()).navigateToSingleLightFragment();
+                lightSystemController.setSelectedLightPosition(position);
+                ((MainInterface) view.getContext()).navigateToSingleLightFragment();
             });
 
             lightName.setOnClickListener(view -> {
-                ((MainInterface)view.getContext()).navigateToSingleLightFragment();
+                lightSystemController.setSelectedLightPosition(position);
+                ((MainInterface) view.getContext()).navigateToSingleLightFragment();
             });
-
         }
         return itemView;
     }
