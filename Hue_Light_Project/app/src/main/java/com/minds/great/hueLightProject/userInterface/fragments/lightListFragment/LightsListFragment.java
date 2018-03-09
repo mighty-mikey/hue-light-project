@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.minds.great.hueLightProject.R;
-import com.minds.great.hueLightProject.core.controllers.LightSystemController;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightsListInterface;
+import com.minds.great.hueLightProject.core.presenters.LightsListInterface;
 import com.minds.great.hueLightProject.core.models.LightSystem;
+import com.minds.great.hueLightProject.core.presenters.LightListPresenter;
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 
@@ -21,7 +21,7 @@ import javax.inject.Inject;
 public class LightsListFragment extends Fragment implements LightsListInterface {
 
     @Inject
-    LightSystemController lightSystemController;
+    LightListPresenter lightListPresenter;
 
     private LightsListAdapter lightsListAdapter;
 
@@ -32,7 +32,7 @@ public class LightsListFragment extends Fragment implements LightsListInterface 
         if(getActivity() instanceof LightProjectActivity) {
             ((LightProjectActivity) getActivity()).getInjector().inject(this);
         }
-        lightsListAdapter = new LightsListAdapter(lightSystemController);
+        lightsListAdapter = new LightsListAdapter(lightListPresenter);
         return inflater.inflate(R.layout.fragment_lights_list, container, false);
     }
 
@@ -41,15 +41,14 @@ public class LightsListFragment extends Fragment implements LightsListInterface 
         super.onResume();
         ListView lightsList = (ListView) getActivity().findViewById(R.id.lightsList);
         lightsList.setAdapter(lightsListAdapter);
-        List<LightPoint> lightList = lightSystemController.getLightList();
+        List<LightPoint> lightList = lightListPresenter.getLightList();
         lightsListAdapter.setLightsList(lightList, getContext());
-        lightsListAdapter.notifyDataSetChanged();
-        lightSystemController.viewLoaded(this);
+        lightListPresenter.viewLoaded(this);
     }
 
     @Override
     public void onDestroy() {
-        lightSystemController.viewUnloaded();
+        lightListPresenter.viewUnloaded();
         super.onDestroy();
     }
 

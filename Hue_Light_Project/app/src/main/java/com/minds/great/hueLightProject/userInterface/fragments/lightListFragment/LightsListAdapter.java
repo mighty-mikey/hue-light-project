@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.core.controllers.LightSystemController;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainInterface;
+import com.minds.great.hueLightProject.core.presenters.LightListPresenter;
 import com.minds.great.hueLightProject.hueImpl.HueUtil;
 import com.philips.lighting.hue.sdk.wrapper.domain.clip.ColorMode;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
@@ -27,10 +28,10 @@ public class LightsListAdapter extends BaseAdapter {
     final private int HEADER_CODE = 1;
     final private int FOOTER_CODE = -1;
 
-    private LightSystemController lightSystemController;
+    private LightListPresenter lightListPresenter;
 
-    LightsListAdapter(LightSystemController lightSystemController) {
-        this.lightSystemController = lightSystemController;
+    LightsListAdapter(LightListPresenter lightListPresenter) {
+        this.lightListPresenter = lightListPresenter;
     }
 
     @Override
@@ -86,12 +87,12 @@ public class LightsListAdapter extends BaseAdapter {
             });
 
             color.setOnClickListener(view -> {
-                lightSystemController.setSelectedLightPosition(position);
+                lightListPresenter.setSelectedLightPosition(position);
                 ((MainInterface) view.getContext()).navigateToSingleLightFragment();
             });
 
             lightName.setOnClickListener(view -> {
-                lightSystemController.setSelectedLightPosition(position);
+                lightListPresenter.setSelectedLightPosition(position);
                 ((MainInterface) view.getContext()).navigateToSingleLightFragment();
             });
         }
@@ -126,6 +127,7 @@ public class LightsListAdapter extends BaseAdapter {
     void setLightsList(List<LightPoint> lightPoints, Context context) {
         this.context = context;
         this.lightsList = lightPoints;
+        notifyDataSetChanged();
     }
 
     void lightsAndGroupsHeartbeat(List<LightPoint> lightPoints) {
