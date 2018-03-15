@@ -14,6 +14,7 @@ import com.minds.great.hueLightProject.userInterface.fragments.lightListFragment
 import com.minds.great.hueLightProject.utils.dagger.DaggerInjector;
 import com.minds.great.hueLightProject.utils.dagger.HueModule;
 import com.minds.great.hueLightProject.utils.dagger.Injector;
+import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 
 import org.androidannotations.annotations.EActivity;
 
@@ -63,9 +64,11 @@ public class LightProjectActivity extends FragmentActivity implements MainInterf
     }
 
     @Override
-    public void navigateToSingleLightFragment() {
+    public void navigateToSingleLightFragment(LightPoint light) {
+        SingleLightFragment fragment = new SingleLightFragment();
+        fragment.setLight(light);
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, new SingleLightFragment()).commit();
+                .replace(R.id.fragment_container, fragment).commit();
     }
 
     public Injector getInjector() {
