@@ -98,7 +98,7 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
             TextView lightName = (TextView) view.findViewById(R.id.lightName);
             lightName.setText(light.getName());
             onOffSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-                LightState lightState = light.getLightState();
+                LightState lightState = new LightState();
                 lightState.setOn(b);
                 light.updateState(lightState);
             });
@@ -109,7 +109,7 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
             dimmer.setProgress(light.getLightState().getBrightness());
             dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 Timer timer = null;
-                LightState lightState = light.getLightState();
+                LightState lightState = new LightState();
                 int brightness = 0;
 
                 @Override
@@ -119,6 +119,7 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
 
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {
+                    lightState.setBrightness(light.getLightState().getBrightness());
                     timer = new Timer();
                     timer.schedule(new TimerTask() {
                         @Override
