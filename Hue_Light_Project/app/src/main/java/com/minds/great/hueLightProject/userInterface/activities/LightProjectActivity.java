@@ -36,8 +36,9 @@ public class LightProjectActivity extends FragmentActivity implements MainInterf
         setContentView(R.layout.fragment_container);
 
         fragmentManager = getSupportFragmentManager();
+        MainFragment mainFragment = new MainFragment();
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, new MainFragment())
+                .replace(R.id.fragment_container, mainFragment)
                 .commit();
 
         mainController.viewLoaded(this);
@@ -58,14 +59,18 @@ public class LightProjectActivity extends FragmentActivity implements MainInterf
 
     @Override
     public void navigateToLightListFragment() {
+        LightsListFragment fragment = new LightsListFragment();
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, new LightsListFragment()).commit();
+                .addToBackStack(fragment.toString())
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 
     @Override
     public void navigateToSingleLightFragment() {
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, new SingleLightFragment()).commit();
+        SingleLightFragment fragment = new SingleLightFragment();
+        fragmentManager.beginTransaction().addToBackStack(fragment.toString())
+                .replace(R.id.fragment_container, fragment).commit();
     }
 
     public Injector getInjector() {
