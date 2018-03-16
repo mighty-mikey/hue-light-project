@@ -1,6 +1,12 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion '26.0.2'
@@ -57,6 +63,8 @@ dependencies {
     compile 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
     implementation files('libs/huecppsdk-wrapper.jar')
     implementation files('libs/huecppsdk-wrapper-javadoc.jar')
+    //color picker
+    compile 'com.github.QuadFlask:colorpicker:0.0.13'
 }
 
 buildscript {

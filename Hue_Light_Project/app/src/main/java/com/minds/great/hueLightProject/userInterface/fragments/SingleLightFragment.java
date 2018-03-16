@@ -16,6 +16,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.flask.colorpicker.ColorPickerView;
+
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -24,10 +27,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.minds.great.hueLightProject.R;
-import com.minds.great.hueLightProject.core.controllers.LightSystemController;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightsListInterface;
 import com.minds.great.hueLightProject.core.models.LightSystem;
+import com.minds.great.hueLightProject.core.presenters.SingleLightInterface;
+import com.minds.great.hueLightProject.core.presenters.SingleLightPresenter;
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
+import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 import com.minds.great.hueLightProject.userInterface.fragments.lightListFragment.LightsListAdapter;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
@@ -40,10 +44,10 @@ import javax.inject.Inject;
 
 import io.reactivex.internal.operators.observable.ObservableTimer;
 
-public class SingleLightFragment extends Fragment implements LightsListInterface {
+public class SingleLightFragment extends Fragment implements SingleLightInterface {
 
     @Inject
-    LightSystemController lightSystemController;
+    SingleLightPresenter singleLightPresenter;
 
     private Switch onOffSwitch;
     private LightPoint light;
@@ -53,7 +57,7 @@ public class SingleLightFragment extends Fragment implements LightsListInterface
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        if(getActivity() instanceof LightProjectActivity) {
+        if (getActivity() instanceof LightProjectActivity) {
             ((LightProjectActivity) getActivity()).getInjector().inject(this);
         }
         return inflater.inflate(R.layout.fragment_single_light, container, false);
@@ -62,14 +66,27 @@ public class SingleLightFragment extends Fragment implements LightsListInterface
     @Override
     public void onResume() {
         super.onResume();
+        ColorPickerView colorPicker = (ColorPickerView) getActivity().findViewById(R.id.color_picker_view);
+        colorPicker.addOnColorSelectedListener(this::changeLightColor);
+        singleLightPresenter.viewLoaded(this);
         initViews();
-        lightSystemController.viewLoaded(this);
     }
+
 
     @Override
     public void onDestroy() {
-        lightSystemController.viewUnloaded();
+//        singleLightPresenter.viewUnloaded();
         super.onDestroy();
+    }
+
+    private void changeLightColor(int i) {
+        String hexString = Integer.toHexString(i);
+        HueColor.RGB rgb = new HueColor.RGB(
+                Integer.valueOf(hexString.substring(2, 4), 16),
+                Integer.valueOf(hexString.substring(4, 6), 16),
+                Integer.valueOf(hexString.substring(6, 8), 16)
+        );
+        singleLightPresenter.setColor(new HueColor(rgb, null, null));
     }
 
     private void initViews() {
@@ -89,22 +106,12 @@ public class SingleLightFragment extends Fragment implements LightsListInterface
             LinearGradient gradient = new LinearGradient(-100, 0, 1100, 0, Color.BLACK, Color.WHITE, Shader.TileMode.CLAMP);
             ShapeDrawable shape = new ShapeDrawable(new RectShape());
             shape.getPaint().setShader(gradient);
-
-
-//            GradientDrawable gradientDrawable = new GradientDrawable(
-//                    GradientDrawable.Orientation.RIGHT_LEFT, //set a gradient direction
-//                    new int[] {0xFFFFFFFF,0x00000000}); //set the color of gradient
-//            gradientDrawable.setCornerRadius(20f); //set corner radius
-//
-//            if(Build.VERSION.SDK_INT>=16)
-//                dimmer.setBackground(gradientDrawable);
-//            else dimmer.setBackgroundDrawable(gradientDrawable);
-//            dimmer.setProgressDrawable( shape );
             dimmer.setProgress(light.getLightState().getBrightness());
             dimmer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 Timer timer = null;
                 LightState lightState = light.getLightState();
                 int brightness = 0;
+
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                     brightness = i;
@@ -139,11 +146,16 @@ public class SingleLightFragment extends Fragment implements LightsListInterface
         this.light = light;
     }
 
+//    @Override
+//    public void updateLights(LightSystem lightSystem) {
+//        getActivity().runOnUiThread(() -> {
+//            LightPoint uiLight = lightSystem.getBridge().getBridgeState().getLightPoint(light.getIdentifier());
+//            onOffSwitch.setChecked(uiLight.getLightState().isOn());
+//        });
+//    }
+
     @Override
-    public void updateLights(LightSystem lightSystem) {
-        getActivity().runOnUiThread(() -> {
-            LightPoint uiLight = lightSystem.getBridge().getBridgeState().getLightPoint(light.getIdentifier());
-            onOffSwitch.setChecked(uiLight.getLightState().isOn());
-        });
+    public void showColorPicker() {
+        getActivity().findViewById(R.id.color_picker_view).setVisibility(View.VISIBLE);
     }
 }

@@ -54,11 +54,11 @@ public class ConnectionController {
         lightSystemInterface.searchForLightSystems();
     }
 
-    BehaviorRelay<LightSystem> getConnectionSuccessfulRelay() {
+    public BehaviorRelay<LightSystem> getConnectionSuccessfulRelay() {
         return lightSystemInterface.getLightSystemObservable();
     }
 
-    PublishRelay<LightSystem> getLightsAndGroupsHeartbeatRelay() {
+    public PublishRelay<LightSystem> getLightsAndGroupsHeartbeatRelay() {
         return lightSystemInterface.getLightsAndGroupsHeartbeatRelayObservable();
     }
 

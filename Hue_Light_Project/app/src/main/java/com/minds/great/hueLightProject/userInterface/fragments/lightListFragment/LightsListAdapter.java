@@ -11,7 +11,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.minds.great.hueLightProject.R;
+import com.minds.great.hueLightProject.core.controllers.LightSystemController;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainInterface;
+import com.minds.great.hueLightProject.core.presenters.LightListPresenter;
 import com.minds.great.hueLightProject.hueImpl.HueUtil;
 import com.philips.lighting.hue.sdk.wrapper.domain.clip.ColorMode;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
@@ -20,23 +22,23 @@ import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 public class LightsListAdapter extends BaseAdapter {
     private List<LightPoint> lightsList;
     private Context context;
     final private int HEADER_CODE = 1;
     final private int FOOTER_CODE = -1;
 
-    @Inject
+    private LightListPresenter lightListPresenter;
 
+    LightsListAdapter(LightListPresenter lightListPresenter) {
+        this.lightListPresenter = lightListPresenter;
+    }
 
     @Override
     public int getCount() {
         if (null != lightsList) {
             return lightsList.size();
         }
-
         return 0;
     }
 
@@ -84,10 +86,15 @@ public class LightsListAdapter extends BaseAdapter {
                 light.updateState(lightState);
             });
 
-            color.setOnClickListener(view -> ((MainInterface)view.getContext()).navigateToSingleLightFragment(light));
+            color.setOnClickListener(view -> {
+                lightListPresenter.setSelectedLightPosition(position);
+                ((MainInterface) view.getContext()).navigateToSingleLightFragment(light);
+            });
 
-            lightName.setOnClickListener(view -> ((MainInterface)view.getContext()).navigateToSingleLightFragment(light));
-
+            lightName.setOnClickListener(view -> {
+                lightListPresenter.setSelectedLightPosition(position);
+                ((MainInterface) view.getContext()).navigateToSingleLightFragment(light);
+            });
         }
         return itemView;
     }
@@ -120,6 +127,7 @@ public class LightsListAdapter extends BaseAdapter {
     void setLightsList(List<LightPoint> lightPoints, Context context) {
         this.context = context;
         this.lightsList = lightPoints;
+        notifyDataSetChanged();
     }
 
     void lightsAndGroupsHeartbeat(List<LightPoint> lightPoints) {

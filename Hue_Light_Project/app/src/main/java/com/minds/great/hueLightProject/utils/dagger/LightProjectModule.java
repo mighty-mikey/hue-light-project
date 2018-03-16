@@ -5,6 +5,8 @@ import com.minds.great.hueLightProject.core.controllers.LightSystemController;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
 import com.minds.great.hueLightProject.core.controllers.MainController;
 import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
+import com.minds.great.hueLightProject.core.presenters.LightListPresenter;
+import com.minds.great.hueLightProject.core.presenters.SingleLightPresenter;
 
 import javax.inject.Singleton;
 
@@ -14,6 +16,18 @@ import dagger.Provides;
 @Singleton
 @Module
 class LightProjectModule {
+
+    @Singleton
+    @Provides
+    SingleLightPresenter providesSingleLightPresenter(LightSystemController lightSystemController){
+        return new SingleLightPresenter(lightSystemController);
+    }
+
+    @Singleton
+    @Provides
+    LightListPresenter providesLightListPresenter( ConnectionController connectionController, LightSystemController lightSystemController){
+        return new LightListPresenter(connectionController, lightSystemController);
+    }
 
     @Singleton
     @Provides
