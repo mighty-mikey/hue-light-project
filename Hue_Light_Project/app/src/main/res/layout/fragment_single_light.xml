@@ -2,22 +2,37 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    style="@style/appBorder">
 
+    <TextView
+        android:id="@+id/lightName"
+        style="@style/lightsListTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Light Name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
     <Switch
         android:id="@+id/onOffSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <SeekBar
         android:id="@+id/dimmer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxHeight="8dp"
+        android:minHeight="8dp"
+        android:max="255"
+        android:layout_marginEnd="8dp"
+        android:progressDrawable="@drawable/seekbar_progressbar"
+        android:thumb="@drawable/seekbar_thumb"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/color_picker_view"
         />
 
     <com.flask.colorpicker.ColorPickerView
@@ -32,14 +47,5 @@
         app:lightnessSlider="true"
         app:lightnessSliderView="@+id/v_lightness_slider"
         app:wheelType="FLOWER" />
-
-    <TextView
-        android:id="@+id/lightName"
-        style="@style/lightsListTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Light Name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

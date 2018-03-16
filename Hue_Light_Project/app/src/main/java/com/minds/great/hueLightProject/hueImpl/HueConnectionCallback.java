@@ -51,7 +51,7 @@ public class HueConnectionCallback extends BridgeConnectionCallback {
 
             case AUTHENTICATED:
                 lightSystemRelay.accept(HueUtil.convertBridgeConnectionToLightSystem(bridgeConnection));
-                bridgeConnection.getHeartbeatManager().startHeartbeat(BridgeStateCacheType.LIGHTS_AND_GROUPS, 5000);
+                bridgeConnection.getHeartbeatManager().startHeartbeat(BridgeStateCacheType.LIGHTS_AND_GROUPS, 10000);
                 break;
 
             default:
