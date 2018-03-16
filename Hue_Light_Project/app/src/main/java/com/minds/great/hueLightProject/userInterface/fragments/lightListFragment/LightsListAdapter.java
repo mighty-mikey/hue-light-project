@@ -88,12 +88,12 @@ public class LightsListAdapter extends BaseAdapter {
 
             color.setOnClickListener(view -> {
                 lightListPresenter.setSelectedLightPosition(position);
-                ((MainInterface) view.getContext()).navigateToSingleLightFragment();
+                ((MainInterface) view.getContext()).navigateToSingleLightFragment(light);
             });
 
             lightName.setOnClickListener(view -> {
                 lightListPresenter.setSelectedLightPosition(position);
-                ((MainInterface) view.getContext()).navigateToSingleLightFragment();
+                ((MainInterface) view.getContext()).navigateToSingleLightFragment(light);
             });
         }
         return itemView;

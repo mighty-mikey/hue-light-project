@@ -21,4 +21,5 @@ public class SingleLightPresenter {
     public void setColor(HueColor hueColor) {
         lightSystemController.setColor(hueColor);
     }
+
 }
