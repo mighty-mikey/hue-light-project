@@ -7,4 +7,6 @@
     <color name="backgroundGray">#2E2D2A</color>
     <color name="orange">#E99123</color>
     <color name="white">#FFFFFF</color>
+    <color name="colorTempBlue">#FFFEFA</color>
+    <color name="colorTempOrange">#FF9227</color>
 </resources>
