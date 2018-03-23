@@ -1,6 +1,7 @@
 package com.minds.great.hueLightProject.core.models;
 
 import com.philips.lighting.hue.sdk.wrapper.domain.Bridge;
+import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 
 public class LightSystem {
 
@@ -16,6 +17,10 @@ public class LightSystem {
 
     public Bridge getBridge() {
         return bridge;
+    }
+
+    public LightPoint getLight(int i){
+        return bridge.getBridgeState().getLights().get(i);
     }
 
     static public class Builder {

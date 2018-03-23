@@ -58,7 +58,7 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
 
     @Override
     public void onDestroy() {
-//        singleLightPresenter.viewUnloaded();
+        singleLightPresenter.viewUnloaded();
         super.onDestroy();
     }
 
@@ -123,7 +123,7 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
 
             if(light.getLightState().getColormode().equals(ColorMode.COLOR_TEMPERATURE)){
                 colorTemp = (SeekBar) view.findViewById(R.id.colorTemp);
-                colorTemp.setProgress(light.getLightState().getCT());
+                colorTemp.setProgress(light.getLightState().getCT() - 150);
                 colorTemp.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     Timer timer = null;
                     LightState lightState = new LightState();
@@ -164,14 +164,6 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
         this.light = light;
     }
 
-//    @Override
-//    public void updateLights(LightSystem lightSystem) {
-//        getActivity().runOnUiThread(() -> {
-//            LightPoint uiLight = lightSystem.getBridge().getBridgeState().getLightPoint(light.getIdentifier());
-//            onOffSwitch.setChecked(uiLight.getLightState().isOn());
-//        });
-//    }
-
     @Override
     public void showColorPicker() {
         getActivity().findViewById(R.id.color_picker_view).setVisibility(View.VISIBLE);
@@ -180,5 +172,14 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
     @Override
     public void showColorTempSeekBar() {
         getActivity().findViewById(R.id.colorTemp).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void updateLight(LightPoint updatedLight) {
+        getActivity().runOnUiThread(() -> {
+            onOffSwitch.setChecked(updatedLight.getLightState().isOn());
+            dimmer.setProgress(updatedLight.getLightState().getBrightness());
+            colorTemp.setProgress(updatedLight.getLightState().getCT() - 150);
+        });
     }
 }

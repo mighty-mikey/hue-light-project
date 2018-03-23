@@ -31,6 +31,10 @@ public class LightSystemController {
         this.position = position;
     }
 
+    public int getSelectedLightPosition(){
+        return this.position;
+    }
+
     public void setColor(HueColor hueColor) {
         LightPoint lightPoint = getLightList().get(position);
         LightState lightState = lightPoint.getLightState();

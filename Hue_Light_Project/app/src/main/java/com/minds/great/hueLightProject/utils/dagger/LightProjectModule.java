@@ -19,8 +19,8 @@ class LightProjectModule {
 
     @Singleton
     @Provides
-    SingleLightPresenter providesSingleLightPresenter(LightSystemController lightSystemController){
-        return new SingleLightPresenter(lightSystemController);
+    SingleLightPresenter providesSingleLightPresenter(ConnectionController connectionController, LightSystemController lightSystemController){
+        return new SingleLightPresenter(connectionController, lightSystemController);
     }
 
     @Singleton
