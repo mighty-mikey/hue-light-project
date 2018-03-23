@@ -16,6 +16,9 @@ public class SingleLightPresenter {
         if(lightSystemController.getSelectedLightColorMode().equals(ColorMode.XY)){
             singleLightInterface.showColorPicker();
         }
+        else if(lightSystemController.getSelectedLightColorMode().equals(ColorMode.COLOR_TEMPERATURE)){
+            singleLightInterface.showColorTempSeekBar();
+        }
     }
 
     public void setColor(HueColor hueColor) {
