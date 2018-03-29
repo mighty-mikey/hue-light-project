@@ -11,8 +11,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.minds.great.hueLightProject.R;
-import com.minds.great.hueLightProject.core.controllers.LightSystemController;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainInterface;
+import com.minds.great.hueLightProject.core.domain.domainInterfaces.MainInterface;
 import com.minds.great.hueLightProject.core.presenters.LightListPresenter;
 import com.minds.great.hueLightProject.hueImpl.HueUtil;
 import com.philips.lighting.hue.sdk.wrapper.domain.clip.ColorMode;

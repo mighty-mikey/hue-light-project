@@ -1,4 +1,4 @@
-package com.minds.great.hueLightProject.core.controllers;
+package com.minds.great.hueLightProject.core.domain;
 
 import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.minds.great.hueLightProject.core.models.LightSystem;
@@ -21,11 +21,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LightSystemControllerTest {
+public class LightSystemDomainTest {
 
     @Mock
     private
-    ConnectionController connectionControllerMock;
+    ConnectionDomain connectionDomainMock;
     @Mock
     private
     LightSystem lightSystem;
@@ -34,19 +34,19 @@ public class LightSystemControllerTest {
     @Mock
     private BridgeState bridgeStateMock;
 
-    private LightSystemController subject;
+    private LightSystemDomain subject;
     private BehaviorRelay<LightSystem> lightSystemRelay;
 
     @Before
     public void setUp() throws Exception {
         lightSystemRelay = BehaviorRelay.create();
-        when(connectionControllerMock.getConnectionSuccessfulRelay()).thenReturn(lightSystemRelay);
-        subject = new LightSystemController(connectionControllerMock);
+        when(connectionDomainMock.getConnectionSuccessfulRelay()).thenReturn(lightSystemRelay);
+        subject = new LightSystemDomain(connectionDomainMock);
     }
 
     @Test
     public void LightSystemController_initsLightSystem() throws Exception {
-        verify(connectionControllerMock).getConnectionSuccessfulRelay();
+        verify(connectionDomainMock).getConnectionSuccessfulRelay();
     }
 
     @Test
@@ -68,7 +68,7 @@ public class LightSystemControllerTest {
 
     @After
     public void tearDown() throws Exception {
-        reset(connectionControllerMock);
+        reset(connectionDomainMock);
         reset(lightSystem);
         reset(bridgeMock);
         reset(bridgeStateMock);

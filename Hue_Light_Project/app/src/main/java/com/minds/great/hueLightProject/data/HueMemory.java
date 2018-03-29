@@ -2,7 +2,7 @@ package com.minds.great.hueLightProject.data;
 
 import android.util.Log;
 
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
+import com.minds.great.hueLightProject.core.domain.domainInterfaces.MemoryInterface;
 import com.philips.lighting.hue.sdk.wrapper.knownbridges.KnownBridge;
 import com.philips.lighting.hue.sdk.wrapper.knownbridges.KnownBridges;
 

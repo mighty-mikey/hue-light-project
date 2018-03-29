@@ -1,21 +1,21 @@
-package com.minds.great.hueLightProject.core.controllers;
+package com.minds.great.hueLightProject.core.domain;
 
 import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.jakewharton.rxrelay2.PublishRelay;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.ConnectionInterface;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
+import com.minds.great.hueLightProject.core.domain.domainInterfaces.ConnectionInterface;
+import com.minds.great.hueLightProject.core.domain.domainInterfaces.LightSystemInterface;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public class ConnectionController {
+public class ConnectionDomain {
 
     private CompositeDisposable compositeDisposable;
     private LightSystemInterface lightSystemInterface;
     private ConnectionInterface connectionView;
 
-    public ConnectionController(LightSystemInterface lightSystemInterface) {
+    public ConnectionDomain(LightSystemInterface lightSystemInterface) {
         this.lightSystemInterface = lightSystemInterface;
     }
 

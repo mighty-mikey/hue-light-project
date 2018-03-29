@@ -1,8 +1,8 @@
-package com.minds.great.hueLightProject.core.controllers;
+package com.minds.great.hueLightProject.core.domain;
 
 import com.jakewharton.rxrelay2.BehaviorRelay;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainInterface;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
+import com.minds.great.hueLightProject.core.domain.domainInterfaces.MainInterface;
+import com.minds.great.hueLightProject.core.domain.domainInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 
 import org.junit.After;
@@ -20,9 +20,9 @@ import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class MainControllerTest {
+public class MainDomainTest {
 
-    private MainController subject;
+    private MainDomain subject;
 
     @Mock
     private MainInterface view;
@@ -31,15 +31,15 @@ public class MainControllerTest {
     private MemoryInterface memory;
 
     @Mock
-    private ConnectionController connectionController;
+    private ConnectionDomain connectionDomain;
     private BehaviorRelay<LightSystem> connectionSuccessfulRelay;
 
     @Before
     public void setUp() throws Exception {
         connectionSuccessfulRelay = BehaviorRelay.create();
-        when(connectionController.getConnectionSuccessfulRelay()).thenReturn(connectionSuccessfulRelay);
+        when(connectionDomain.getConnectionSuccessfulRelay()).thenReturn(connectionSuccessfulRelay);
 
-        subject = new MainController(memory, connectionController);
+        subject = new MainDomain(memory, connectionDomain);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class MainControllerTest {
     public void viewCreated_whenLightSystemIsNotNull_connectsToLightSystem() throws Exception {
         when(memory.getLightSystemIpAddress()).thenReturn("1");
         subject.viewLoaded(view);
-        verify(connectionController).connect("1");
+        verify(connectionDomain).connect("1");
     }
 
     @Test
@@ -85,9 +85,9 @@ public class MainControllerTest {
     @Test
     public void viewCreated_whenSystemInMemory_navigateToLights() throws Exception {
         when(memory.getLightSystemIpAddress()).thenReturn("1");
-        verify(connectionController, never()).connect(any());
+        verify(connectionDomain, never()).connect(any());
         subject.viewLoaded(view);
-        verify(connectionController).connect(any());
+        verify(connectionDomain).connect(any());
     }
 
     @After
@@ -95,6 +95,6 @@ public class MainControllerTest {
         connectionSuccessfulRelay = null;
         reset(view);
         reset(memory);
-        reset(connectionController);
+        reset(connectionDomain);
     }
 }

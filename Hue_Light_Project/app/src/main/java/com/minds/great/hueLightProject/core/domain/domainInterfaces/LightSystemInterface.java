@@ -1,4 +1,4 @@
-package com.minds.great.hueLightProject.core.controllers.controllerInterfaces;
+package com.minds.great.hueLightProject.core.domain.domainInterfaces;
 
 import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.jakewharton.rxrelay2.PublishRelay;

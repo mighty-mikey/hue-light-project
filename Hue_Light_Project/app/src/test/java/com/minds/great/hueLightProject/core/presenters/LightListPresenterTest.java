@@ -1,8 +1,8 @@
 package com.minds.great.hueLightProject.core.presenters;
 
 import com.jakewharton.rxrelay2.PublishRelay;
-import com.minds.great.hueLightProject.core.controllers.ConnectionController;
-import com.minds.great.hueLightProject.core.controllers.LightSystemController;
+import com.minds.great.hueLightProject.core.domain.ConnectionDomain;
+import com.minds.great.hueLightProject.core.domain.LightSystemDomain;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 
 import org.junit.Before;
@@ -20,10 +20,10 @@ import static org.mockito.Mockito.when;
 public class LightListPresenterTest {
     @Mock
     private
-    ConnectionController connectionControllerMock;
+    ConnectionDomain connectionDomainMock;
     @Mock
     private
-    LightSystemController lightSystemController;
+    LightSystemDomain lightSystemDomain;
     @Mock
     private
     LightsListInterface lightsListInterfaceMock;
@@ -37,8 +37,8 @@ public class LightListPresenterTest {
 
     @Before
     public void setUp() throws Exception {
-        when(connectionControllerMock.getLightsAndGroupsHeartbeatRelay()).thenReturn(lightsAndGroupsHeartbeatRelay);
-        subject = new LightListPresenter(connectionControllerMock, lightSystemController);
+        when(connectionDomainMock.getLightsAndGroupsHeartbeatRelay()).thenReturn(lightsAndGroupsHeartbeatRelay);
+        subject = new LightListPresenter(connectionDomainMock, lightSystemDomain);
     }
 
     @Test

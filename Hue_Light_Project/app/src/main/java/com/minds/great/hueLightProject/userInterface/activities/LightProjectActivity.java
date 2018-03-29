@@ -5,8 +5,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
 import com.minds.great.hueLightProject.R;
-import com.minds.great.hueLightProject.core.controllers.MainController;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainInterface;
+import com.minds.great.hueLightProject.core.domain.MainDomain;
+import com.minds.great.hueLightProject.core.domain.domainInterfaces.MainInterface;
 import com.minds.great.hueLightProject.userInterface.fragments.ConnectionFragment;
 import com.minds.great.hueLightProject.userInterface.fragments.MainFragment;
 import com.minds.great.hueLightProject.userInterface.fragments.SingleLightFragment;
@@ -24,7 +24,7 @@ import javax.inject.Inject;
 public class LightProjectActivity extends FragmentActivity implements MainInterface {
 
     @Inject
-    MainController mainController;
+    MainDomain mainDomain;
     private FragmentManager fragmentManager;
     private Injector injector;
 
@@ -42,12 +42,12 @@ public class LightProjectActivity extends FragmentActivity implements MainInterf
                 .replace(R.id.fragment_container, mainFragment)
                 .commit();
 
-        mainController.viewLoaded(this);
+        mainDomain.viewLoaded(this);
     }
 
     @Override
     protected void onDestroy() {
-        mainController.viewUnloaded();
+        mainDomain.viewUnloaded();
         injector = null;
         super.onDestroy();
     }

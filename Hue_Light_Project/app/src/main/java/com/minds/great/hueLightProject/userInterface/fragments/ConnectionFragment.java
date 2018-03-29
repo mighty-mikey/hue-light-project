@@ -13,8 +13,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.minds.great.hueLightProject.R;
-import com.minds.great.hueLightProject.core.controllers.ConnectionController;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.ConnectionInterface;
+import com.minds.great.hueLightProject.core.domain.ConnectionDomain;
+import com.minds.great.hueLightProject.core.domain.domainInterfaces.ConnectionInterface;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
 
@@ -27,7 +27,7 @@ import static android.view.View.VISIBLE;
 public class ConnectionFragment extends Fragment implements ConnectionInterface {
 
     @Inject
-    ConnectionController connectionController;
+    ConnectionDomain connectionDomain;
 
     private ProgressBar searchProgressBar;
     private Button connectButton;
@@ -50,15 +50,15 @@ public class ConnectionFragment extends Fragment implements ConnectionInterface 
         initViews();
         connectButton.setOnClickListener(view -> {
             checkInternetPermission();
-            connectionController.search();
+            connectionDomain.search();
         });
-        connectionController.viewLoaded(this);
+        connectionDomain.viewLoaded(this);
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        connectionController.viewUnloaded();
+        connectionDomain.viewUnloaded();
         super.onPause();
     }
 

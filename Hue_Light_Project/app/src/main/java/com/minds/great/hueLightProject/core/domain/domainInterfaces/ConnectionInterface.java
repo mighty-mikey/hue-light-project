@@ -1,4 +1,4 @@
-package com.minds.great.hueLightProject.core.controllers.controllerInterfaces;
+package com.minds.great.hueLightProject.core.domain.domainInterfaces;
 
 
 public interface ConnectionInterface {

@@ -1,6 +1,9 @@
 package com.minds.great.hueLightProject.core.presenters;
 
-import com.minds.great.hueLightProject.core.controllers.LightSystemController;
+import com.jakewharton.rxrelay2.BehaviorRelay;
+import com.jakewharton.rxrelay2.PublishRelay;
+import com.minds.great.hueLightProject.core.domain.ConnectionDomain;
+import com.minds.great.hueLightProject.core.domain.LightSystemDomain;
 import com.philips.lighting.hue.sdk.wrapper.domain.clip.ColorMode;
 
 import org.junit.Before;
@@ -18,25 +21,29 @@ public class SingleLightPresenterTest {
     @Mock
     private SingleLightInterface singleLightInterfaceMock;
     @Mock
-    private LightSystemController lightSystemController;
+    private LightSystemDomain lightSystemDomain;
+    @Mock
+    private ConnectionDomain connectionDomain;
 
     private SingleLightPresenter subject;
 
     @Before
     public void setUp() throws Exception {
-        subject = new SingleLightPresenter(lightSystemController);
+        subject = new SingleLightPresenter(connectionDomain, lightSystemDomain);
+        when(connectionDomain.getLightsAndGroupsHeartbeatRelay()).thenReturn(PublishRelay.create());
+        //TODO:  add tests around connectionDomain.
     }
 
     @Test
     public void viewLoaded_whenSelectedLightIsColorLight_showColorPicker() throws Exception {
-        when(lightSystemController.getSelectedLightColorMode()).thenReturn(ColorMode.XY);
+        when(lightSystemDomain.getSelectedLightColorMode()).thenReturn(ColorMode.XY);
         subject.viewLoaded(singleLightInterfaceMock);
         verify(singleLightInterfaceMock).showColorPicker();
     }
 
     @Test
     public void viewLoaded_whenSelectedLightIsNotColorLight_showColorPickerNotCalled() throws Exception {
-        when(lightSystemController.getSelectedLightColorMode()).thenReturn(ColorMode.COLOR_TEMPERATURE);
+        when(lightSystemDomain.getSelectedLightColorMode()).thenReturn(ColorMode.COLOR_TEMPERATURE);
         subject.viewLoaded(singleLightInterfaceMock);
         verify(singleLightInterfaceMock, never()).showColorPicker();
     }

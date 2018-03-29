@@ -1,4 +1,4 @@
-package com.minds.great.hueLightProject.core.controllers;
+package com.minds.great.hueLightProject.core.domain;
 
 
 import com.minds.great.hueLightProject.core.models.LightSystem;
@@ -9,13 +9,13 @@ import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 
 import java.util.List;
 
-public class LightSystemController {
+public class LightSystemDomain {
 
     private LightSystem lightSystem;
     private int position = 0;
 
-    public LightSystemController(ConnectionController connectionController) {
-        connectionController.getConnectionSuccessfulRelay()
+    public LightSystemDomain(ConnectionDomain connectionDomain) {
+        connectionDomain.getConnectionSuccessfulRelay()
                 .subscribe(lightSystem -> this.lightSystem = lightSystem);
     }
 

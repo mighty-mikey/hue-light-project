@@ -1,10 +1,10 @@
 package com.minds.great.hueLightProject.utils.dagger;
 
-import com.minds.great.hueLightProject.core.controllers.ConnectionController;
-import com.minds.great.hueLightProject.core.controllers.LightSystemController;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
-import com.minds.great.hueLightProject.core.controllers.MainController;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
+import com.minds.great.hueLightProject.core.domain.ConnectionDomain;
+import com.minds.great.hueLightProject.core.domain.LightSystemDomain;
+import com.minds.great.hueLightProject.core.domain.MainDomain;
+import com.minds.great.hueLightProject.core.domain.domainInterfaces.LightSystemInterface;
+import com.minds.great.hueLightProject.core.domain.domainInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.core.presenters.LightListPresenter;
 import com.minds.great.hueLightProject.core.presenters.SingleLightPresenter;
 
@@ -19,31 +19,31 @@ class LightProjectModule {
 
     @Singleton
     @Provides
-    SingleLightPresenter providesSingleLightPresenter(ConnectionController connectionController, LightSystemController lightSystemController){
-        return new SingleLightPresenter(connectionController, lightSystemController);
+    SingleLightPresenter providesSingleLightPresenter(ConnectionDomain connectionDomain, LightSystemDomain lightSystemDomain){
+        return new SingleLightPresenter(connectionDomain, lightSystemDomain);
     }
 
     @Singleton
     @Provides
-    LightListPresenter providesLightListPresenter( ConnectionController connectionController, LightSystemController lightSystemController){
-        return new LightListPresenter(connectionController, lightSystemController);
+    LightListPresenter providesLightListPresenter(ConnectionDomain connectionDomain, LightSystemDomain lightSystemDomain){
+        return new LightListPresenter(connectionDomain, lightSystemDomain);
     }
 
     @Singleton
     @Provides
-    ConnectionController providesConnectionController(LightSystemInterface lightSystemInterface){
-        return new ConnectionController(lightSystemInterface);
+    ConnectionDomain providesConnectionController(LightSystemInterface lightSystemInterface){
+        return new ConnectionDomain(lightSystemInterface);
     }
 
     @Singleton
     @Provides
-    MainController providesMainController(MemoryInterface memory, ConnectionController connectionController){
-        return new MainController(memory, connectionController);
+    MainDomain providesMainController(MemoryInterface memory, ConnectionDomain connectionDomain){
+        return new MainDomain(memory, connectionDomain);
     }
 
     @Singleton
     @Provides
-    LightSystemController providesLightSystemController(ConnectionController connectionController){
-        return new LightSystemController(connectionController);
+    LightSystemDomain providesLightSystemController(ConnectionDomain connectionDomain){
+        return new LightSystemDomain(connectionDomain);
     }
 }

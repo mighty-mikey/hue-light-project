@@ -1,10 +1,10 @@
-package com.minds.great.hueLightProject.core.controllers;
+package com.minds.great.hueLightProject.core.domain;
 
 import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.jakewharton.rxrelay2.PublishRelay;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.ConnectionInterface;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.LightSystemInterface;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
+import com.minds.great.hueLightProject.core.domain.domainInterfaces.ConnectionInterface;
+import com.minds.great.hueLightProject.core.domain.domainInterfaces.LightSystemInterface;
+import com.minds.great.hueLightProject.core.domain.domainInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 
@@ -18,8 +18,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.emory.mathcs.backport.java.util.Collections;
-
 import static com.minds.great.hueLightProject.core.models.ConnectionError.NO_BRIDGE_FOUND_CODE;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -29,7 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ConnectionControllerTest {
+public class ConnectionDomainTest {
 
     @Mock
     private ConnectionInterface viewMock;
@@ -40,7 +38,7 @@ public class ConnectionControllerTest {
     @Mock
     private MemoryInterface memoryMock;
 
-    private ConnectionController subject;
+    private ConnectionDomain subject;
 
     private PublishRelay<List<LightSystem>> lightSystemListRelay;
     private PublishRelay<ConnectionError> errorRelay;
@@ -64,7 +62,7 @@ public class ConnectionControllerTest {
         when(lightSystemMock.getLightSystemListObservable()).thenReturn(lightSystemListRelay);
         when(lightSystemMock.getLightSystemObservable()).thenReturn(lightSystemRelay);
 
-        subject = new ConnectionController(lightSystemMock);
+        subject = new ConnectionDomain(lightSystemMock);
     }
 
     @Test

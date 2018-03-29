@@ -1,29 +1,29 @@
-package com.minds.great.hueLightProject.core.controllers;
+package com.minds.great.hueLightProject.core.domain;
 
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MainInterface;
-import com.minds.great.hueLightProject.core.controllers.controllerInterfaces.MemoryInterface;
+import com.minds.great.hueLightProject.core.domain.domainInterfaces.MainInterface;
+import com.minds.great.hueLightProject.core.domain.domainInterfaces.MemoryInterface;
 
 import javax.annotation.Nonnull;
 
 import io.reactivex.disposables.Disposable;
 
-public class MainController {
+public class MainDomain {
 
     private MemoryInterface memory;
-    private ConnectionController connectionController;
+    private ConnectionDomain connectionDomain;
     private Disposable connectionSuccessDisposable;
 
-    public MainController(MemoryInterface memory, ConnectionController connectionController) {
+    public MainDomain(MemoryInterface memory, ConnectionDomain connectionDomain) {
         this.memory = memory;
-        this.connectionController = connectionController;
+        this.connectionDomain = connectionDomain;
     }
 
     public void viewLoaded(@Nonnull MainInterface view) {
         String lightSystemIpAddress = memory.getLightSystemIpAddress();
-        connectionSuccessDisposable = connectionController.getConnectionSuccessfulRelay()
+        connectionSuccessDisposable = connectionDomain.getConnectionSuccessfulRelay()
                 .subscribe(lightSystem -> view.navigateToLightListFragment());
         if (null != lightSystemIpAddress) {
-            connectionController.connect(lightSystemIpAddress);
+            connectionDomain.connect(lightSystemIpAddress);
         } else {
             view.navigateToConnectionFragment();
         }
