@@ -2,6 +2,7 @@ package com.minds.great.hueLightProject.userInterface.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,8 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
     SeekBar dimmer;
     @ViewById
     SeekBar colorTemp;
+    @ViewById
+    ColorPickerView colorPicker;
 
     private LightPoint light;
 
@@ -61,9 +64,11 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
     @Override
     public void onResume() {
         super.onResume();
-        ColorPickerView colorPicker = (ColorPickerView) getActivity().findViewById(R.id.color_picker_view);
         colorPicker.addOnColorSelectedListener(this::changeLightColor);
         singleLightPresenter.viewLoaded(this);
+        light = singleLightPresenter.getSelectedListPoint();
+        HueColor color = light.getLightState().getColor();
+        changeLightColor(color);
         initViews();
     }
 
@@ -81,7 +86,15 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
                 Integer.valueOf(hexString.substring(4, 6), 16),
                 Integer.valueOf(hexString.substring(6, 8), 16)
         );
+        Log.d("what is this shit ", "r: " + rgb.r);
+        Log.d("what is this shit ", "g: " + rgb.g);
+        Log.d("what is this shit ", "b: " + rgb.b);
+        Log.d("what is this shit ", "original int: " + i);
         singleLightPresenter.setColor(new HueColor(rgb, null, null));
+    }
+
+    private void changeLightColor(HueColor color) {
+        colorPicker.setColor( color.getRGB().r , false);
     }
 
     private void initViews() {
@@ -102,13 +115,9 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
         }
     }
 
-    public void setLight(LightPoint light) {
-        this.light = light;
-    }
-
     @Override
     public void showColorPicker() {
-        getActivity().findViewById(R.id.color_picker_view).setVisibility(View.VISIBLE);
+        colorPicker.setVisibility(View.VISIBLE);
     }
 
     @Override

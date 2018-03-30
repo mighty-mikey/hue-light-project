@@ -31,8 +31,12 @@ public class LightSystemDomain {
         this.position = position;
     }
 
-    public int getSelectedLightPosition(){
+    public int getSelectedLightPosition() {
         return this.position;
+    }
+
+    public LightPoint getSelectedLightPoint() {
+        return getLightList().get(getSelectedLightPosition());
     }
 
     public void setColor(HueColor hueColor) {

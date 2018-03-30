@@ -4,6 +4,7 @@ package com.minds.great.hueLightProject.core.presenters;
 import com.minds.great.hueLightProject.core.domain.ConnectionDomain;
 import com.minds.great.hueLightProject.core.domain.LightSystemDomain;
 import com.philips.lighting.hue.sdk.wrapper.domain.clip.ColorMode;
+import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 
 import io.reactivex.disposables.Disposable;
@@ -20,16 +21,15 @@ public class SingleLightPresenter {
 
     public void viewLoaded(SingleLightInterface singleLightInterface) {
         subscribe = connectionDomain.getLightsAndGroupsHeartbeatRelay().subscribe(lightSystem -> singleLightInterface.updateLight(lightSystem.getLight(lightSystemDomain.getSelectedLightPosition())));
-        if(lightSystemDomain.getSelectedLightColorMode().equals(ColorMode.XY)){
+        if (lightSystemDomain.getSelectedLightColorMode().equals(ColorMode.XY)) {
             singleLightInterface.showColorPicker();
-        }
-        else if(lightSystemDomain.getSelectedLightColorMode().equals(ColorMode.COLOR_TEMPERATURE)){
+        } else if (lightSystemDomain.getSelectedLightColorMode().equals(ColorMode.COLOR_TEMPERATURE)) {
             singleLightInterface.showColorTempSeekBar();
         }
     }
 
-    public void viewUnloaded(){
-        if(subscribe != null){
+    public void viewUnloaded() {
+        if (subscribe != null) {
             subscribe.dispose();
             subscribe = null;
         }
@@ -39,4 +39,7 @@ public class SingleLightPresenter {
         lightSystemDomain.setColor(hueColor);
     }
 
+    public LightPoint getSelectedListPoint() {
+        return lightSystemDomain.getSelectedLightPoint();
+    }
 }

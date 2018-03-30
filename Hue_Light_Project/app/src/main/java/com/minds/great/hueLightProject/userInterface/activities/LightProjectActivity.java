@@ -68,9 +68,8 @@ public class LightProjectActivity extends FragmentActivity implements MainInterf
     }
 
     @Override
-    public void navigateToSingleLightFragment(LightPoint light) {
+    public void navigateToSingleLightFragment() {
         SingleLightFragment fragment = new SingleLightFragment();
-        fragment.setLight(light);
         fragmentManager.beginTransaction().addToBackStack(fragment.toString())
                 .replace(R.id.fragment_container, fragment).commit();
     }

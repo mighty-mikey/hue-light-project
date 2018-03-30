@@ -7,5 +7,5 @@ public interface MainInterface {
 
     void navigateToLightListFragment();
 
-    void navigateToSingleLightFragment(LightPoint light);
+    void navigateToSingleLightFragment();
 }
