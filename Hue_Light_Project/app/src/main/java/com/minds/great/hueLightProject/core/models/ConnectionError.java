@@ -2,6 +2,7 @@ package com.minds.great.hueLightProject.core.models;
 
 public class ConnectionError {
     public static int NO_BRIDGE_FOUND_CODE = 1157;
+    public static int SAVED_BRIDGE_NOT_FOUND = 2347;
 
     private int code;
 

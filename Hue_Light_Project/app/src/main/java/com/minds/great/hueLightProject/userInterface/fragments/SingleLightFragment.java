@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import com.flask.colorpicker.ColorPickerView;
 
 import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -22,12 +21,9 @@ import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
 
-import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.inject.Inject;
 
@@ -37,13 +33,9 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
     @Inject
     SingleLightPresenter singleLightPresenter;
 
-    @ViewById
     Switch onOffSwitch;
-    @ViewById
     TextView lightName;
-    @ViewById
     SeekBar dimmer;
-    @ViewById
     SeekBar colorTemp;
 
     private LightPoint light;
@@ -61,9 +53,6 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
     @Override
     public void onResume() {
         super.onResume();
-        ColorPickerView colorPicker = (ColorPickerView) getActivity().findViewById(R.id.color_picker_view);
-        colorPicker.addOnColorSelectedListener(this::changeLightColor);
-        singleLightPresenter.viewLoaded(this);
         initViews();
     }
 
@@ -85,20 +74,30 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
     }
 
     private void initViews() {
-        onOffSwitch.setChecked(light.getLightState().isOn());
-        lightName.setText(light.getName());
-        onOffSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-            LightState lightState = new LightState();
-            lightState.setOn(b);
-            light.updateState(lightState);
-        });
-        light.getLightState().getCT();
-        dimmer.setProgress(light.getLightState().getBrightness());
-        dimmer.setOnSeekBarChangeListener(new DimmerSeekBarListener(light));
+        View view = getView();
+        if (null != view) {
+            ColorPickerView colorPicker = (ColorPickerView) view.findViewById(R.id.color_picker_view);
+            colorPicker.addOnColorSelectedListener(this::changeLightColor);
+            singleLightPresenter.viewLoaded(this);
+            onOffSwitch = (Switch) view.findViewById(R.id.onOffSwitch);
+            onOffSwitch.setChecked(light.getLightState().isOn());
+            lightName = (TextView) view.findViewById(R.id.lightName);
+            lightName.setText(light.getName());
+            onOffSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+                LightState lightState = new LightState();
+                lightState.setOn(b);
+                light.updateState(lightState);
+            });
+            light.getLightState().getCT();
+            dimmer = (SeekBar) view.findViewById(R.id.dimmer);
+            dimmer.setProgress(light.getLightState().getBrightness());
+            dimmer.setOnSeekBarChangeListener(new DimmerSeekBarListener(light));
 
-        if (light.getLightState().getColormode().equals(ColorMode.COLOR_TEMPERATURE)) {
-            colorTemp.setProgress(light.getLightState().getCT() - 150);
-            colorTemp.setOnSeekBarChangeListener(new ColorTempSeekBarListener(light));
+            if (light.getLightState().getColormode().equals(ColorMode.COLOR_TEMPERATURE)) {
+                colorTemp = (SeekBar) view.findViewById(R.id.colorTemp);
+                colorTemp.setProgress(light.getLightState().getCT() - 150);
+                colorTemp.setOnSeekBarChangeListener(new ColorTempSeekBarListener(light));
+            }
         }
     }
 

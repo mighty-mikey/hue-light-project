@@ -37,8 +37,8 @@ class LightProjectModule {
 
     @Singleton
     @Provides
-    MainDomain providesMainController(MemoryInterface memory, ConnectionDomain connectionDomain){
-        return new MainDomain(memory, connectionDomain);
+    MainDomain providesMainController(MemoryInterface memory, ConnectionDomain connectionDomain, LightSystemInterface lightSystemInterface){
+        return new MainDomain(memory, connectionDomain, lightSystemInterface);
     }
 
     @Singleton
