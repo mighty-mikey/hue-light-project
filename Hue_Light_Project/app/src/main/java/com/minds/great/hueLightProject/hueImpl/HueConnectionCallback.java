@@ -61,7 +61,7 @@ public class HueConnectionCallback extends BridgeConnectionCallback {
 
     @Override
     public void onConnectionError(BridgeConnection bridgeConnection, List<HueError> list) {
-        for (HueError error : list) {
+        for (HueError ignored : list) {
             errorRelay.accept(new ConnectionError.Builder().build());
         }
     }

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.minds.great.hueLightProject.R;
+import com.minds.great.hueLightProject.core.domain.domainInterfaces.MainInterface;
 import com.minds.great.hueLightProject.core.presenters.LightsListInterface;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 import com.minds.great.hueLightProject.core.presenters.LightListPresenter;
@@ -55,5 +56,10 @@ public class LightsListFragment extends Fragment implements LightsListInterface 
     @Override
     public void updateLights(LightSystem lightSystem) {
         getActivity().runOnUiThread(() -> lightsListAdapter.lightsAndGroupsHeartbeat(lightSystem.getBridge().getBridgeState().getLightPoints()));
+    }
+
+    @Override
+    public void navigateToSingleLightFragment() {
+        ((MainInterface)getContext()).navigateToSingleLightFragment();
     }
 }

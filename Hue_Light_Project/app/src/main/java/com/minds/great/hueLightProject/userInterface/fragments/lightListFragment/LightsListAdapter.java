@@ -85,13 +85,9 @@ public class LightsListAdapter extends BaseAdapter {
                 light.updateState(lightState);
             });
 
-            color.setOnClickListener(view -> {
-                lightListPresenter.setSelectedLightPosition(position);
-            });
+            color.setOnClickListener(view -> lightListPresenter.setSelectedLightPosition(position));
 
-            lightName.setOnClickListener(view -> {
-                lightListPresenter.setSelectedLightPosition(position);
-            });
+            lightName.setOnClickListener(view -> lightListPresenter.setSelectedLightPosition(position));
         }
         return itemView;
     }

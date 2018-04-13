@@ -2,33 +2,24 @@ package com.minds.great.hueLightProject.userInterface.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.flask.colorpicker.ColorPickerView;
-
 import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.flask.colorpicker.ColorPickerView;
 import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.core.presenters.SingleLightInterface;
 import com.minds.great.hueLightProject.core.presenters.SingleLightPresenter;
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
 import com.philips.lighting.hue.sdk.wrapper.domain.clip.ColorMode;
-import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
+import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 
-import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ViewById;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.inject.Inject;
 
@@ -38,15 +29,10 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
     @Inject
     SingleLightPresenter singleLightPresenter;
 
-    @ViewById
     Switch onOffSwitch;
-    @ViewById
     TextView lightName;
-    @ViewById
     SeekBar dimmer;
-    @ViewById
     SeekBar colorTemp;
-    @ViewById
     ColorPickerView colorPicker;
 
     private LightPoint light;
@@ -64,12 +50,31 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
     @Override
     public void onResume() {
         super.onResume();
+        initViews();
+        initLight();
         colorPicker.addOnColorSelectedListener(this::changeLightColor);
         singleLightPresenter.viewLoaded(this);
-        light = singleLightPresenter.getSelectedListPoint();
         HueColor color = light.getLightState().getColor();
         changeLightColor(color);
-        initViews();
+    }
+
+    private void initLight() {
+        light = singleLightPresenter.getSelectedListPoint();
+        onOffSwitch.setChecked(light.getLightState().isOn());
+        lightName.setText(light.getName());
+        onOffSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            LightState lightState = new LightState();
+            lightState.setOn(b);
+            light.updateState(lightState);
+        });
+        light.getLightState().getCT();
+        dimmer.setProgress(light.getLightState().getBrightness());
+        dimmer.setOnSeekBarChangeListener(new DimmerSeekBarListener(light));
+
+        if (light.getLightState().getColormode().equals(ColorMode.COLOR_TEMPERATURE)) {
+            colorTemp.setProgress(light.getLightState().getCT() - 150);
+            colorTemp.setOnSeekBarChangeListener(new ColorTempSeekBarListener(light));
+        }
     }
 
 
@@ -86,33 +91,33 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
                 Integer.valueOf(hexString.substring(4, 6), 16),
                 Integer.valueOf(hexString.substring(6, 8), 16)
         );
-        Log.d("what is this shit ", "r: " + rgb.r);
-        Log.d("what is this shit ", "g: " + rgb.g);
-        Log.d("what is this shit ", "b: " + rgb.b);
-        Log.d("what is this shit ", "original int: " + i);
         singleLightPresenter.setColor(new HueColor(rgb, null, null));
     }
 
     private void changeLightColor(HueColor color) {
-        colorPicker.setColor( color.getRGB().r , false);
+        Integer r = color.getRGB().r;
+        Integer g = color.getRGB().g;
+        Integer b = color.getRGB().b;
+
+        //Shift red 16-bits and mask out other stuff
+        r = (r << 16) & 0x00FF0000;
+        //Shift Green 8-bits and mask out other stuff
+        g = (g << 8) & 0x0000FF00;
+        //Mask out anything not blue.
+        b = b & 0x000000FF;
+
+        //0xFF000000 for 100% Alpha. Bitwise OR everything together.
+        int i = 0xFF000000 | r | g | b;
+
+        colorPicker.setInitialColor(i, false);
     }
 
     private void initViews() {
-        onOffSwitch.setChecked(light.getLightState().isOn());
-        lightName.setText(light.getName());
-        onOffSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-            LightState lightState = new LightState();
-            lightState.setOn(b);
-            light.updateState(lightState);
-        });
-        light.getLightState().getCT();
-        dimmer.setProgress(light.getLightState().getBrightness());
-        dimmer.setOnSeekBarChangeListener(new DimmerSeekBarListener(light));
-
-        if (light.getLightState().getColormode().equals(ColorMode.COLOR_TEMPERATURE)) {
-            colorTemp.setProgress(light.getLightState().getCT() - 150);
-            colorTemp.setOnSeekBarChangeListener(new ColorTempSeekBarListener(light));
-        }
+        onOffSwitch = (Switch) getView().findViewById(R.id.onOffSwitch);
+        lightName = (TextView) getView().findViewById(R.id.lightName);
+        dimmer = (SeekBar) getView().findViewById(R.id.dimmer);
+        colorTemp = (SeekBar) getView().findViewById(R.id.colorTemp);
+        colorPicker = (ColorPickerView) getView().findViewById(R.id.colorPicker);
     }
 
     @Override

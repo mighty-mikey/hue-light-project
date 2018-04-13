@@ -54,4 +54,11 @@ public class LightListPresenterTest {
         subject.viewLoaded(lightsListInterfaceMock);
         verify(lightsListInterfaceMock, never()).updateLights(any());
     }
+
+    @Test
+    public void setSelectedLightPosition_callsNavigateToSingleLight() {
+        subject.viewLoaded(lightsListInterfaceMock);
+        subject.setSelectedLightPosition(0);
+        verify(lightsListInterfaceMock).navigateToSingleLightFragment();
+    }
 }

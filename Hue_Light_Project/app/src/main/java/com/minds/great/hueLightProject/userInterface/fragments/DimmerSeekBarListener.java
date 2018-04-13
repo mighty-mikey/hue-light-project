@@ -44,5 +44,4 @@ public class DimmerSeekBarListener implements SeekBar.OnSeekBarChangeListener {
         lightState.setBrightness(brightness);
         light.updateState(lightState);
     }
-
 }
