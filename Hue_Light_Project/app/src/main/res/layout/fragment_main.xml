@@ -11,7 +11,7 @@
         <TextView
             android:id="@+id/logo"
             style="@style/errorMessage"
-            android:text="Main Activity Logo"
+            android:text="Mood Magic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"

@@ -24,8 +24,8 @@ import java.util.List;
 public class LightsListAdapter extends BaseAdapter {
     private List<LightPoint> lightsList;
     private Context context;
-    final private int HEADER_CODE = 1;
-    final private int FOOTER_CODE = -1;
+    final private int EVEN_ROW_CODE = 1;
+    final private int ODD_ROW_CODE = -1;
 
     private LightListPresenter lightListPresenter;
 
@@ -102,12 +102,10 @@ public class LightsListAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = null;
         if (inflater != null) {
-            if (itemViewType == HEADER_CODE) {
-                itemView = inflater.inflate(R.layout.lights_list_header, null);
-            } else if (itemViewType == FOOTER_CODE) {
-                itemView = inflater.inflate(R.layout.lights_list_footer, null);
+            if (itemViewType == EVEN_ROW_CODE) {
+                itemView = inflater.inflate(R.layout.lights_list_even, null);
             } else {
-                itemView = inflater.inflate(R.layout.lights_list_item, null);
+                itemView = inflater.inflate(R.layout.lights_list_odd, null);
             }
         }
         return itemView;
@@ -115,12 +113,11 @@ public class LightsListAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return HEADER_CODE;
-        } else if (position == lightsList.size() - 1) {
-            return FOOTER_CODE;
+        if (position %2 == 0) {
+            return EVEN_ROW_CODE;
+        } else {
+            return ODD_ROW_CODE;
         }
-        return 0;
     }
 
     void setLightsList(List<LightPoint> lightPoints, Context context) {

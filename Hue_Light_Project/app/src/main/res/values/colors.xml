@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
     <color name="black">#000000</color>
-    <color name="backgroundGray">#2E2D2A</color>
-    <color name="orange">#E99123</color>
     <color name="white">#FFFFFF</color>
+    <color name="background">#1B2021</color>
+    <color name="buttonColor">#E7186F</color>
+    <color name="titleTextColor">#E7186F</color>
+    <color name="textColor">#FFFFFF</color>
     <color name="colorTempBlue">#FFFEFA</color>
     <color name="colorTempOrange">#FF9227</color>
+    <color name="evenListItemBackground">#273330</color>
+    <color name="oddListItemBackground">#242B29</color>
 </resources>
