@@ -2,17 +2,20 @@ package com.minds.great.hueLightProject.userInterface.fragments;
 
 import android.widget.SeekBar;
 
+import com.flask.colorpicker.ColorPickerView;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 
 public class DimmerSeekBarListener implements SeekBar.OnSeekBarChangeListener {
-    private Timer timer = null;
     private LightState lightState = new LightState();
     private int brightness = 0;
     private LightPoint light;
+    private Disposable subscribe;
 
     DimmerSeekBarListener(LightPoint light) {
         this.light = light;
@@ -26,21 +29,20 @@ public class DimmerSeekBarListener implements SeekBar.OnSeekBarChangeListener {
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         lightState.setBrightness(light.getLightState().getBrightness());
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (brightness != lightState.getBrightness()) {
-                    lightState.setBrightness(brightness);
-                    light.updateState(lightState);
-                }
+        subscribe = Observable.timer(300, TimeUnit.MILLISECONDS).subscribe(aLong -> {
+            if (brightness != lightState.getBrightness()) {
+                lightState.setBrightness(brightness);
+                light.updateState(lightState);
             }
-        }, 300, 300);
+        });
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        timer.cancel();
+        if (subscribe != null) {
+            subscribe.dispose();
+            subscribe = null;
+        }
         lightState.setBrightness(brightness);
         light.updateState(lightState);
     }

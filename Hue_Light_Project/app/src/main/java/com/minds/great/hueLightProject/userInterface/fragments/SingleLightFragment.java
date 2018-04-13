@@ -77,7 +77,6 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
         }
     }
 
-
     @Override
     public void onPause() {
         super.onPause();
