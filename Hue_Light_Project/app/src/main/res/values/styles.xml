@@ -3,9 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryDark">@color/background</item>
-        <item name="colorAccent">@color/white</item>
+        <item name="colorPrimary">@color/oddListItemBackground</item>
+        <item name="colorPrimaryDark">@color/evenListItemBackground</item>
+        <item name="colorAccent">@color/textColor</item>
         <item name="android:windowBackground">@color/background</item>
     </style>
 
@@ -30,6 +30,11 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="switchStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="lightsListTitle">
@@ -57,11 +62,6 @@
         <item name="android:layout_marginTop">28dp</item>
         <item name="android:textSize">35sp</item>
         <item name="android:gravity">center</item>
-    </style>
-
-    <style name="lightsList">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="errorMessage">

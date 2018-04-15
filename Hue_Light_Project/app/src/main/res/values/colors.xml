@@ -5,9 +5,10 @@
     <color name="background">#1B2021</color>
     <color name="buttonColor">#E7186F</color>
     <color name="titleTextColor">#E7186F</color>
-    <color name="textColor">#FFFFFF</color>
+    <color name="hightLightColor">#03DBC6</color>
+    <color name="textColor">#E2E2E2</color>
     <color name="colorTempBlue">#FFFEFA</color>
     <color name="colorTempOrange">#FF9227</color>
-    <color name="evenListItemBackground">#273330</color>
-    <color name="oddListItemBackground">#242B29</color>
+    <color name="evenListItemBackground">#303435</color>
+    <color name="oddListItemBackground">#232526</color>
 </resources>

@@ -3,10 +3,12 @@ package com.minds.great.hueLightProject.userInterface.fragments.lightListFragmen
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -63,7 +65,7 @@ public class LightsListAdapter extends BaseAdapter {
         if (itemView != null) {
             TextView lightName = (TextView) itemView.findViewById(R.id.lightName);
             Switch onOffSwitch = (Switch) itemView.findViewById(R.id.onOffSwitch);
-            View color = itemView.findViewById(R.id.color);
+            ImageView color = (ImageView) itemView.findViewById(R.id.color);
             lightName.setText(light.getName());
             onOffSwitch.setChecked(light.getLightState().isOn());
 
@@ -77,7 +79,7 @@ public class LightsListAdapter extends BaseAdapter {
                     lightColor = HueUtil.getRGBFromColorTemperature(light.getLightState().getCT(), light.getLightState().getBrightness());
                 }
             }
-            color.setBackgroundColor(lightColor);
+            color.setColorFilter(lightColor);
 
             onOffSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
                 LightState lightState = light.getLightState();
@@ -85,12 +87,7 @@ public class LightsListAdapter extends BaseAdapter {
                 light.updateState(lightState);
             });
 
-            color.setOnClickListener(view -> {
-                lightListPresenter.setSelectedLightPosition(position);
-                ((MainInterface) view.getContext()).navigateToSingleLightFragment(light);
-            });
-
-            lightName.setOnClickListener(view -> {
+            itemView.setOnClickListener(view -> {
                 lightListPresenter.setSelectedLightPosition(position);
                 ((MainInterface) view.getContext()).navigateToSingleLightFragment(light);
             });

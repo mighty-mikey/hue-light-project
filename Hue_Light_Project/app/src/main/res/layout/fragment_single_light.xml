@@ -12,14 +12,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/onOffSwitch"/>
+
     <Switch
         android:id="@+id/onOffSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="22dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/evenListItemBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lightName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
 
     <com.flask.colorpicker.ColorPickerView
         android:id="@+id/color_picker_view"
@@ -29,7 +40,6 @@
         app:alphaSlider="true"
         app:alphaSliderView="@+id/v_alpha_slider"
         app:density="12"
-        app:layout_constraintTop_toBottomOf="@id/lightName"
         app:lightnessSlider="true"
         app:lightnessSliderView="@+id/v_lightness_slider"
         app:wheelType="FLOWER" />
@@ -43,8 +53,8 @@
         android:minHeight="50dp"
         android:max="350"
         android:layout_marginEnd="8dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="40dp"
+        android:paddingBottom="10dp"
         android:progressDrawable="@drawable/seekbar_colortemp"
         android:thumb="@drawable/seekbar_thumb"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,11 +69,11 @@
         android:minHeight="50dp"
         android:max="255"
         android:layout_marginEnd="8dp"
-        android:paddingTop="20dp"
+        android:paddingTop="40dp"
         android:progressDrawable="@drawable/seekbar_dimmer"
         android:thumb="@drawable/seekbar_thumb"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/colorTemp"
         />
-
+    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

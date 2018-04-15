@@ -16,36 +16,30 @@
         android:layout_marginTop="25dp"
         android:textColor="@color/textColor"
         android:textSize="25sp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/onOffSwitch"
         app:layout_constraintStart_toStartOf="parent"
         android:ellipsize="end"
-        android:maxLines="1"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:maxLines="1" />
 
     <Switch
         android:id="@+id/onOffSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/switchStyle"
         android:layout_marginEnd="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/lightName"
         app:layout_constraintEnd_toStartOf="@id/color"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <View
+    <ImageView
         android:id="@+id/color"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleY="-1"
+        android:src="@drawable/bulb1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!--<View-->
-        <!--android:layout_width="25dp"-->
-        <!--android:layout_height="25dp"-->
-        <!--android:background="@drawable/bulb1"-->
-        <!--/>-->
-
-
+        app:layout_constraintTop_toTopOf="parent"
+        />
 </android.support.constraint.ConstraintLayout>
