@@ -50,6 +50,7 @@ public class ConnectionDomain {
     public void search() {
         connectionView.showProgressBar();
         connectionView.hideConnectButton();
+        connectionView.hideLogo();
         connectionView.hideErrorMessage();
         lightSystemInterface.searchForLightSystems();
     }
@@ -70,11 +71,13 @@ public class ConnectionDomain {
         connectionView.showErrorMessage(connectionError.getCode());
         connectionView.hideProgressBar();
         connectionView.showConnectButton();
+        connectionView.hideLogo();
     }
 
     private void showWaitForConnection() {
         connectionView.hideProgressBar();
         connectionView.showWaitingForConnection();
         connectionView.hideConnectButton();
+        connectionView.hideLogo();
     }
 }

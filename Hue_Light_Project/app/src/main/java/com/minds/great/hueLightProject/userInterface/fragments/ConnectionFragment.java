@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ public class ConnectionFragment extends Fragment implements ConnectionInterface 
     private Button connectButton;
     private TextView waitingForConnection;
     private TextView errorMessage;
+    private ImageView logo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,6 +85,11 @@ public class ConnectionFragment extends Fragment implements ConnectionInterface 
     }
 
     @Override
+    public void hideLogo() {
+        getActivity().runOnUiThread(() -> logo.setVisibility(GONE));
+    }
+
+    @Override
     public void hideConnectButton() {
         getActivity().runOnUiThread(() -> connectButton.setVisibility(GONE));
     }
@@ -121,6 +128,7 @@ public class ConnectionFragment extends Fragment implements ConnectionInterface 
             connectButton = (Button) view.findViewById(R.id.connectButton);
             waitingForConnection = (TextView) view.findViewById(R.id.waitingForConnection);
             errorMessage = (TextView) view.findViewById(R.id.errorMessage);
+            logo = (ImageView) view.findViewById(R.id.logo);
         }
     }
 }
