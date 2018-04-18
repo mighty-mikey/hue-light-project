@@ -2,7 +2,6 @@ package com.minds.great.hueLightProject.userInterface.fragments;
 
 import android.widget.SeekBar;
 
-import com.flask.colorpicker.ColorPickerView;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
 

@@ -134,7 +134,7 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
         getActivity().runOnUiThread(() -> {
             onOffSwitch.setChecked(updatedLight.getLightState().isOn());
             dimmer.setProgress(updatedLight.getLightState().getBrightness());
-            if (null != colorTemp) {
+            if (null != colorTemp && updatedLight.getLightState() != null) {
                 colorTemp.setProgress(updatedLight.getLightState().getCT() - 150);
             }
         });
