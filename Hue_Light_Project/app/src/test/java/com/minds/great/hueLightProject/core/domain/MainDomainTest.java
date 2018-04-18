@@ -1,8 +1,11 @@
 package com.minds.great.hueLightProject.core.domain;
 
 import com.jakewharton.rxrelay2.BehaviorRelay;
+import com.jakewharton.rxrelay2.PublishRelay;
+import com.minds.great.hueLightProject.core.domain.domainInterfaces.LightSystemInterface;
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.MainInterface;
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.MemoryInterface;
+import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 
 import org.junit.After;
@@ -31,15 +34,23 @@ public class MainDomainTest {
     private MemoryInterface memory;
 
     @Mock
+    private LightSystemInterface lightSystemInterface;
+
+    @Mock
     private ConnectionDomain connectionDomain;
+
     private BehaviorRelay<LightSystem> connectionSuccessfulRelay;
+
+    private PublishRelay<ConnectionError> errorRelay;
 
     @Before
     public void setUp() throws Exception {
         connectionSuccessfulRelay = BehaviorRelay.create();
+        errorRelay = PublishRelay.create();
         when(connectionDomain.getConnectionSuccessfulRelay()).thenReturn(connectionSuccessfulRelay);
+        when(lightSystemInterface.getErrorObservable()).thenReturn(errorRelay);
 
-        subject = new MainDomain(memory, connectionDomain);
+        subject = new MainDomain(memory, connectionDomain, lightSystemInterface);
     }
 
     @Test

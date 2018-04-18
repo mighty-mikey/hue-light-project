@@ -12,6 +12,7 @@ import com.philips.lighting.hue.sdk.wrapper.domain.HueError;
 
 import java.util.List;
 
+import static com.minds.great.hueLightProject.core.models.ConnectionError.SAVED_BRIDGE_NOT_FOUND;
 import static com.minds.great.hueLightProject.core.models.ConnectionError.NO_BRIDGE_FOUND_CODE;
 
 
@@ -32,7 +33,7 @@ public class HueConnectionCallback extends BridgeConnectionCallback {
                 break;
 
             case COULD_NOT_CONNECT:
-                errorRelay.accept(new ConnectionError.Builder().code(NO_BRIDGE_FOUND_CODE).build());
+                errorRelay.accept(new ConnectionError.Builder().code(SAVED_BRIDGE_NOT_FOUND).build());
                 break;
 
             case CONNECTION_LOST:

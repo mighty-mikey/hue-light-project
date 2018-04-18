@@ -19,7 +19,10 @@ import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
 import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+
+import org.androidannotations.annotations.ViewById;
 
 import javax.inject.Inject;
 
@@ -72,10 +75,12 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
         dimmer.setOnSeekBarChangeListener(new DimmerSeekBarListener(light));
 
         if (light.getLightState().getColormode().equals(ColorMode.COLOR_TEMPERATURE)) {
+            colorTemp = (SeekBar) getView().findViewById(R.id.colorTemp);
             colorTemp.setProgress(light.getLightState().getCT() - 150);
             colorTemp.setOnSeekBarChangeListener(new ColorTempSeekBarListener(light));
         }
     }
+
 
     @Override
     public void onPause() {
