@@ -3,7 +3,6 @@ package com.minds.great.hueLightProject.userInterface.fragments.lightListFragmen
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,21 +64,26 @@ public class LightsListAdapter extends BaseAdapter {
         if (itemView != null) {
             TextView lightName = (TextView) itemView.findViewById(R.id.lightName);
             Switch onOffSwitch = (Switch) itemView.findViewById(R.id.onOffSwitch);
-            ImageView color = (ImageView) itemView.findViewById(R.id.color);
+            ImageView lightOnIcon = (ImageView) itemView.findViewById(R.id.lightOnIcon);
+            ImageView lightOffIcon = (ImageView) itemView.findViewById(R.id.lightOffIcon);
             lightName.setText(light.getName());
             onOffSwitch.setChecked(light.getLightState().isOn());
 
-            int lightColor = Color.BLACK;
             if (light.getLightState().isOn()) {
                 ColorMode lightColorMode = light.getLightState().getColormode();
                 if (lightColorMode == ColorMode.XY) {
                     HueColor.RGB rgb = light.getLightState().getColor().getRGB();
-                    lightColor = Color.argb(light.getLightState().getBrightness(), rgb.r, rgb.g, rgb.b);
+                    lightOnIcon.setColorFilter(Color.argb(light.getLightState().getBrightness(), rgb.r, rgb.g, rgb.b));
                 } else if (lightColorMode == ColorMode.COLOR_TEMPERATURE) {
-                    lightColor = HueUtil.getRGBFromColorTemperature(light.getLightState().getCT(), light.getLightState().getBrightness());
+                    lightOnIcon.setColorFilter(HueUtil.getRGBFromColorTemperature(light.getLightState().getCT(), light.getLightState().getBrightness()));
                 }
+                lightOnIcon.setVisibility(View.VISIBLE);
+                lightOffIcon.setVisibility(View.GONE);
             }
-            color.setColorFilter(lightColor);
+            else{
+                lightOnIcon.setVisibility(View.GONE);
+                lightOffIcon.setVisibility(View.VISIBLE);
+            }
 
             onOffSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
                 LightState lightState = light.getLightState();
