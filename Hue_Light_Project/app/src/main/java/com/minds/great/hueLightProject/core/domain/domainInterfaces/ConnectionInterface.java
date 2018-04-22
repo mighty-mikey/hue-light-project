@@ -15,4 +15,6 @@ public interface ConnectionInterface {
     void showErrorMessage(int code);
 
     void showConnectButton();
+
+    void hideLogo();
 }

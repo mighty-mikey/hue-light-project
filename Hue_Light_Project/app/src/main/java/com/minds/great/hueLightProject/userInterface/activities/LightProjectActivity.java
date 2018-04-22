@@ -14,7 +14,6 @@ import com.minds.great.hueLightProject.userInterface.fragments.lightListFragment
 import com.minds.great.hueLightProject.utils.dagger.DaggerInjector;
 import com.minds.great.hueLightProject.utils.dagger.HueModule;
 import com.minds.great.hueLightProject.utils.dagger.Injector;
-import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 
 import org.androidannotations.annotations.EActivity;
 

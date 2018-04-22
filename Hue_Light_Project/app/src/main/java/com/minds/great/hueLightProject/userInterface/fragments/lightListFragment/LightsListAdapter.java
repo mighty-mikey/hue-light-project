@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -24,8 +25,8 @@ import java.util.List;
 public class LightsListAdapter extends BaseAdapter {
     private List<LightPoint> lightsList;
     private Context context;
-    final private int HEADER_CODE = 1;
-    final private int FOOTER_CODE = -1;
+    final private int EVEN_ROW_CODE = 1;
+    final private int ODD_ROW_CODE = -1;
 
     private LightListPresenter lightListPresenter;
 
@@ -63,21 +64,26 @@ public class LightsListAdapter extends BaseAdapter {
         if (itemView != null) {
             TextView lightName = (TextView) itemView.findViewById(R.id.lightName);
             Switch onOffSwitch = (Switch) itemView.findViewById(R.id.onOffSwitch);
-            View color = itemView.findViewById(R.id.color);
+            ImageView lightOnIcon = (ImageView) itemView.findViewById(R.id.lightOnIcon);
+            ImageView lightOffIcon = (ImageView) itemView.findViewById(R.id.lightOffIcon);
             lightName.setText(light.getName());
             onOffSwitch.setChecked(light.getLightState().isOn());
 
-            int lightColor = Color.BLACK;
             if (light.getLightState().isOn()) {
                 ColorMode lightColorMode = light.getLightState().getColormode();
                 if (lightColorMode == ColorMode.XY) {
                     HueColor.RGB rgb = light.getLightState().getColor().getRGB();
-                    lightColor = Color.argb(light.getLightState().getBrightness(), rgb.r, rgb.g, rgb.b);
+                    lightOnIcon.setColorFilter(Color.argb(light.getLightState().getBrightness(), rgb.r, rgb.g, rgb.b));
                 } else if (lightColorMode == ColorMode.COLOR_TEMPERATURE) {
-                    lightColor = HueUtil.getRGBFromColorTemperature(light.getLightState().getCT(), light.getLightState().getBrightness());
+                    lightOnIcon.setColorFilter(HueUtil.getRGBFromColorTemperature(light.getLightState().getCT(), light.getLightState().getBrightness()));
                 }
+                lightOnIcon.setVisibility(View.VISIBLE);
+                lightOffIcon.setVisibility(View.GONE);
             }
-            color.setBackgroundColor(lightColor);
+            else{
+                lightOnIcon.setVisibility(View.GONE);
+                lightOffIcon.setVisibility(View.VISIBLE);
+            }
 
             onOffSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
                 LightState lightState = light.getLightState();
@@ -85,9 +91,9 @@ public class LightsListAdapter extends BaseAdapter {
                 light.updateState(lightState);
             });
 
-            color.setOnClickListener(view -> lightListPresenter.setSelectedLightPosition(position));
-
-            lightName.setOnClickListener(view -> lightListPresenter.setSelectedLightPosition(position));
+            itemView.setOnClickListener(view -> {
+                lightListPresenter.setSelectedLightPosition(position);
+            });
         }
         return itemView;
     }
@@ -96,12 +102,10 @@ public class LightsListAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = null;
         if (inflater != null) {
-            if (itemViewType == HEADER_CODE) {
-                itemView = inflater.inflate(R.layout.lights_list_header, null);
-            } else if (itemViewType == FOOTER_CODE) {
-                itemView = inflater.inflate(R.layout.lights_list_footer, null);
+            if (itemViewType == EVEN_ROW_CODE) {
+                itemView = inflater.inflate(R.layout.lights_list_even, null);
             } else {
-                itemView = inflater.inflate(R.layout.lights_list_item, null);
+                itemView = inflater.inflate(R.layout.lights_list_odd, null);
             }
         }
         return itemView;
@@ -109,12 +113,11 @@ public class LightsListAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return HEADER_CODE;
-        } else if (position == lightsList.size() - 1) {
-            return FOOTER_CODE;
+        if (position %2 == 0) {
+            return EVEN_ROW_CODE;
+        } else {
+            return ODD_ROW_CODE;
         }
-        return 0;
     }
 
     void setLightsList(List<LightPoint> lightPoints, Context context) {
