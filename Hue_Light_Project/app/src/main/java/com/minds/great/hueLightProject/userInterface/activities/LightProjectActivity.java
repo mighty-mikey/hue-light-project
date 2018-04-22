@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
+import com.crashlytics.android.Crashlytics;
 import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.core.domain.MainDomain;
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.MainInterface;
@@ -15,6 +16,7 @@ import com.minds.great.hueLightProject.utils.dagger.DaggerInjector;
 import com.minds.great.hueLightProject.utils.dagger.HueModule;
 import com.minds.great.hueLightProject.utils.dagger.Injector;
 
+import io.fabric.sdk.android.Fabric;
 import org.androidannotations.annotations.EActivity;
 
 import javax.inject.Inject;
@@ -30,6 +32,7 @@ public class LightProjectActivity extends FragmentActivity implements MainInterf
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
 
         getInjector().inject(this);
 

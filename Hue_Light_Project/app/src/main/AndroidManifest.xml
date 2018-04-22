@@ -19,6 +19,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".userInterface.activities.LightProjectActivity_" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="24c4a084454403f37ec895d2bfece7d4afd78925" />
     </application>
 
 </manifest>

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 apply plugin: 'me.tatarka.retrolambda'
 
 allprojects {
@@ -65,21 +66,30 @@ dependencies {
     implementation files('libs/huecppsdk-wrapper-javadoc.jar')
     //color picker
     compile 'com.github.QuadFlask:colorpicker:0.0.13'
+    compile('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
+        transitive = true;
+    }
+    compile('com.crashlytics.sdk.android:answers:1.4.1@aar') {
+        transitive = true;
+    }
 }
 
 buildscript {
     repositories {
         mavenCentral()
+        maven { url 'https://maven.fabric.io/public' }
     }
 
     dependencies {
         classpath 'me.tatarka:gradle-retrolambda:3.7.0'
+        classpath 'io.fabric.tools:gradle:1.+'
     }
 }
 
 // Required because retrolambda is on maven central
 repositories {
     mavenCentral()
+    maven { url 'https://maven.fabric.io/public' }
 }
 
 apply plugin: 'com.android.application' //or apply plugin: 'java'
