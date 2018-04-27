@@ -19,10 +19,7 @@ import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
 import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
-
-import org.androidannotations.annotations.ViewById;
 
 import javax.inject.Inject;
 
@@ -58,6 +55,7 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
         colorPicker.addOnColorSelectedListener(this::changeLightColor);
         singleLightPresenter.viewLoaded(this);
         HueColor color = light.getLightState().getColor();
+        color.setBrightness(255.0);
         changeLightColor(color);
     }
 
