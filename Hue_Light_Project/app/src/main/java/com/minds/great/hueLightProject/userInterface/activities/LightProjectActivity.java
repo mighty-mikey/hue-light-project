@@ -64,7 +64,6 @@ public class LightProjectActivity extends FragmentActivity implements MainInterf
     public void navigateToLightListFragment() {
         LightsListFragment fragment = new LightsListFragment();
         fragmentManager.beginTransaction()
-//                .addToBackStack(fragment.toString())
                 .replace(R.id.fragment_container, fragment)
                 .commit();
     }

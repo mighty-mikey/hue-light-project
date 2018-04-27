@@ -20,7 +20,11 @@ public class SingleLightPresenter {
     }
 
     public void viewLoaded(SingleLightInterface singleLightInterface) {
-        subscribe = connectionDomain.getLightsAndGroupsHeartbeatRelay().subscribe(lightSystem -> singleLightInterface.updateLight(lightSystem.getLight(lightSystemDomain.getSelectedLightPosition())));
+        subscribe = connectionDomain.getLightsAndGroupsHeartbeatRelay()
+                .subscribe(lightSystem -> {
+                    LightPoint light = lightSystem.getLight(lightSystemDomain.getSelectedLightPosition());
+                    singleLightInterface.updateLight(light);
+                });
         if (lightSystemDomain.getSelectedLightColorMode().equals(ColorMode.XY)) {
             singleLightInterface.showColorPicker();
         } else if (lightSystemDomain.getSelectedLightColorMode().equals(ColorMode.COLOR_TEMPERATURE)) {

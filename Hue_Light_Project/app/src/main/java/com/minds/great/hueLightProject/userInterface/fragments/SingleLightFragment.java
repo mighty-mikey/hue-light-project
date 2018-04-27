@@ -76,6 +76,7 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
 
         if (light.getLightState().getColormode().equals(ColorMode.COLOR_TEMPERATURE)) {
             colorTemp = (SeekBar) getView().findViewById(R.id.colorTemp);
+
             colorTemp.setProgress(light.getLightState().getCT() - 150);
             colorTemp.setOnSeekBarChangeListener(new ColorTempSeekBarListener(light));
         }
@@ -141,6 +142,9 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
             dimmer.setProgress(updatedLight.getLightState().getBrightness());
             if (null != colorTemp && updatedLight.getLightState() != null) {
                 colorTemp.setProgress(updatedLight.getLightState().getCT() - 150);
+            }
+            if(null != colorPicker){
+                changeLightColor(updatedLight.getLightState().getColor());
             }
         });
     }
