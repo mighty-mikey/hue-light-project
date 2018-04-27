@@ -98,6 +98,12 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
     }
 
     private void changeLightColor(HueColor color) {
+        int i = calculateIntColorFromHueColor(color);
+
+        colorPicker.setInitialColor(i, false);
+    }
+
+    private int calculateIntColorFromHueColor(HueColor color) {
         Integer r = color.getRGB().r;
         Integer g = color.getRGB().g;
         Integer b = color.getRGB().b;
@@ -110,9 +116,7 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
         b = b & 0x000000FF;
 
         //0xFF000000 for 100% Alpha. Bitwise OR everything together.
-        int i = 0xFF000000 | r | g | b;
-
-        colorPicker.setInitialColor(i, false);
+        return 0xFF000000 | r | g | b;
     }
 
     private void initViews() {
@@ -142,7 +146,8 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
                 colorTemp.setProgress(updatedLight.getLightState().getCT() - 150);
             }
             if(null != colorPicker){
-                changeLightColor(updatedLight.getLightState().getColor());
+                int color = calculateIntColorFromHueColor(updatedLight.getLightState().getColor());
+                colorPicker.setColor(color, true);
             }
         });
     }
