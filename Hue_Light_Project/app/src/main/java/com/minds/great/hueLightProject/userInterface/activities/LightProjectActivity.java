@@ -64,7 +64,7 @@ public class LightProjectActivity extends FragmentActivity implements MainInterf
     public void navigateToLightListFragment() {
         LightsListFragment fragment = new LightsListFragment();
         fragmentManager.beginTransaction()
-                .addToBackStack(fragment.toString())
+//                .addToBackStack(fragment.toString())
                 .replace(R.id.fragment_container, fragment)
                 .commit();
     }
@@ -72,7 +72,7 @@ public class LightProjectActivity extends FragmentActivity implements MainInterf
     @Override
     public void navigateToSingleLightFragment() {
         SingleLightFragment fragment = new SingleLightFragment();
-        fragmentManager.beginTransaction().addToBackStack(fragment.toString())
+        fragmentManager.beginTransaction().addToBackStack(null)
                 .replace(R.id.fragment_container, fragment).commit();
     }
 

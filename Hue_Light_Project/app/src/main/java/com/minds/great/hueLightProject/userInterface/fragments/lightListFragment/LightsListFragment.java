@@ -48,14 +48,18 @@ public class LightsListFragment extends Fragment implements LightsListInterface 
     }
 
     @Override
-    public void onDestroy() {
+    public void onPause() {
         lightListPresenter.viewUnloaded();
-        super.onDestroy();
+        super.onPause();
     }
 
     @Override
     public void updateLights(LightSystem lightSystem) {
-        getActivity().runOnUiThread(() -> lightsListAdapter.lightsAndGroupsHeartbeat(lightSystem.getBridge().getBridgeState().getLightPoints()));
+
+        getActivity().runOnUiThread(() -> {
+            List<LightPoint> lightPoints = lightSystem.getBridge().getBridgeState().getLightPoints();
+            lightsListAdapter.lightsAndGroupsHeartbeat(lightPoints);
+        });
     }
 
     @Override
