@@ -104,6 +104,7 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
     }
 
     private int calculateIntColorFromHueColor(HueColor color) {
+        color.setBrightness(255.0);
         Integer r = color.getRGB().r;
         Integer g = color.getRGB().g;
         Integer b = color.getRGB().b;
