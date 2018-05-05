@@ -57,7 +57,8 @@ public class LightProjectActivity extends FragmentActivity implements MainInterf
     @Override
     public void navigateToConnectionFragment() {
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, new ConnectionFragment()).commit();
+                .replace(R.id.fragment_container, new ConnectionFragment())
+                .commit();
     }
 
     @Override
@@ -71,8 +72,11 @@ public class LightProjectActivity extends FragmentActivity implements MainInterf
     @Override
     public void navigateToSingleLightFragment() {
         SingleLightFragment fragment = new SingleLightFragment();
-        fragmentManager.beginTransaction().addToBackStack(null)
-                .replace(R.id.fragment_container, fragment).commit();
+
+        fragmentManager.beginTransaction()
+                .addToBackStack("lightsListFragment")
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
 
     public Injector getInjector() {
