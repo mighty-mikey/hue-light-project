@@ -30,20 +30,24 @@ public class LightsListFragment extends Fragment implements LightsListInterface 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        View view = inflater.inflate(R.layout.fragment_lights_list, container, false);
+
         if(getActivity() instanceof LightProjectActivity) {
             ((LightProjectActivity) getActivity()).getInjector().inject(this);
         }
         lightsListAdapter = new LightsListAdapter(lightListPresenter);
-        return inflater.inflate(R.layout.fragment_lights_list, container, false);
+
+        ListView lightsList = (ListView) view.findViewById(R.id.lightsList);
+        lightsList.setAdapter(lightsListAdapter);
+        List<LightPoint> lightList = lightListPresenter.getLightList();
+        lightsListAdapter.setLightsList(lightList, getContext());
+
+        return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        ListView lightsList = (ListView) getActivity().findViewById(R.id.lightsList);
-        lightsList.setAdapter(lightsListAdapter);
-        List<LightPoint> lightList = lightListPresenter.getLightList();
-        lightsListAdapter.setLightsList(lightList, getContext());
         lightListPresenter.viewLoaded(this);
     }
 
@@ -55,7 +59,6 @@ public class LightsListFragment extends Fragment implements LightsListInterface 
 
     @Override
     public void updateLights(LightSystem lightSystem) {
-
         getActivity().runOnUiThread(() -> {
             List<LightPoint> lightPoints = lightSystem.getBridge().getBridgeState().getLightPoints();
             lightsListAdapter.lightsAndGroupsHeartbeat(lightPoints);

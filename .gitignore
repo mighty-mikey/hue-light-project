@@ -5,3 +5,4 @@ Hue_Light_Project/app/gradlew
 Hue_Light_Project/app/gradle/wrapper/gradle-wrapper.properties
 Hue_Light_Project/app/gradle/wrapper/gradle-wrapper.jar
 *.tap
+Hue_Light_Project/app/fabric.properties

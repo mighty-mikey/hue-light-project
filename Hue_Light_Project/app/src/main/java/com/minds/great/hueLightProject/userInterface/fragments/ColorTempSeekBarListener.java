@@ -2,6 +2,7 @@ package com.minds.great.hueLightProject.userInterface.fragments;
 
 import android.widget.SeekBar;
 
+import com.minds.great.hueLightProject.utils.dagger.UiConstants;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
 
@@ -20,8 +21,8 @@ public class ColorTempSeekBarListener implements SeekBar.OnSeekBarChangeListener
     }
 
     @Override
-    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-        ct = i + 150;
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        ct = progress + UiConstants.HUE_COLOR_TEMP_OFFSET;
     }
 
     @Override

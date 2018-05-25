@@ -14,6 +14,7 @@ import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.core.presenters.SingleLightInterface;
 import com.minds.great.hueLightProject.core.presenters.SingleLightPresenter;
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
+import com.minds.great.hueLightProject.utils.dagger.UiConstants;
 import com.philips.lighting.hue.sdk.wrapper.domain.clip.ColorMode;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
@@ -68,14 +69,13 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
             lightState.setOn(b);
             light.updateState(lightState);
         });
-        light.getLightState().getCT();
         dimmer.setProgress(light.getLightState().getBrightness());
         dimmer.setOnSeekBarChangeListener(new DimmerSeekBarListener(light));
 
         if (light.getLightState().getColormode().equals(ColorMode.COLOR_TEMPERATURE)) {
             colorTemp = (SeekBar) getView().findViewById(R.id.colorTemp);
 
-            colorTemp.setProgress(light.getLightState().getCT() - 150);
+            colorTemp.setProgress(light.getLightState().getCT() - UiConstants.HUE_COLOR_TEMP_OFFSET);
             colorTemp.setOnSeekBarChangeListener(new ColorTempSeekBarListener(light));
         }
     }
@@ -144,7 +144,7 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
             onOffSwitch.setChecked(updatedLight.getLightState().isOn());
             dimmer.setProgress(updatedLight.getLightState().getBrightness());
             if (light.getLightState().getColormode().equals(ColorMode.COLOR_TEMPERATURE)) {
-                colorTemp.setProgress(updatedLight.getLightState().getCT() - 150);
+                colorTemp.setProgress(updatedLight.getLightState().getCT() - UiConstants.HUE_COLOR_TEMP_OFFSET);
             }
             if(null != colorPicker){
                 int color = calculateIntColorFromHueColor(updatedLight.getLightState().getColor());

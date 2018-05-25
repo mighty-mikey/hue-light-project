@@ -14,7 +14,7 @@ public class LightListPresenter {
     private ConnectionDomain connectionDomain;
     private LightSystemDomain lightSystemDomain;
     LightsListInterface view;
-    private Disposable subscribe;
+    private Disposable heartBeatRelay;
 
     public LightListPresenter(ConnectionDomain connectionDomain,
                               LightSystemDomain lightSystemDomain) {
@@ -23,15 +23,15 @@ public class LightListPresenter {
     }
 
     public void viewLoaded(LightsListInterface lightsListInterface) {
-        subscribe = connectionDomain.getLightsAndGroupsHeartbeatRelay().subscribe(lightsListInterface::updateLights);
+        heartBeatRelay = connectionDomain.getLightsAndGroupsHeartbeatRelay().subscribe(lightsListInterface::updateLights);
         view = lightsListInterface;
     }
     public void viewUnloaded(){
-        view = null;
-        if(subscribe != null){
-            subscribe.dispose();
-            subscribe = null;
+        if(heartBeatRelay != null){
+            heartBeatRelay.dispose();
+            heartBeatRelay = null;
         }
+        view = null;
     }
 
     public void setSelectedLightPosition(int position) {

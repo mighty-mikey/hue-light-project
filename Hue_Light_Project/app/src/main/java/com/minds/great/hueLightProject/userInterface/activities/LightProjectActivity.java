@@ -44,12 +44,22 @@ public class LightProjectActivity extends FragmentActivity implements MainInterf
                 .replace(R.id.fragment_container, mainFragment)
                 .commit();
 
+    }
+
+    @Override
+    protected void onResume() {
         mainDomain.viewLoaded(this);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        mainDomain.viewUnloaded();
+        super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        mainDomain.viewUnloaded();
         injector = null;
         super.onDestroy();
     }
