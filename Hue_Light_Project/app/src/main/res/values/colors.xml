@@ -9,6 +9,6 @@
     <color name="textColor">#E2E2E2</color>
     <color name="colorTempBlue">#FFFEFA</color>
     <color name="colorTempOrange">#FF9227</color>
-    <color name="evenListItemBackground">#303435</color>
-    <color name="oddListItemBackground">#232526</color>
+    <color name="evenListItemBackground">#4c5254</color>
+    <color name="oddListItemBackground">#35393a</color>
 </resources>

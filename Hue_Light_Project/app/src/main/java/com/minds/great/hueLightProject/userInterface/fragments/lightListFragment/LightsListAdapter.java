@@ -63,11 +63,9 @@ public class LightsListAdapter extends BaseAdapter {
 
         if (itemView != null) {
             TextView lightName = (TextView) itemView.findViewById(R.id.lightName);
-            Switch onOffSwitch = (Switch) itemView.findViewById(R.id.onOffSwitch);
             ImageView lightOnIcon = (ImageView) itemView.findViewById(R.id.lightOnIcon);
             ImageView lightOffIcon = (ImageView) itemView.findViewById(R.id.lightOffIcon);
             lightName.setText(light.getName());
-            onOffSwitch.setChecked(light.getLightState().isOn());
 
             if (light.getLightState().isOn()) {
                 ColorMode lightColorMode = light.getLightState().getColormode();
@@ -85,12 +83,17 @@ public class LightsListAdapter extends BaseAdapter {
                 lightOffIcon.setVisibility(View.VISIBLE);
             }
 
-            onOffSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            lightOnIcon.setOnClickListener((icon) -> {
                 LightState lightState = light.getLightState();
-                lightState.setOn(b);
+                lightState.setOn(false);
                 light.updateState(lightState);
             });
 
+            lightOffIcon.setOnClickListener((icon) -> {
+                LightState lightState = light.getLightState();
+                lightState.setOn(true);
+                light.updateState(lightState);
+            });
             itemView.setOnClickListener(view -> {
                 lightListPresenter.setSelectedLightPosition(position);
             });

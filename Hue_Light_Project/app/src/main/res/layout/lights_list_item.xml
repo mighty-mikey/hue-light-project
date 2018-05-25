@@ -18,18 +18,10 @@
         android:textSize="25sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/onOffSwitch"
         app:layout_constraintStart_toStartOf="parent"
         android:ellipsize="end"
         android:maxLines="1" />
 
-    <Switch
-        android:id="@+id/onOffSwitch"
-        style="@style/switchStyle"
-        android:layout_marginEnd="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/lightName"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/lightOnIcon"
@@ -40,7 +32,6 @@
         android:paddingStart="10dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/onOffSwitch"
         app:layout_constraintEnd_toEndOf="parent"
         />
 
@@ -53,7 +44,6 @@
         android:paddingStart="10dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/onOffSwitch"
         app:layout_constraintEnd_toEndOf="parent"
         />
 </android.support.constraint.ConstraintLayout>
