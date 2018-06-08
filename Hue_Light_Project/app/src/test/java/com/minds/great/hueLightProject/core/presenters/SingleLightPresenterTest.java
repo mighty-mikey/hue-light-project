@@ -1,12 +1,12 @@
 package com.minds.great.hueLightProject.core.presenters;
 
-import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.jakewharton.rxrelay2.PublishRelay;
 import com.minds.great.hueLightProject.core.domain.ConnectionDomain;
 import com.minds.great.hueLightProject.core.domain.LightSystemDomain;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 import com.philips.lighting.hue.sdk.wrapper.domain.clip.ColorMode;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
+import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,38 +29,105 @@ public class SingleLightPresenterTest {
     private ConnectionDomain connectionDomain;
     @Mock
     private LightSystem lightSystem;
-
+    @Mock
+    private LightPoint lightPointMock;
+    @Mock
+    private LightState lightStateMock;
     private SingleLightPresenter subject;
     private PublishRelay<LightSystem> heartBeatRelay;
+    private final int brightness = 5;
 
     @Before
     public void setUp() throws Exception {
-        subject = new SingleLightPresenter(connectionDomain, lightSystemDomain);
         heartBeatRelay = PublishRelay.create();
         when(connectionDomain.getLightsAndGroupsHeartbeatRelay()).thenReturn(heartBeatRelay);
+        when(lightSystemDomain.getSelectedLightPoint()).thenReturn(lightPointMock);
+        when(lightPointMock.getLightState()).thenReturn(lightStateMock);
+        when(lightStateMock.getColormode()).thenReturn(ColorMode.XY);
+        subject = new SingleLightPresenter(connectionDomain, lightSystemDomain);
         //TODO:  add tests around connectionDomain.
     }
 
     @Test
     public void viewLoaded_whenSelectedLightIsColorLight_showColorPicker() throws Exception {
-        when(lightSystemDomain.getSelectedLightColorMode()).thenReturn(ColorMode.XY);
         subject.viewLoaded(singleLightInterfaceMock);
         verify(singleLightInterfaceMock).showColorPicker();
     }
 
     @Test
     public void viewLoaded_whenSelectedLightIsNotColorLight_showColorPickerNotCalled() throws Exception {
-        when(lightSystemDomain.getSelectedLightColorMode()).thenReturn(ColorMode.COLOR_TEMPERATURE);
+        when(lightStateMock.getColormode()).thenReturn(ColorMode.COLOR_TEMPERATURE);
         subject.viewLoaded(singleLightInterfaceMock);
         verify(singleLightInterfaceMock, never()).showColorPicker();
     }
 
     @Test
     public void viewLoaded_subscribesToHeartBeatRelay() {
-        when(lightSystemDomain.getSelectedLightColorMode()).thenReturn(ColorMode.XY);
+
         subject.viewLoaded(singleLightInterfaceMock);
         verify(connectionDomain).getLightsAndGroupsHeartbeatRelay();
         heartBeatRelay.accept(lightSystem);
-        verify(singleLightInterfaceMock).updateLight(any());
+        verify(singleLightInterfaceMock).updateSingleLightUi(any());
+    }
+
+    @Test
+    public void viewLoaded_andLightIsOn_setUiSwitchOn() {
+        when(lightStateMock.isOn()).thenReturn(true);
+        subject.viewLoaded(singleLightInterfaceMock);
+        verify(singleLightInterfaceMock).setOnOffSwitch(true);
+    }
+
+    @Test
+    public void viewLoaded_andLightIsOff_setUiSwitchOff() {
+        when(lightStateMock.isOn()).thenReturn(false);
+        subject.viewLoaded(singleLightInterfaceMock);
+        verify(singleLightInterfaceMock).setOnOffSwitch(false);
+    }
+
+    @Test
+    public void viewLoaded_setLightName() {
+        String name = "THE LIGHT";
+        when(lightPointMock.getName()).thenReturn(name);
+        subject.viewLoaded(singleLightInterfaceMock);
+        verify(singleLightInterfaceMock).setLightNameText(name);
+    }
+
+    @Test
+    public void viewLoaded_setDimmerProgress() {
+        when(lightStateMock.getBrightness()).thenReturn(brightness);
+        subject.viewLoaded(singleLightInterfaceMock);
+        verify(singleLightInterfaceMock).setDimmerProgress(brightness);
+    }
+
+    @Test
+    public void updateBrightness_updatesLightBrightness() {
+        subject.updateBrightness(brightness);
+        verify(lightStateMock).setBrightness(brightness);
+        verify(lightPointMock).updateState(lightStateMock);
+    }
+
+    @Test
+    public void updateBrightness_whenBrightnessIsSame_doNotUpdate() {
+        when(lightStateMock.getBrightness()).thenReturn(brightness);
+        subject.updateBrightness(brightness);
+        verify(lightStateMock, never()).setBrightness(any());
+        verify(lightPointMock, never()).updateState(lightStateMock);
+    }
+
+    @Test
+    public void updateOnState_setsLightOff() {
+        boolean on = false;
+        subject.updateOnState(on);
+        verify(lightStateMock).setOn(on);
+        verify(lightPointMock).updateState(lightStateMock);
+    }
+
+    @Test
+    public void viewLoaded_colorModeIsColorTemperature_initColorTemp() {
+        when(lightStateMock.getColormode()).thenReturn(ColorMode.COLOR_TEMPERATURE);
+        int colorTemp = 4;
+        when(lightStateMock.getCT()).thenReturn(colorTemp);
+        subject.viewLoaded(singleLightInterfaceMock);
+        verify(singleLightInterfaceMock).initColorTemp(colorTemp);
     }
 }

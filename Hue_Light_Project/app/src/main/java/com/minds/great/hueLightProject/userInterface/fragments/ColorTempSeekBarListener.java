@@ -20,30 +20,5 @@ public class ColorTempSeekBarListener implements SeekBar.OnSeekBarChangeListener
         this.light = light;
     }
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        ct = progress + UiConstants.HUE_COLOR_TEMP_OFFSET;
-    }
 
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        lightState.setCT(light.getLightState().getCT());
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (ct != lightState.getCT()) {
-                    lightState.setCT(ct);
-                    light.updateState(lightState);
-                }
-            }
-        }, 300, 300);
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        timer.cancel();
-        lightState.setCT(ct);
-        light.updateState(lightState);
-    }
 }

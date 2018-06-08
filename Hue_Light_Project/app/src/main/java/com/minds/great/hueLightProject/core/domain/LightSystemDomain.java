@@ -1,8 +1,9 @@
 package com.minds.great.hueLightProject.core.domain;
 
 
+import android.annotation.SuppressLint;
+
 import com.minds.great.hueLightProject.core.models.LightSystem;
-import com.philips.lighting.hue.sdk.wrapper.domain.clip.ColorMode;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
 import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
@@ -14,6 +15,7 @@ public class LightSystemDomain {
     private LightSystem lightSystem;
     private int position = 0;
 
+    @SuppressLint("CheckResult")
     public LightSystemDomain(ConnectionDomain connectionDomain) {
         connectionDomain.getConnectionSuccessfulRelay()
                 .subscribe(lightSystem -> this.lightSystem = lightSystem);
@@ -44,10 +46,5 @@ public class LightSystemDomain {
         LightState lightState = lightPoint.getLightState();
         lightState.setXYWithColor(hueColor);
         lightPoint.updateState(lightState);
-    }
-
-    public ColorMode getSelectedLightColorMode() {
-        //TODO: Error handling
-        return getLightList().get(position).getLightState().getColormode();
     }
 }

@@ -17,15 +17,21 @@ import com.minds.great.hueLightProject.userInterface.activities.LightProjectActi
 import com.minds.great.hueLightProject.utils.dagger.UiConstants;
 import com.philips.lighting.hue.sdk.wrapper.domain.clip.ColorMode;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
-import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
 import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 
 import org.androidannotations.annotations.EFragment;
 
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+
 @EFragment
-public class SingleLightFragment extends Fragment implements SingleLightInterface {
+public class SingleLightFragment extends Fragment implements SingleLightInterface, SeekBar.OnSeekBarChangeListener {
 
     @Inject
     SingleLightPresenter singleLightPresenter;
@@ -35,7 +41,8 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
     SeekBar dimmer;
     SeekBar colorTemp;
     ColorPickerView colorPicker;
-
+    private int dimmerValue = 0;
+    private Disposable subscribe;
     private LightPoint light;
 
     @Override
@@ -62,22 +69,11 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
 
     private void initLight() {
         light = singleLightPresenter.getSelectedListPoint();
-        onOffSwitch.setChecked(light.getLightState().isOn());
-        lightName.setText(light.getName());
+
         onOffSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-            LightState lightState = new LightState();
-            lightState.setOn(b);
-            light.updateState(lightState);
+            singleLightPresenter.updateOnState(b);
         });
-        dimmer.setProgress(light.getLightState().getBrightness());
-        dimmer.setOnSeekBarChangeListener(new DimmerSeekBarListener(light));
-
-        if (light.getLightState().getColormode().equals(ColorMode.COLOR_TEMPERATURE)) {
-            colorTemp = (SeekBar) getView().findViewById(R.id.colorTemp);
-
-            colorTemp.setProgress(light.getLightState().getCT() - UiConstants.HUE_COLOR_TEMP_OFFSET);
-            colorTemp.setOnSeekBarChangeListener(new ColorTempSeekBarListener(light));
-        }
+        dimmer.setOnSeekBarChangeListener(this);
     }
 
 
@@ -134,22 +130,90 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
     }
 
     @Override
-    public void showColorTempSeekBar() {
-        getActivity().findViewById(R.id.colorTemp).setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void updateLight(LightPoint updatedLight) {
+    public void updateSingleLightUi(LightPoint updatedLight) {
         getActivity().runOnUiThread(() -> {
             onOffSwitch.setChecked(updatedLight.getLightState().isOn());
             dimmer.setProgress(updatedLight.getLightState().getBrightness());
             if (light.getLightState().getColormode().equals(ColorMode.COLOR_TEMPERATURE)) {
                 colorTemp.setProgress(updatedLight.getLightState().getCT() - UiConstants.HUE_COLOR_TEMP_OFFSET);
             }
-            if(null != colorPicker){
+            if (null != colorPicker) {
                 int color = calculateIntColorFromHueColor(updatedLight.getLightState().getColor());
                 colorPicker.setColor(color, true);
             }
         });
+    }
+
+    @Override
+    public void setOnOffSwitch(boolean lightIsOn) {
+        onOffSwitch.setChecked(lightIsOn);
+    }
+
+    @Override
+    public void setLightNameText(String nameOfLight) {
+        lightName.setText(nameOfLight);
+    }
+
+    @Override
+    public void setDimmerProgress(int brightness) {
+        dimmer.setProgress(brightness);
+    }
+
+    @Override
+    public void initColorTemp(int colorTemp1) {
+        if (getView() != null) {
+            colorTemp = (SeekBar) getView().findViewById(R.id.colorTemp);
+            colorTemp.setProgress(colorTemp1 - UiConstants.HUE_COLOR_TEMP_OFFSET);
+            colorTemp.setOnSeekBarChangeListener(new ColorTempSeekBarListener(light));
+            colorTemp.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+        dimmerValue = i;
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        subscribe = Observable.timer(300, TimeUnit.MILLISECONDS).subscribe(aLong -> {
+            singleLightPresenter.updateBrightness(dimmerValue);
+        });
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        if (subscribe != null) {
+            subscribe.dispose();
+            subscribe = null;
+        }
+        singleLightPresenter.updateBrightness(dimmerValue);
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        ct = progress + UiConstants.HUE_COLOR_TEMP_OFFSET;
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        lightState.setCT(light.getLightState().getCT());
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (ct != lightState.getCT()) {
+                    lightState.setCT(ct);
+                    light.updateState(lightState);
+                }
+            }
+        }, 300, 300);
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        timer.cancel();
+        lightState.setCT(ct);
+        light.updateState(lightState);
     }
 }

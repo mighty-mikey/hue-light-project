@@ -6,7 +6,13 @@ import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 public interface SingleLightInterface {
     void showColorPicker();
 
-    void showColorTempSeekBar();
+    void updateSingleLightUi(LightPoint lightSystem);
 
-    void updateLight(LightPoint lightSystem);
+    void setOnOffSwitch(boolean lightIsOn);
+
+    void setLightNameText(String nameOfLight);
+
+    void setDimmerProgress(int brightness);
+
+    void initColorTemp(int colorTemp);
 }
