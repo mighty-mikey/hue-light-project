@@ -7,6 +7,7 @@ import com.minds.great.hueLightProject.core.models.LightSystem;
 import com.philips.lighting.hue.sdk.wrapper.domain.clip.ColorMode;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
+import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -129,5 +131,14 @@ public class SingleLightPresenterTest {
         when(lightStateMock.getCT()).thenReturn(colorTemp);
         subject.viewLoaded(singleLightInterfaceMock);
         verify(singleLightInterfaceMock).initColorTemp(colorTemp);
+    }
+
+    @Test
+    public void getColor_returnsSelectedLightColor() {
+        HueColor.RGB rgb = new HueColor.RGB(1, 2, 3);
+        HueColor hueColor = new HueColor(rgb, null, null);
+        when(lightStateMock.getColor()).thenReturn(hueColor);
+        HueColor resultColor = subject.getColor();
+        assertThat(resultColor).isEqualTo(hueColor);
     }
 }

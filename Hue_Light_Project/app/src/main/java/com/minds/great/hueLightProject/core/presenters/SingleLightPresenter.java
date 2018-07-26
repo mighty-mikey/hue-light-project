@@ -69,4 +69,8 @@ public class SingleLightPresenter {
         lightState.setOn(on);
         light.updateState(lightState);
     }
+
+    public HueColor getColor() {
+        return lightSystemDomain.getSelectedLightPoint().getLightState().getColor();
+    }
 }

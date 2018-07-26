@@ -31,7 +31,7 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
 @EFragment
-public class SingleLightFragment extends Fragment implements SingleLightInterface, SeekBar.OnSeekBarChangeListener {
+public class SingleLightFragment extends Fragment implements SingleLightInterface{
 
     @Inject
     SingleLightPresenter singleLightPresenter;
@@ -70,12 +70,9 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
     private void initLight() {
         light = singleLightPresenter.getSelectedListPoint();
 
-        onOffSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
-            singleLightPresenter.updateOnState(b);
-        });
-        dimmer.setOnSeekBarChangeListener(this);
+        onOffSwitch.setOnCheckedChangeListener((compoundButton, b) -> singleLightPresenter.updateOnState(b));
+        dimmer.setOnSeekBarChangeListener(new DimmerSeekBarListener(singleLightPresenter));
     }
-
 
     @Override
     public void onPause() {
@@ -167,53 +164,5 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
             colorTemp.setOnSeekBarChangeListener(new ColorTempSeekBarListener(light));
             colorTemp.setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-        dimmerValue = i;
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        subscribe = Observable.timer(300, TimeUnit.MILLISECONDS).subscribe(aLong -> {
-            singleLightPresenter.updateBrightness(dimmerValue);
-        });
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        if (subscribe != null) {
-            subscribe.dispose();
-            subscribe = null;
-        }
-        singleLightPresenter.updateBrightness(dimmerValue);
-    }
-
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        ct = progress + UiConstants.HUE_COLOR_TEMP_OFFSET;
-    }
-
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-        lightState.setCT(light.getLightState().getCT());
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (ct != lightState.getCT()) {
-                    lightState.setCT(ct);
-                    light.updateState(lightState);
-                }
-            }
-        }, 300, 300);
-    }
-
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-        timer.cancel();
-        lightState.setCT(ct);
-        light.updateState(lightState);
     }
 }
