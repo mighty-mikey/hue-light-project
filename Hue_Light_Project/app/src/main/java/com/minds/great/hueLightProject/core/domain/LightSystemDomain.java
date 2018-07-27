@@ -40,11 +40,4 @@ public class LightSystemDomain {
     public LightPoint getSelectedLightPoint() {
         return getLightList().get(getSelectedLightPosition());
     }
-
-    public void setColor(HueColor hueColor) {
-        LightPoint lightPoint = getLightList().get(position);
-        LightState lightState = lightPoint.getLightState();
-        lightState.setXYWithColor(hueColor);
-        lightPoint.updateState(lightState);
-    }
 }

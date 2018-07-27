@@ -14,6 +14,9 @@ public class SingleLightPresenter {
     private ConnectionDomain connectionDomain;
     private LightSystemDomain lightSystemDomain;
     private Disposable subscribe;
+    private SingleLightInterface view;
+    private LightPoint light;
+    private LightState lightState;
 
     public SingleLightPresenter(ConnectionDomain connectionDomain, LightSystemDomain lightSystemDomain) {
         this.connectionDomain = connectionDomain;
@@ -21,51 +24,70 @@ public class SingleLightPresenter {
     }
 
     public void viewLoaded(SingleLightInterface singleLightInterface) {
-        subscribe = connectionDomain.getLightsAndGroupsHeartbeatRelay()
-                .subscribe(lightSystem -> {
-                    LightPoint light = lightSystem.getLight(lightSystemDomain.getSelectedLightPosition());
-                    singleLightInterface.updateSingleLightUi(light);
-                });
+        this.view = singleLightInterface;
+        subscribe = connectionDomain.getLightsAndGroupsHeartbeatRelay().subscribe(lightSystem -> updateUiFromLight());
+        updateUiFromLight();
+    }
+
+    private void updateUiFromLight() {
         LightPoint light = lightSystemDomain.getSelectedLightPoint();
-        singleLightInterface.setOnOffSwitch(light.getLightState().isOn());
-        singleLightInterface.setLightNameText(light.getName());
-        singleLightInterface.setDimmerProgress(light.getLightState().getBrightness());
+        view.setOnOffSwitch(light.getLightState().isOn());
+        view.setLightNameText(light.getName());
+        view.setDimmerProgress(light.getLightState().getBrightness());
 
         ColorMode colormode = light.getLightState().getColormode();
         if (colormode.equals(ColorMode.XY)) {
-            singleLightInterface.showColorPicker();
+            view.showColorPicker();
         } else if (colormode.equals(ColorMode.COLOR_TEMPERATURE)) {
-            singleLightInterface.initColorTemp(light.getLightState().getCT());
+            view.initColorTemp(light.getLightState().getCT());
         }
     }
 
     public void viewUnloaded() {
+        //no test don't remove:
+        view = null;
         if (subscribe != null) {
             subscribe.dispose();
             subscribe = null;
         }
     }
 
-    public void setColor(HueColor hueColor) {
-        lightSystemDomain.setColor(hueColor);
-    }
-
     public LightPoint getSelectedListPoint() {
         return lightSystemDomain.getSelectedLightPoint();
     }
 
+    public void updateColor(HueColor hueColor) {
+        refreshLightState();
+        lightState.setXYWithColor(hueColor);
+        lightState.setOn(true);
+        light.updateState(lightState);
+    }
+
     public void updateBrightness(int brightness) {
-        LightPoint light = lightSystemDomain.getSelectedLightPoint();
-        LightState lightState = light.getLightState();
+        refreshLightState();
         if (brightness != lightState.getBrightness()) {
             lightState.setBrightness(brightness);
+            lightState.setOn(true);
+            light.updateState(lightState);
+        }
+    }
+
+    private void refreshLightState() {
+        light = lightSystemDomain.getSelectedLightPoint();
+        lightState = light.getLightState();
+    }
+
+    public void updateColorTemperature(int colorTemperature) {
+        refreshLightState();
+        if (colorTemperature != lightState.getCT()) {
+            lightState.setCT(colorTemperature);
+            lightState.setOn(true);
             light.updateState(lightState);
         }
     }
 
     public void updateOnState(boolean on) {
-        LightPoint light = lightSystemDomain.getSelectedLightPoint();
-        LightState lightState = light.getLightState();
+        refreshLightState();
         lightState.setOn(on);
         light.updateState(lightState);
     }

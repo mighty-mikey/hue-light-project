@@ -27,8 +27,7 @@ public class LightsListFragment extends Fragment implements LightsListInterface 
     private LightsListAdapter lightsListAdapter;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_lights_list, container, false);
 

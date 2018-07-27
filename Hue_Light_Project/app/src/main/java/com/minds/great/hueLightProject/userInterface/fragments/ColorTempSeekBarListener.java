@@ -2,49 +2,46 @@ package com.minds.great.hueLightProject.userInterface.fragments;
 
 import android.widget.SeekBar;
 
+import com.minds.great.hueLightProject.core.presenters.SingleLightPresenter;
 import com.minds.great.hueLightProject.utils.dagger.UiConstants;
-import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 
 
 public class ColorTempSeekBarListener implements SeekBar.OnSeekBarChangeListener {
-    Timer timer = null;
-    LightState lightState = new LightState();
-    int ct = 0;
-    private LightPoint light;
+    private int colorTemperature = 0;
+    private SingleLightPresenter presenter;
+    private Disposable subscribe;
 
-    public ColorTempSeekBarListener(LightPoint light) {
-        this.light = light;
+    ColorTempSeekBarListener(SingleLightPresenter presenter) {
+        this.presenter = presenter;
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        ct = progress + UiConstants.HUE_COLOR_TEMP_OFFSET;
+        colorTemperature = progress + UiConstants.HUE_COLOR_TEMP_OFFSET;
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-        lightState.setCT(light.getLightState().getCT());
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (ct != lightState.getCT()) {
-                    lightState.setCT(ct);
-                    light.updateState(lightState);
-                }
-            }
-        }, 300, 300);
+        subscribe = Observable
+                .timer(300, TimeUnit.MILLISECONDS)
+                .subscribe(aLong -> presenter.updateColorTemperature(colorTemperature));
+
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        timer.cancel();
-        lightState.setCT(ct);
-        light.updateState(lightState);
+        if (subscribe != null) {
+            subscribe.dispose();
+            subscribe = null;
+        }
+        presenter.updateColorTemperature(colorTemperature);
     }
-
 }
