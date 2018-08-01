@@ -36,6 +36,8 @@ public class SingleLightPresenterTest {
     private LightPoint lightPointMock;
     @Mock
     private LightState lightStateMock;
+    @Mock
+    private HueColor hueColorMock;
     private SingleLightPresenter subject;
     private PublishRelay<LightSystem> heartBeatRelay;
     private final int brightness = 5;
@@ -43,24 +45,23 @@ public class SingleLightPresenterTest {
     private String lightName = "Light Name";
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         heartBeatRelay = PublishRelay.create();
         when(connectionDomain.getLightsAndGroupsHeartbeatRelay()).thenReturn(heartBeatRelay);
         when(lightSystemDomain.getSelectedLightPoint()).thenReturn(lightPointMock);
         when(lightPointMock.getLightState()).thenReturn(lightStateMock);
         when(lightStateMock.getColormode()).thenReturn(ColorMode.XY);
         subject = new SingleLightPresenter(connectionDomain, lightSystemDomain);
-        //TODO:  add tests around connectionDomain.
     }
 
     @Test
-    public void viewLoaded_whenSelectedLightIsColorLight_showColorPicker() throws Exception {
+    public void viewLoaded_whenSelectedLightIsColorLight_showColorPicker() {
         subject.viewLoaded(singleLightInterfaceMock);
         verify(singleLightInterfaceMock).showColorPicker();
     }
 
     @Test
-    public void viewLoaded_whenSelectedLightIsNotColorLight_showColorPickerNotCalled() throws Exception {
+    public void viewLoaded_whenSelectedLightIsNotColorLight_showColorPickerNotCalled() {
         int colorTemperature = 10;
         when(lightStateMock.getColormode()).thenReturn(ColorMode.COLOR_TEMPERATURE);
         when(lightStateMock.getCT()).thenReturn(colorTemperature);
@@ -176,7 +177,7 @@ public class SingleLightPresenterTest {
     }
 
     @Test
-    public void viewLoaded_whenSelectedLightIsColorLight_andHeartBeatUpDates_showColorPicker() throws Exception {
+    public void viewLoaded_whenSelectedLightIsColorLight_andHeartBeatUpDates_showColorPicker() {
         subject.viewLoaded(singleLightInterfaceMock);
         reset(singleLightInterfaceMock);
         heartBeatRelay.accept(lightSystemMock);
@@ -184,7 +185,7 @@ public class SingleLightPresenterTest {
     }
 
     @Test
-    public void viewLoaded_whenSelectedLightIsNotColorLight_andHeartBeatUpDates_showColorPickerNotCalled() throws Exception {
+    public void viewLoaded_whenSelectedLightIsNotColorLight_andHeartBeatUpDates_showColorPickerNotCalled() {
         int colorTemperature = 10;
         when(lightStateMock.getColormode()).thenReturn(ColorMode.COLOR_TEMPERATURE);
         when(lightStateMock.getCT()).thenReturn(colorTemperature);
@@ -197,20 +198,16 @@ public class SingleLightPresenterTest {
 
     @Test
     public void getColor_returnsSelectedLightColor() {
-        HueColor.RGB rgb = new HueColor.RGB(255, 0, 0);
-        HueColor hueColor = new HueColor(rgb, null, null);
-        when(lightStateMock.getColor()).thenReturn(hueColor);
+        when(lightStateMock.getColor()).thenReturn(hueColorMock);
         HueColor resultColor = subject.getColor();
-        assertThat(resultColor).isEqualTo(hueColor);
+        assertThat(resultColor).isEqualTo(hueColorMock);
     }
 
     @Test
     public void updateColor_setsColorToLightState() {
-        HueColor.RGB rgb = new HueColor.RGB(255, 0, 0);
-        HueColor hueColor = new HueColor(rgb, null, null);
-        subject.updateColor(hueColor);
+        subject.updateColor(hueColorMock);
         verify(lightStateMock).setOn(true);
-        verify(lightStateMock).setXYWithColor(hueColor);
+        verify(lightStateMock).setXYWithColor(hueColorMock);
         verify(lightPointMock).updateState(lightStateMock);
     }
 }
