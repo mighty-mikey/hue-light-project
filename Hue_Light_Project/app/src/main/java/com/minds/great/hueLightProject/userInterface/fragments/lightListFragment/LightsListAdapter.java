@@ -129,7 +129,7 @@ public class LightsListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    void lightsAndGroupsHeartbeat(List<LightPoint> lightPoints) {
+    void updateListData(List<LightPoint> lightPoints) {
         this.lightsList = lightPoints;
         notifyDataSetChanged();
     }

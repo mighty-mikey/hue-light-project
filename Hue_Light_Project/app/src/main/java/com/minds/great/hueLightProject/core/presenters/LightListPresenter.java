@@ -23,8 +23,10 @@ public class LightListPresenter {
     }
 
     public void viewLoaded(LightsListInterface lightsListInterface) {
-        heartBeatRelay = connectionDomain.getLightsAndGroupsHeartbeatRelay().subscribe(lightsListInterface::updateLights);
+        heartBeatRelay = connectionDomain.getHeartBeatRelay()
+                .subscribe(lightSystem -> lightsListInterface.updateLights(lightSystem.getBridge().getBridgeState().getLightPoints()));
         view = lightsListInterface;
+        view.updateLights(lightSystemDomain.getLightList());
     }
     public void viewUnloaded(){
         if(heartBeatRelay != null){
@@ -37,9 +39,5 @@ public class LightListPresenter {
     public void setSelectedLightPosition(int position) {
         lightSystemDomain.setSelectedLightPosition(position);
         view.navigateToSingleLightFragment();
-    }
-
-    public List<LightPoint> getLightList() {
-        return lightSystemDomain.getLightList();
     }
 }

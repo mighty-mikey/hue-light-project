@@ -59,7 +59,7 @@ public class ConnectionDomain {
         return lightSystemInterface.getLightSystemObservable();
     }
 
-    public PublishRelay<LightSystem> getLightsAndGroupsHeartbeatRelay() {
+    public PublishRelay<LightSystem> getHeartBeatRelay() {
         return lightSystemInterface.getLightsAndGroupsHeartbeatRelayObservable();
     }
 

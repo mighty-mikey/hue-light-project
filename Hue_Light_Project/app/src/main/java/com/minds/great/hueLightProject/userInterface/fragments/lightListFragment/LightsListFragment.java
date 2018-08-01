@@ -10,7 +10,6 @@ import android.widget.ListView;
 import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.MainInterface;
 import com.minds.great.hueLightProject.core.presenters.LightsListInterface;
-import com.minds.great.hueLightProject.core.models.LightSystem;
 import com.minds.great.hueLightProject.core.presenters.LightListPresenter;
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
@@ -23,23 +22,20 @@ public class LightsListFragment extends Fragment implements LightsListInterface 
 
     @Inject
     LightListPresenter lightListPresenter;
-
     private LightsListAdapter lightsListAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_lights_list, container, false);
 
         if(getActivity() instanceof LightProjectActivity) {
             ((LightProjectActivity) getActivity()).getInjector().inject(this);
         }
+
         lightsListAdapter = new LightsListAdapter(lightListPresenter);
 
         ListView lightsList = (ListView) view.findViewById(R.id.lightsList);
         lightsList.setAdapter(lightsListAdapter);
-        List<LightPoint> lightList = lightListPresenter.getLightList();
-        lightsListAdapter.setLightsList(lightList, getContext());
 
         return view;
     }
@@ -57,11 +53,8 @@ public class LightsListFragment extends Fragment implements LightsListInterface 
     }
 
     @Override
-    public void updateLights(LightSystem lightSystem) {
-        getActivity().runOnUiThread(() -> {
-            List<LightPoint> lightPoints = lightSystem.getBridge().getBridgeState().getLightPoints();
-            lightsListAdapter.lightsAndGroupsHeartbeat(lightPoints);
-        });
+    public void updateLights(List<LightPoint> lightPoints) {
+        getActivity().runOnUiThread(() -> lightsListAdapter.updateListData(lightPoints));
     }
 
     @Override

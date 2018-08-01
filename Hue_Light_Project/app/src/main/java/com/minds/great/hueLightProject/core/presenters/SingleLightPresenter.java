@@ -25,7 +25,7 @@ public class SingleLightPresenter {
 
     public void viewLoaded(SingleLightInterface singleLightInterface) {
         this.view = singleLightInterface;
-        subscribe = connectionDomain.getLightsAndGroupsHeartbeatRelay().subscribe(lightSystem -> updateUiFromLight());
+        subscribe = connectionDomain.getHeartBeatRelay().subscribe(lightSystem -> updateUiFromLight());
         updateUiFromLight();
     }
 

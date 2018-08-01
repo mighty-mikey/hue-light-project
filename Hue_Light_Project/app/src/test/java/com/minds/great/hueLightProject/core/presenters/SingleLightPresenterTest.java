@@ -47,7 +47,7 @@ public class SingleLightPresenterTest {
     @Before
     public void setUp() {
         heartBeatRelay = PublishRelay.create();
-        when(connectionDomain.getLightsAndGroupsHeartbeatRelay()).thenReturn(heartBeatRelay);
+        when(connectionDomain.getHeartBeatRelay()).thenReturn(heartBeatRelay);
         when(lightSystemDomain.getSelectedLightPoint()).thenReturn(lightPointMock);
         when(lightPointMock.getLightState()).thenReturn(lightStateMock);
         when(lightStateMock.getColormode()).thenReturn(ColorMode.XY);

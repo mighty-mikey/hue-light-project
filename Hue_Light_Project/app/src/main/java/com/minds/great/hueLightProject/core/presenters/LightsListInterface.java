@@ -1,10 +1,12 @@
 package com.minds.great.hueLightProject.core.presenters;
 
-import com.minds.great.hueLightProject.core.models.LightSystem;
+import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
+
+import java.util.List;
 
 public interface LightsListInterface {
 
-    void updateLights(LightSystem lightSystem);
+    void updateLights(List<LightPoint> lightSystem);
 
     void navigateToSingleLightFragment();
 }
