@@ -5,8 +5,6 @@ import android.annotation.SuppressLint;
 
 import com.minds.great.hueLightProject.core.models.LightSystem;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
-import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
-import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class LightSystemDomain {
         this.position = position;
     }
 
-    public int getSelectedLightPosition() {
+    private int getSelectedLightPosition() {
         return this.position;
     }
 

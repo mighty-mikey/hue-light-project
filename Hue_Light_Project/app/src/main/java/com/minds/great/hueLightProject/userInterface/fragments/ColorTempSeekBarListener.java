@@ -4,10 +4,7 @@ import android.widget.SeekBar;
 
 import com.minds.great.hueLightProject.core.presenters.SingleLightPresenter;
 import com.minds.great.hueLightProject.utils.dagger.UiConstants;
-import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;

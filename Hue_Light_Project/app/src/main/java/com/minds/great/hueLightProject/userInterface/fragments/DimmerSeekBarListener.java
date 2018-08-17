@@ -3,8 +3,6 @@ package com.minds.great.hueLightProject.userInterface.fragments;
 import android.widget.SeekBar;
 
 import com.minds.great.hueLightProject.core.presenters.SingleLightPresenter;
-import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
-import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
 
 import java.util.concurrent.TimeUnit;
 

@@ -4,4 +4,7 @@
     <string name="wait_for_connection">Press the push-link button on the Hue Bridge to connect to it.</string>
     <string name="no_bridge_found">No bridges found. Check network connection and try again.</string>
     <string name="lights_list_title">Lights</string>
+    <string name="logo">logo</string>
+    <string name="light_bulb_on">light bulb on</string>
+    <string name="light_bulb_off">light bulb off</string>
 </resources>

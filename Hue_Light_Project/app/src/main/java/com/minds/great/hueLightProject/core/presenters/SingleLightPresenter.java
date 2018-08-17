@@ -26,21 +26,35 @@ public class SingleLightPresenter {
     public void viewLoaded(SingleLightInterface singleLightInterface) {
         this.view = singleLightInterface;
         subscribe = connectionDomain.getHeartBeatRelay().subscribe(lightSystem -> updateUiFromLight());
-        updateUiFromLight();
+        initLightStateView();
     }
 
     private void updateUiFromLight() {
-        LightPoint light = lightSystemDomain.getSelectedLightPoint();
+        ColorMode colormode = light.getLightState().getColormode();
         view.setOnOffSwitch(light.getLightState().isOn());
         view.setLightNameText(light.getName());
         view.setDimmerProgress(light.getLightState().getBrightness());
+        if (colormode.equals(ColorMode.COLOR_TEMPERATURE)) {
+            view.setColorTempProgress(light.getLightState().getCT());
+        }
+    }
 
+    private void initLightStateView(){
+        light = lightSystemDomain.getSelectedLightPoint();
+        Boolean wasLightOn = light.getLightState().isOn();
         ColorMode colormode = light.getLightState().getColormode();
         if (colormode.equals(ColorMode.XY)) {
-            view.showColorPicker();
+            if (!wasLightOn) {
+                light.getLightState().setOn(true);
+            }
+            HueColor color = light.getLightState().getColor();
+            color.setBrightness(255.0);
+            view.showColorPicker(color);
+            light.getLightState().setOn(wasLightOn);
         } else if (colormode.equals(ColorMode.COLOR_TEMPERATURE)) {
-            view.initColorTemp(light.getLightState().getCT());
+            view.showColorTemp();
         }
+        updateUiFromLight();
     }
 
     public void viewUnloaded() {
@@ -50,10 +64,6 @@ public class SingleLightPresenter {
             subscribe.dispose();
             subscribe = null;
         }
-    }
-
-    public LightPoint getSelectedListPoint() {
-        return lightSystemDomain.getSelectedLightPoint();
     }
 
     public void updateColor(HueColor hueColor) {

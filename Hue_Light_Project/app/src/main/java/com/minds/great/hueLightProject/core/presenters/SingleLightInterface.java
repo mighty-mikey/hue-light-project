@@ -1,7 +1,9 @@
 package com.minds.great.hueLightProject.core.presenters;
 
+import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
+
 public interface SingleLightInterface {
-    void showColorPicker();
+    void showColorPicker(HueColor color);
 
     void setOnOffSwitch(boolean lightIsOn);
 
@@ -9,5 +11,7 @@ public interface SingleLightInterface {
 
     void setDimmerProgress(int brightness);
 
-    void initColorTemp(int colorTemp);
+    void setColorTempProgress(int colorTemp);
+
+    void showColorTemp();
 }

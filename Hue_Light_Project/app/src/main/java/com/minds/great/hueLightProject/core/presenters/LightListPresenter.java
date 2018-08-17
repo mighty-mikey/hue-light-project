@@ -40,4 +40,8 @@ public class LightListPresenter {
         lightSystemDomain.setSelectedLightPosition(position);
         view.navigateToSingleLightFragment();
     }
+
+    public List<LightPoint> getLightList() {
+        return lightSystemDomain.getLightList();
+    }
 }

@@ -15,7 +15,6 @@ import com.minds.great.hueLightProject.core.presenters.SingleLightInterface;
 import com.minds.great.hueLightProject.core.presenters.SingleLightPresenter;
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
 import com.minds.great.hueLightProject.utils.dagger.UiConstants;
-import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 
 import org.androidannotations.annotations.EFragment;
@@ -33,7 +32,6 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
     SeekBar dimmer;
     SeekBar colorTemp;
     ColorPickerView colorPicker;
-    private LightPoint light;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,9 +48,6 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
         initLight();
         colorPicker.addOnColorSelectedListener(this::changeLightColor);
         singleLightPresenter.viewLoaded(this);
-        HueColor color = light.getLightState().getColor();
-        color.setBrightness(255.0);
-        changeLightColor(color);
     }
 
     private void initViews() {
@@ -64,23 +59,28 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
     }
 
     private void initLight() {
-        light = singleLightPresenter.getSelectedListPoint();
         onOffSwitch.setOnCheckedChangeListener((compoundButton, b) -> singleLightPresenter.updateOnState(b));
         dimmer.setOnSeekBarChangeListener(new DimmerSeekBarListener(singleLightPresenter));
     }
 
     @Override
-    public void initColorTemp(int colorTemp1) {
+    public void setColorTempProgress(int colorTemp1) {
+        colorTemp.setProgress(colorTemp1 - UiConstants.HUE_COLOR_TEMP_OFFSET);
+    }
+
+    @Override
+    public void showColorTemp() {
         if (getView() != null) {
             colorTemp = (SeekBar) getView().findViewById(R.id.colorTemp);
-            colorTemp.setProgress(colorTemp1 - UiConstants.HUE_COLOR_TEMP_OFFSET);
             colorTemp.setOnSeekBarChangeListener(new ColorTempSeekBarListener(singleLightPresenter));
             colorTemp.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
-    public void showColorPicker() {
+    public void showColorPicker(HueColor color) {
+        int i = calculateIntColorFromHueColor(color);
+        colorPicker.setInitialColor(i, false);
         getActivity().runOnUiThread(() -> colorPicker.setVisibility(View.VISIBLE));
     }
 
@@ -98,11 +98,6 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
                 Integer.valueOf(hexString.substring(6, 8), 16)
         );
         singleLightPresenter.updateColor(new HueColor(rgb, null, null));
-    }
-
-    private void changeLightColor(HueColor color) {
-        int i = calculateIntColorFromHueColor(color);
-        colorPicker.setInitialColor(i, false);
     }
 
     private int calculateIntColorFromHueColor(HueColor color) {

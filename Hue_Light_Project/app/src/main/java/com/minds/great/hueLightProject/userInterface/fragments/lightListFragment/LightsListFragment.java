@@ -36,6 +36,8 @@ public class LightsListFragment extends Fragment implements LightsListInterface 
 
         ListView lightsList = (ListView) view.findViewById(R.id.lightsList);
         lightsList.setAdapter(lightsListAdapter);
+        List<LightPoint> lightList = lightListPresenter.getLightList();
+        lightsListAdapter.setLightsList(lightList, getContext());
 
         return view;
     }
