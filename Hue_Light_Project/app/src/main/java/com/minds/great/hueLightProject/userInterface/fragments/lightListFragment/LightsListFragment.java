@@ -2,6 +2,7 @@ package com.minds.great.hueLightProject.userInterface.fragments.lightListFragmen
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ public class LightsListFragment extends Fragment implements LightsListInterface 
     @Inject
     LightListPresenter lightListPresenter;
     private LightsListAdapter lightsListAdapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,5 +64,9 @@ public class LightsListFragment extends Fragment implements LightsListInterface 
     @Override
     public void navigateToSingleLightFragment() {
         ((MainInterface)getContext()).navigateToSingleLightFragment();
+    }
+
+    public static Fragment newInstance() {
+        return new LightsListFragment();
     }
 }

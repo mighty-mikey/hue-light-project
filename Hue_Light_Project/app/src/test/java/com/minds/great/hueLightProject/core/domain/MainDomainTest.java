@@ -79,9 +79,9 @@ public class MainDomainTest {
         when(memory.getLightSystemIpAddress()).thenReturn("1");
         subject.viewLoaded(view);
 
-        verify(view, never()).navigateToLightListFragment();
+        verify(view, never()).navigateToTabFragment();
         connectionSuccessfulRelay.accept(lightSystem);
-        verify(view).navigateToLightListFragment();
+        verify(view).navigateToTabFragment();
     }
 
     @Test
@@ -94,7 +94,7 @@ public class MainDomainTest {
 
 
     @Test
-    public void viewCreated_whenSystemInMemory_navigateToLights() throws Exception {
+    public void viewCreated_whenSystemInMemory_navigateToTabs() throws Exception {
         when(memory.getLightSystemIpAddress()).thenReturn("1");
         verify(connectionDomain, never()).connect(any());
         subject.viewLoaded(view);

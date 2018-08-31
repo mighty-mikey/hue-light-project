@@ -10,8 +10,8 @@ import com.minds.great.hueLightProject.core.domain.MainDomain;
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.MainInterface;
 import com.minds.great.hueLightProject.userInterface.fragments.ConnectionFragment;
 import com.minds.great.hueLightProject.userInterface.fragments.MainFragment;
-import com.minds.great.hueLightProject.userInterface.fragments.SingleLightFragment;
-import com.minds.great.hueLightProject.userInterface.fragments.lightListFragment.LightsListFragment;
+import com.minds.great.hueLightProject.userInterface.fragments.singleLightFragment.SingleLightFragment;
+import com.minds.great.hueLightProject.userInterface.fragments.tabFragment.TabFragment;
 import com.minds.great.hueLightProject.utils.dagger.DaggerInjector;
 import com.minds.great.hueLightProject.utils.dagger.HueModule;
 import com.minds.great.hueLightProject.utils.dagger.Injector;
@@ -72,8 +72,8 @@ public class LightProjectActivity extends FragmentActivity implements MainInterf
     }
 
     @Override
-    public void navigateToLightListFragment() {
-        LightsListFragment fragment = new LightsListFragment();
+    public void navigateToTabFragment() {
+        TabFragment fragment = new TabFragment();
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();

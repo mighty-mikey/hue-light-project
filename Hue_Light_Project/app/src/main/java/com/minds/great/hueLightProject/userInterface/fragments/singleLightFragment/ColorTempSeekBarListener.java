@@ -1,33 +1,36 @@
-package com.minds.great.hueLightProject.userInterface.fragments;
+package com.minds.great.hueLightProject.userInterface.fragments.singleLightFragment;
 
 import android.widget.SeekBar;
 
 import com.minds.great.hueLightProject.core.presenters.SingleLightPresenter;
+import com.minds.great.hueLightProject.utils.dagger.UiConstants;
 
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
-public class DimmerSeekBarListener implements SeekBar.OnSeekBarChangeListener {
-    private int brightness = 0;
-    private Disposable subscribe;
-    private SingleLightPresenter presenter;
 
-    DimmerSeekBarListener(SingleLightPresenter presenter) {
+public class ColorTempSeekBarListener implements SeekBar.OnSeekBarChangeListener {
+    private int colorTemperature = 0;
+    private SingleLightPresenter presenter;
+    private Disposable subscribe;
+
+    ColorTempSeekBarListener(SingleLightPresenter presenter) {
         this.presenter = presenter;
     }
 
     @Override
-    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-        brightness = i;
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        colorTemperature = progress + UiConstants.HUE_COLOR_TEMP_OFFSET;
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         subscribe = Observable
                 .timer(300, TimeUnit.MILLISECONDS)
-                .subscribe(aLong -> presenter.updateBrightness(brightness));
+                .subscribe(aLong -> presenter.updateColorTemperature(colorTemperature));
+
     }
 
     @Override
@@ -36,6 +39,6 @@ public class DimmerSeekBarListener implements SeekBar.OnSeekBarChangeListener {
             subscribe.dispose();
             subscribe = null;
         }
-        presenter.updateBrightness(brightness);
+        presenter.updateColorTemperature(colorTemperature);
     }
 }

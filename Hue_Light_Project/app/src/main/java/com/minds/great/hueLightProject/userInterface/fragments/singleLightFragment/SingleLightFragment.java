@@ -1,4 +1,4 @@
-package com.minds.great.hueLightProject.userInterface.fragments;
+package com.minds.great.hueLightProject.userInterface.fragments.singleLightFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

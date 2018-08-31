@@ -7,4 +7,6 @@
     <string name="logo">logo</string>
     <string name="light_bulb_on">light bulb on</string>
     <string name="light_bulb_off">light bulb off</string>
+    <string name="lights">Lights</string>
+    <string name="moods">Moods</string>
 </resources>

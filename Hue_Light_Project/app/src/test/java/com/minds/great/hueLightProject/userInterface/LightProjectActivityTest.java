@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import com.minds.great.hueLightProject.BuildConfig;
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
 import com.minds.great.hueLightProject.userInterface.fragments.ConnectionFragment;
-import com.minds.great.hueLightProject.userInterface.fragments.lightListFragment.LightsListFragment;
+import com.minds.great.hueLightProject.userInterface.fragments.tabFragment.TabFragment;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -43,11 +43,11 @@ public class LightProjectActivityTest {
     @Test
     public void navigateToLightFragment_checkFragmentManager() throws Exception {
         FragmentManager supportFragmentManager = subject.getSupportFragmentManager();
-        subject.navigateToLightListFragment();
+        subject.navigateToTabFragment();
         List<Fragment> fragments = supportFragmentManager.getFragments();
 
         assertThat(fragments).isNotEmpty();
-        assertThat(fragments.get(0) instanceof LightsListFragment).isTrue();
+        assertThat(fragments.get(0) instanceof TabFragment).isTrue();
 
     }
 
