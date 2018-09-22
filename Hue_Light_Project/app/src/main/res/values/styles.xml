@@ -74,5 +74,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="appBorder"></style>
+    <style name="tabStyle">
+        <item name="android:textSize">20sp</item>
+    </style>
 </resources>

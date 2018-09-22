@@ -2,20 +2,19 @@ package com.minds.great.hueLightProject.userInterface.fragments.tabFragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
+import com.minds.great.hueLightProject.userInterface.fragments.MoodListFragment;
+import com.minds.great.hueLightProject.userInterface.fragments.lightListFragment.LightsListFragment;
 
 public class TabFragment extends Fragment {
-
-    private final int FIRST_PAGE = 0;
-    private final int LAST_PAGE = 1;
 
     @Nullable
     @Override
@@ -27,13 +26,14 @@ public class TabFragment extends Fragment {
         }
 
         TabAdapter tabAdapter = new TabAdapter(getChildFragmentManager());
+        tabAdapter.addFragment(new LightsListFragment(), "Lights");
+        tabAdapter.addFragment(new MoodListFragment(), "Moods");
 
-        ViewPager tabs = (ViewPager) view.findViewById(R.id.pager);
-        tabs.setAdapter(tabAdapter);
-        Button button = (Button) view.findViewById(R.id.goto_first);
-        button.setOnClickListener(v -> tabs.setCurrentItem(FIRST_PAGE));
-        button = (Button) view.findViewById(R.id.goto_last);
-        button.setOnClickListener(v -> tabs.setCurrentItem(LAST_PAGE));
+        ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
+        viewPager.setAdapter(tabAdapter);
+
+        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
         return view;
     }
