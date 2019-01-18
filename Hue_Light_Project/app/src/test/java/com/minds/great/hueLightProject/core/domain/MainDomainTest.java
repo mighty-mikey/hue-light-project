@@ -4,9 +4,9 @@ import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.jakewharton.rxrelay2.PublishRelay;
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.LightSystemInterface;
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.MainInterface;
-import com.minds.great.hueLightProject.core.domain.domainInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.models.LightSystem;
+import com.minds.great.hueLightProject.data.HueDomain;
 
 import org.junit.After;
 import org.junit.Before;
@@ -31,7 +31,7 @@ public class MainDomainTest {
     private MainInterface view;
 
     @Mock
-    private MemoryInterface memory;
+    private HueDomain hueDomain;
 
     @Mock
     private LightSystemInterface lightSystemInterface;
@@ -50,25 +50,25 @@ public class MainDomainTest {
         when(connectionDomain.getConnectionSuccessfulRelay()).thenReturn(connectionSuccessfulRelay);
         when(lightSystemInterface.getErrorObservable()).thenReturn(errorRelay);
 
-        subject = new MainDomain(memory, connectionDomain, lightSystemInterface);
+        subject = new MainDomain(hueDomain, connectionDomain, lightSystemInterface);
     }
 
     @Test
     public void viewCreated_callsCheckMemory(){
         subject.viewLoaded(view);
-        verify(memory).getLightSystemIpAddress();
+        verify(hueDomain).getLastConnectedBridgeIpAddress();
     }
 
     @Test
     public void viewCreated_whenLightSystemIsNull_navigatesToConnectionActivity() throws Exception {
-        when(memory.getLightSystemIpAddress()).thenReturn(null);
+        when(hueDomain.getLastConnectedBridgeIpAddress()).thenReturn(null);
         subject.viewLoaded(view);
         verify(view).navigateToConnectionFragment();
     }
 
     @Test
     public void viewCreated_whenLightSystemIsNotNull_connectsToLightSystem() throws Exception {
-        when(memory.getLightSystemIpAddress()).thenReturn("1");
+        when(hueDomain.getLastConnectedBridgeIpAddress()).thenReturn("1");
         subject.viewLoaded(view);
         verify(connectionDomain).connect("1");
     }
@@ -76,7 +76,7 @@ public class MainDomainTest {
     @Test
     public void viewCreated_whenConnectionSuccessful_switchToLightList() throws Exception {
         LightSystem lightSystem = new LightSystem.Builder().build();
-        when(memory.getLightSystemIpAddress()).thenReturn("1");
+        when(hueDomain.getLastConnectedBridgeIpAddress()).thenReturn("1");
         subject.viewLoaded(view);
 
         verify(view, never()).navigateToTabFragment();
@@ -86,7 +86,7 @@ public class MainDomainTest {
 
     @Test
     public void viewCreated_whenSystemNotInMemory_callNavigateToConnectionActivity() throws Exception {
-        when(memory.getLightSystemIpAddress()).thenReturn(null);
+        when(hueDomain.getLastConnectedBridgeIpAddress()).thenReturn(null);
         verify(view, never()).navigateToConnectionFragment();
         subject.viewLoaded(view);
         verify(view).navigateToConnectionFragment();
@@ -95,7 +95,7 @@ public class MainDomainTest {
 
     @Test
     public void viewCreated_whenSystemInMemory_navigateToTabs() throws Exception {
-        when(memory.getLightSystemIpAddress()).thenReturn("1");
+        when(hueDomain.getLastConnectedBridgeIpAddress()).thenReturn("1");
         verify(connectionDomain, never()).connect(any());
         subject.viewLoaded(view);
         verify(connectionDomain).connect(any());
@@ -105,7 +105,7 @@ public class MainDomainTest {
     public void tearDown() throws Exception {
         connectionSuccessfulRelay = null;
         reset(view);
-        reset(memory);
+        reset(hueDomain);
         reset(connectionDomain);
     }
 }

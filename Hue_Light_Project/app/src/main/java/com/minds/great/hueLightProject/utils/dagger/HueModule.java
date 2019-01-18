@@ -4,8 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.LightSystemInterface;
-import com.minds.great.hueLightProject.core.domain.domainInterfaces.MemoryInterface;
-import com.minds.great.hueLightProject.data.HueMemory;
+import com.minds.great.hueLightProject.data.HueDomain;
 import com.minds.great.hueLightProject.hueImpl.HueLightSystem;
 
 import javax.inject.Singleton;
@@ -31,7 +30,7 @@ public class HueModule {
 
     @Provides
     @Singleton
-    MemoryInterface providesMemoryInterface(){
-        return new HueMemory();
+    HueDomain providesHueDomain(){
+        return new HueDomain();
     }
 }

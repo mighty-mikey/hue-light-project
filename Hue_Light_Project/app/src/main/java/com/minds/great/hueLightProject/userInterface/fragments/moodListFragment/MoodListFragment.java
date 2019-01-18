@@ -1,13 +1,19 @@
-package com.minds.great.hueLightProject.userInterface.fragments;
+package com.minds.great.hueLightProject.userInterface.fragments.moodListFragment;
 
+import android.arch.lifecycle.Observer;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.minds.great.hueLightProject.R;
+import com.minds.great.hueLightProject.core.models.Mood;
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
+
+import java.util.List;
 
 public class MoodListFragment extends Fragment {
 
@@ -18,6 +24,11 @@ public class MoodListFragment extends Fragment {
         if(getActivity() instanceof LightProjectActivity) {
             ((LightProjectActivity) getActivity()).getInjector().inject(this);
         }
+
+
+        MoodListViewModel moodListViewModel = ((LightProjectActivity) getActivity()).getMoodListViewModel();
+
+        moodListViewModel.getAllMoods().observe(this, moods -> ((TextView)view.findViewById(R.id.testID)).setText(moods.toString()));
 
         return view;
     }

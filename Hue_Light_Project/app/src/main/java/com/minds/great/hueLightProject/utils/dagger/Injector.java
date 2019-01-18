@@ -4,7 +4,7 @@ import com.minds.great.hueLightProject.userInterface.fragments.ConnectionFragmen
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
 import com.minds.great.hueLightProject.userInterface.fragments.singleLightFragment.SingleLightFragment;
 import com.minds.great.hueLightProject.userInterface.fragments.lightListFragment.LightsListFragment;
-import com.minds.great.hueLightProject.userInterface.fragments.MoodListFragment;
+import com.minds.great.hueLightProject.userInterface.fragments.moodListFragment.MoodListFragment;
 import com.minds.great.hueLightProject.userInterface.fragments.tabFragment.TabFragment;
 
 import javax.inject.Singleton;

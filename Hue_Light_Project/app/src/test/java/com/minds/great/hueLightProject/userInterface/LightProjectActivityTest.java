@@ -9,6 +9,7 @@ import com.minds.great.hueLightProject.userInterface.fragments.ConnectionFragmen
 import com.minds.great.hueLightProject.userInterface.fragments.tabFragment.TabFragment;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class)

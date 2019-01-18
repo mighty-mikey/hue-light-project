@@ -12,6 +12,7 @@ import com.minds.great.hueLightProject.userInterface.fragments.ConnectionFragmen
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;

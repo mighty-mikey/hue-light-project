@@ -1,5 +1,6 @@
 package com.minds.great.hueLightProject.userInterface.activities;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,7 @@ import com.minds.great.hueLightProject.core.domain.MainDomain;
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.MainInterface;
 import com.minds.great.hueLightProject.userInterface.fragments.ConnectionFragment;
 import com.minds.great.hueLightProject.userInterface.fragments.MainFragment;
+import com.minds.great.hueLightProject.userInterface.fragments.moodListFragment.MoodListViewModel;
 import com.minds.great.hueLightProject.userInterface.fragments.singleLightFragment.SingleLightFragment;
 import com.minds.great.hueLightProject.userInterface.fragments.tabFragment.TabFragment;
 import com.minds.great.hueLightProject.utils.dagger.DaggerInjector;
@@ -28,6 +30,7 @@ public class LightProjectActivity extends FragmentActivity implements MainInterf
     MainDomain mainDomain;
     private FragmentManager fragmentManager;
     private Injector injector;
+    private MoodListViewModel moodListViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +41,18 @@ public class LightProjectActivity extends FragmentActivity implements MainInterf
 
         setContentView(R.layout.fragment_container);
 
+        moodListViewModel = ViewModelProviders.of(this).get(MoodListViewModel.class);
+
         fragmentManager = getSupportFragmentManager();
         MainFragment mainFragment = new MainFragment();
         fragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, mainFragment)
                 .commit();
 
+    }
+
+    public MoodListViewModel getMoodListViewModel() {
+        return moodListViewModel;
     }
 
     @Override

@@ -4,9 +4,9 @@ import com.minds.great.hueLightProject.core.domain.ConnectionDomain;
 import com.minds.great.hueLightProject.core.domain.LightSystemDomain;
 import com.minds.great.hueLightProject.core.domain.MainDomain;
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.LightSystemInterface;
-import com.minds.great.hueLightProject.core.domain.domainInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.core.presenters.LightListPresenter;
 import com.minds.great.hueLightProject.core.presenters.SingleLightPresenter;
+import com.minds.great.hueLightProject.data.HueDomain;
 
 import javax.inject.Singleton;
 
@@ -37,8 +37,8 @@ class LightProjectModule {
 
     @Singleton
     @Provides
-    MainDomain providesMainController(MemoryInterface memory, ConnectionDomain connectionDomain, LightSystemInterface lightSystemInterface){
-        return new MainDomain(memory, connectionDomain, lightSystemInterface);
+    MainDomain providesMainController(HueDomain hueDomain, ConnectionDomain connectionDomain, LightSystemInterface lightSystemInterface){
+        return new MainDomain(hueDomain, connectionDomain, lightSystemInterface);
     }
 
     @Singleton

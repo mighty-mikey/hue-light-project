@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
-import com.minds.great.hueLightProject.userInterface.fragments.MoodListFragment;
+import com.minds.great.hueLightProject.userInterface.fragments.moodListFragment.MoodListFragment;
 import com.minds.great.hueLightProject.userInterface.fragments.lightListFragment.LightsListFragment;
 
 public class TabFragment extends Fragment {

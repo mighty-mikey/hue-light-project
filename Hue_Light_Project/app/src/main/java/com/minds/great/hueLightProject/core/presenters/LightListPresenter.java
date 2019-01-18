@@ -3,6 +3,8 @@ package com.minds.great.hueLightProject.core.presenters;
 
 import com.minds.great.hueLightProject.core.domain.ConnectionDomain;
 import com.minds.great.hueLightProject.core.domain.LightSystemDomain;
+import com.minds.great.hueLightProject.core.models.Mood;
+import com.minds.great.hueLightProject.data.MoodDao;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 
 import java.util.List;
@@ -43,5 +45,11 @@ public class LightListPresenter {
 
     public List<LightPoint> getLightList() {
         return lightSystemDomain.getLightList();
+    }
+
+    public void saveMood() {
+        Mood mood = new Mood();
+        mood.setName("myFirstLightMood");
+        mood.setListOfLights(getLightList());
     }
 }

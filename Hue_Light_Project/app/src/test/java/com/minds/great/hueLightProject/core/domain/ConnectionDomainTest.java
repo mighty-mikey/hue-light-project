@@ -4,9 +4,9 @@ import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.jakewharton.rxrelay2.PublishRelay;
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.ConnectionInterface;
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.LightSystemInterface;
-import com.minds.great.hueLightProject.core.domain.domainInterfaces.MemoryInterface;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.models.LightSystem;
+import com.minds.great.hueLightProject.data.HueDomain;
 
 import org.junit.After;
 import org.junit.Before;
@@ -36,7 +36,7 @@ public class ConnectionDomainTest {
     private LightSystemInterface lightSystemMock;
 
     @Mock
-    private MemoryInterface memoryMock;
+    private HueDomain hueDomain;
 
     private ConnectionDomain subject;
 
@@ -78,7 +78,7 @@ public class ConnectionDomainTest {
 
     @Test
     public void viewLoaded_whenStoredLightSystemNotFound_doesNotCallConnect() throws Exception {
-        when(memoryMock.getLightSystemIpAddress()).thenReturn(null);
+        when(hueDomain.getLastConnectedBridgeIpAddress()).thenReturn(null);
         subject.viewLoaded(viewMock);
         verify(lightSystemMock, never()).connectToLightSystem(any());
         verify(lightSystemMock).getLightSystemListObservable();
@@ -87,7 +87,7 @@ public class ConnectionDomainTest {
 
     @Test
     public void viewLoaded_whenLightSystemListFound_showsWaitForConnection() throws Exception {
-        when(memoryMock.getLightSystemIpAddress()).thenReturn(null);
+        when(hueDomain.getLastConnectedBridgeIpAddress()).thenReturn(null);
         subject.viewLoaded(viewMock);
         ArrayList<LightSystem> lightSystemList = new ArrayList<>();
         lightSystemList.add(lightSystem);
@@ -103,12 +103,12 @@ public class ConnectionDomainTest {
     private void resetMocks() {
         reset(viewMock);
         reset(lightSystemMock);
-        reset(memoryMock);
+        reset(hueDomain);
     }
 
     @Test
     public void viewLoaded_whenErrorFound_informsViewOfError() throws Exception {
-        when(memoryMock.getLightSystemIpAddress()).thenReturn(null);
+        when(hueDomain.getLastConnectedBridgeIpAddress()).thenReturn(null);
         subject.viewLoaded(viewMock);
 
         ConnectionError error = new ConnectionError.Builder()
