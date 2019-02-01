@@ -62,9 +62,9 @@ public class LightsListAdapter extends BaseAdapter {
         View itemView = inflateView(itemViewType);
 
         if (itemView != null) {
-            TextView lightName = (TextView) itemView.findViewById(R.id.lightName);
-            ImageView lightOnIcon = (ImageView) itemView.findViewById(R.id.lightOnIcon);
-            ImageView lightOffIcon = (ImageView) itemView.findViewById(R.id.lightOffIcon);
+            TextView lightName = itemView.findViewById(R.id.lightName);
+            ImageView lightOnIcon = itemView.findViewById(R.id.lightOnIcon);
+            ImageView lightOffIcon = itemView.findViewById(R.id.lightOffIcon);
             lightName.setText(light.getName());
 
             if (light.getLightState().isOn()) {

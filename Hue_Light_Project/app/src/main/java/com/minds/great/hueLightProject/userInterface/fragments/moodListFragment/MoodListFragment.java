@@ -4,9 +4,11 @@ import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.minds.great.hueLightProject.R;
@@ -21,14 +23,18 @@ public class MoodListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mood_list, container, false);
 
-        if(getActivity() instanceof LightProjectActivity) {
+        if (getActivity() instanceof LightProjectActivity) {
             ((LightProjectActivity) getActivity()).getInjector().inject(this);
         }
 
 
         MoodListViewModel moodListViewModel = ((LightProjectActivity) getActivity()).getMoodListViewModel();
 
-        moodListViewModel.getAllMoods().observe(this, moods -> ((TextView)view.findViewById(R.id.testID)).setText(moods.toString()));
+        ListView moodList = view.findViewById(R.id.savedMoodsList);
+        MoodListAdapter adapter = new MoodListAdapter();
+        moodList.setAdapter(adapter);
+        moodListViewModel.getAllMoods().observe(this, moods ->
+                adapter.setMoodList(moods, getContext()));
 
         return view;
     }

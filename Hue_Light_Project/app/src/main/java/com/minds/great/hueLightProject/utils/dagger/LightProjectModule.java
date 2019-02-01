@@ -7,6 +7,8 @@ import com.minds.great.hueLightProject.core.domain.domainInterfaces.LightSystemI
 import com.minds.great.hueLightProject.core.presenters.LightListPresenter;
 import com.minds.great.hueLightProject.core.presenters.SingleLightPresenter;
 import com.minds.great.hueLightProject.data.HueDomain;
+import com.minds.great.hueLightProject.data.MoodDao;
+import com.minds.great.hueLightProject.data.MoodRepository;
 
 import javax.inject.Singleton;
 

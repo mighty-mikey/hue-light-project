@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.MainInterface;
+import com.minds.great.hueLightProject.core.models.Mood;
 import com.minds.great.hueLightProject.core.presenters.LightsListInterface;
 import com.minds.great.hueLightProject.core.presenters.LightListPresenter;
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
@@ -42,7 +43,10 @@ public class LightsListFragment extends Fragment implements LightsListInterface 
         lightsListAdapter.setLightsList(lightList, getContext());
 
         View saveButton = view.findViewById(R.id.save_mood);
-        saveButton.setOnClickListener(view1 -> lightListPresenter.saveMood());
+        Mood mood = new Mood();
+        mood.setName("myFirstLightMood");
+        mood.setListOfLights(lightListPresenter.getLightList());
+        saveButton.setOnClickListener(view1 -> ((LightProjectActivity)getActivity()).getMoodListViewModel().insert(mood));
 
         return view;
     }
