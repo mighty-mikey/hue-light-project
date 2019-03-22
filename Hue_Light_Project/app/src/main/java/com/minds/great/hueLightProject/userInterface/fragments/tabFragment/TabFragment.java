@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 
 import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
-import com.minds.great.hueLightProject.userInterface.fragments.moodListFragment.MoodListFragment;
-import com.minds.great.hueLightProject.userInterface.fragments.lightListFragment.LightsListFragment;
+import com.minds.great.hueLightProject.userInterface.fragments.Lists.moodListFragment.MoodListFragment;
+import com.minds.great.hueLightProject.userInterface.fragments.Lists.lightListFragment.LightsListFragment;
 
 public class TabFragment extends Fragment {
 
@@ -29,10 +29,10 @@ public class TabFragment extends Fragment {
         tabAdapter.addFragment(new LightsListFragment(), "Lights");
         tabAdapter.addFragment(new MoodListFragment(), "Moods");
 
-        ViewPager viewPager = (ViewPager) view.findViewById(R.id.pager);
+        ViewPager viewPager = view.findViewById(R.id.pager);
         viewPager.setAdapter(tabAdapter);
 
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs);
+        TabLayout tabLayout = view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         return view;

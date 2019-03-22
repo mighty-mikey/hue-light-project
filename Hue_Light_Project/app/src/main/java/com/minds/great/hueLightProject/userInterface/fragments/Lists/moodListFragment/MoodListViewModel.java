@@ -1,4 +1,4 @@
-package com.minds.great.hueLightProject.userInterface.fragments.moodListFragment;
+package com.minds.great.hueLightProject.userInterface.fragments.Lists.moodListFragment;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;

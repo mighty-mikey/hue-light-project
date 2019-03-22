@@ -11,7 +11,7 @@ import com.minds.great.hueLightProject.core.domain.MainDomain;
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.MainInterface;
 import com.minds.great.hueLightProject.userInterface.fragments.ConnectionFragment;
 import com.minds.great.hueLightProject.userInterface.fragments.MainFragment;
-import com.minds.great.hueLightProject.userInterface.fragments.moodListFragment.MoodListViewModel;
+import com.minds.great.hueLightProject.userInterface.fragments.Lists.moodListFragment.MoodListViewModel;
 import com.minds.great.hueLightProject.userInterface.fragments.singleLightFragment.SingleLightFragment;
 import com.minds.great.hueLightProject.userInterface.fragments.tabFragment.TabFragment;
 import com.minds.great.hueLightProject.utils.dagger.DaggerInjector;

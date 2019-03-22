@@ -1,4 +1,4 @@
-package com.minds.great.hueLightProject.userInterface;
+package com.minds.great.hueLightProject.userInterfaceTests;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
