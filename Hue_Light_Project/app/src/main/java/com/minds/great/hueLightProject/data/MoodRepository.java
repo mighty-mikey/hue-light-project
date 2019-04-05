@@ -10,34 +10,50 @@ import java.util.List;
 
 public class MoodRepository {
     private MoodDao moodDao;
-    private LiveData<List<Mood>> allMoods;
 
     public MoodRepository(Application application) {
         MoodDatabase db = MoodDatabase.getDatabase(application);
         moodDao = db.moodDao();
-        allMoods = moodDao.getAllMoods();
     }
 
     public LiveData<List<Mood>> getAllMoods() {
-        return allMoods;
+        return moodDao.getAllMoods();
     }
 
 
-    public void insert (Mood word) {
-        new insertAsyncTask(moodDao).execute(word);
+    public void insert (Mood mood) {
+        new InsertAsyncTask(moodDao).execute(mood);
     }
 
-    private static class insertAsyncTask extends AsyncTask<Mood, Void, Void> {
+    public void deleteMood(Mood mood) { new DeleteAsyncTask(moodDao).execute(mood);
+    }
+
+    private static class InsertAsyncTask extends AsyncTask<Mood, Void, Void> {
 
         private MoodDao asyncTaskDao;
 
-        insertAsyncTask(MoodDao dao) {
+        InsertAsyncTask(MoodDao dao) {
             asyncTaskDao = dao;
         }
 
         @Override
         protected Void doInBackground(final Mood... params) {
             asyncTaskDao.insert(params[0]);
+            return null;
+        }
+    }
+
+    private static class DeleteAsyncTask extends AsyncTask<Mood, Void, Void> {
+
+        private MoodDao asyncTaskDao;
+
+        DeleteAsyncTask(MoodDao dao) {
+            asyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Mood... params) {
+            asyncTaskDao.deleteMood(params[0]);
             return null;
         }
     }

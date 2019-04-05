@@ -23,7 +23,6 @@ public abstract class MoodDatabase extends RoomDatabase {
                 @Override
                 public void onOpen (@NonNull SupportSQLiteDatabase db){
                     super.onOpen(db);
-//                    new PopulateDbAsync(INSTANCE).execute();
                 }
             };
 
@@ -41,24 +40,6 @@ public abstract class MoodDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
-
-//    private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
-//
-//        private final MoodDao mDao;
-//
-//        PopulateDbAsync(MoodDatabase db) {
-//            mDao = db.moodDao();
-//        }
-//
-//        @Override
-//        protected Void doInBackground(final Void... params) {
-//            Mood mood = new Mood();
-//            mood.setName("meYo");
-//            mDao.insert(mood);
-//            return null;
-//        }
-//    }
-
 }
 
 

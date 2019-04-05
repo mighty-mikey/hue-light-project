@@ -5,6 +5,7 @@ import com.minds.great.hueLightProject.core.domain.LightSystemDomain;
 import com.minds.great.hueLightProject.core.domain.MainDomain;
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.LightSystemInterface;
 import com.minds.great.hueLightProject.core.presenters.LightListPresenter;
+import com.minds.great.hueLightProject.core.presenters.MoodListPresenter;
 import com.minds.great.hueLightProject.core.presenters.SingleLightPresenter;
 import com.minds.great.hueLightProject.data.HueDomain;
 import com.minds.great.hueLightProject.data.MoodDao;
@@ -45,7 +46,13 @@ class LightProjectModule {
 
     @Singleton
     @Provides
-    LightSystemDomain providesLightSystemController(ConnectionDomain connectionDomain){
+    LightSystemDomain providesLightSystemDomain(ConnectionDomain connectionDomain){
         return new LightSystemDomain(connectionDomain);
+    }
+
+    @Singleton
+    @Provides
+    MoodListPresenter providesMoodListPresenter(LightSystemDomain domain){
+        return new MoodListPresenter(domain);
     }
 }

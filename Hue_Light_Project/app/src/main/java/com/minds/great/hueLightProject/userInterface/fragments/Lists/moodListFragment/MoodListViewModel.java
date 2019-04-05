@@ -26,4 +26,6 @@ public class MoodListViewModel extends AndroidViewModel{
     public void insert(Mood mood){
         moodRepository.insert(mood);
     }
+
+    public void deleteMood(Mood mood) { moodRepository.deleteMood(mood); }
 }

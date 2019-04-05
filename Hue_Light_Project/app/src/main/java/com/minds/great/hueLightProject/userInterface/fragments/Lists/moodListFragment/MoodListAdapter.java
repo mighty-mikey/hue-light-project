@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.core.models.Mood;
+import com.minds.great.hueLightProject.core.presenters.MoodListPresenter;
+import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
 import com.minds.great.hueLightProject.userInterface.fragments.Lists.EvenOddAdapter;
 
 import java.util.Collections;
@@ -15,6 +17,11 @@ import java.util.List;
 public class MoodListAdapter extends EvenOddAdapter {
     private List<Mood> moodList = Collections.emptyList();
     private Context context;
+    private MoodListPresenter moodListPresenter;
+
+    MoodListAdapter(MoodListPresenter moodListPresenter){
+        this.moodListPresenter = moodListPresenter;
+    }
 
     @Override
     public int getCount() {
@@ -42,6 +49,14 @@ public class MoodListAdapter extends EvenOddAdapter {
         View viewItem = inflateView(itemViewType, context);
         TextView name = viewItem.findViewById(R.id.name);
         name.setText(String.valueOf(mood.getName()));
+        name.setOnClickListener(view12 -> {moodListPresenter.selectSavedMood(mood);});
+
+        View deleteIcon = viewItem.findViewById(R.id.moodDeleteIcon);
+        deleteIcon.setOnClickListener(view1 -> {
+            MoodListViewModel moodListViewModel = ((LightProjectActivity) context).getMoodListViewModel();
+            moodListViewModel.deleteMood(mood);
+        });
+
         return viewItem;
     }
 

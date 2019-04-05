@@ -9,4 +9,5 @@
     <string name="light_bulb_off">light bulb off</string>
     <string name="lights">Lights</string>
     <string name="moods">Moods</string>
+    <string name="delete_mood">Delete Mood</string>
 </resources>
