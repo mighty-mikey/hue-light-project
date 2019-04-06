@@ -90,9 +90,8 @@ public class LightsListAdapter extends EvenOddAdapter {
                 lightState.setOn(true);
                 light.updateState(lightState);
             });
-            itemView.setOnClickListener(view -> {
-                lightListPresenter.setSelectedLightPosition(position);
-            });
+            itemView.setOnClickListener(view ->
+                    lightListPresenter.setSelectedLightPosition(position));
         }
         return itemView;
     }

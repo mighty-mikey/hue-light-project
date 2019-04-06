@@ -10,4 +10,6 @@
     <string name="lights">Lights</string>
     <string name="moods">Moods</string>
     <string name="delete_mood">Delete Mood</string>
+    <string name="edit_mood">Edit mood</string>
+    <string name="save_icon">Save icon</string>
 </resources>

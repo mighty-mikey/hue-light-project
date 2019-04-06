@@ -25,8 +25,9 @@ public class MoodRepository {
         new InsertAsyncTask(moodDao).execute(mood);
     }
 
-    public void deleteMood(Mood mood) { new DeleteAsyncTask(moodDao).execute(mood);
-    }
+    public void deleteMood(Mood mood) { new DeleteAsyncTask(moodDao).execute(mood);}
+
+    public void updateMood(Mood mood) { new UpdateAsyncTask(moodDao).execute(mood);}
 
     private static class InsertAsyncTask extends AsyncTask<Mood, Void, Void> {
 
@@ -54,6 +55,21 @@ public class MoodRepository {
         @Override
         protected Void doInBackground(final Mood... params) {
             asyncTaskDao.deleteMood(params[0]);
+            return null;
+        }
+    }
+
+    private static class UpdateAsyncTask extends AsyncTask<Mood, Void, Void> {
+
+        private MoodDao asyncTaskDao;
+
+        UpdateAsyncTask(MoodDao dao) {
+            asyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Mood... params) {
+            asyncTaskDao.updateMood(params[0]);
             return null;
         }
     }

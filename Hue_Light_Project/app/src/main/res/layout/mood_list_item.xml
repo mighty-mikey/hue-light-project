@@ -1,26 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
-android:paddingEnd="20dp"
-android:paddingStart="20dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingEnd="20dp"
+    android:paddingStart="20dp">
 
-<TextView
-    android:id="@+id/name"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="25dp"
-    android:layout_marginTop="25dp"
-    android:ellipsize="end"
-    android:maxLines="1"
-    android:textColor="@color/textColor"
-    android:textSize="25sp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toStartOf="@id/moodDeleteIcon"
-    app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:layout_marginTop="25dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/textColor"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/moodEditIcon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:layout_marginTop="25dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/textColor"
+        android:textSize="25sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/moodEditIcon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/moodEditIcon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:contentDescription="@string/edit_mood"
+        android:paddingEnd="0dp"
+        android:paddingStart="10dp"
+        android:src="@drawable/ic_edit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/moodDeleteIcon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/moodSaveIcon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:contentDescription="@string/save_icon"
+        android:paddingEnd="0dp"
+        android:paddingStart="10dp"
+        android:src="@drawable/ic_save"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/moodDeleteIcon"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/moodDeleteIcon"
