@@ -16,7 +16,6 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-@Singleton
 @Module
 class LightProjectModule {
 

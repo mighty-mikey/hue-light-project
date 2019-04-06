@@ -5,8 +5,6 @@ import com.minds.great.hueLightProject.core.domain.domainInterfaces.MainInterfac
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.data.HueDomain;
 
-import javax.annotation.Nonnull;
-
 import io.reactivex.disposables.Disposable;
 
 public class MainDomain {
@@ -23,7 +21,7 @@ public class MainDomain {
         this.lightSystemInterface = lightSystemInterface;
     }
 
-    public void viewLoaded(@Nonnull MainInterface view) {
+    public void viewLoaded(MainInterface view) {
         String lightSystemIpAddress = hueDomain.getLastConnectedBridgeIpAddress();
         connectionSuccessDisposable = connectionDomain.getConnectionSuccessfulRelay()
                 .subscribe(lightSystem -> view.navigateToTabFragment());
