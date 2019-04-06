@@ -12,4 +12,5 @@
     <string name="delete_mood">Delete Mood</string>
     <string name="edit_mood">Edit mood</string>
     <string name="save_icon">Save icon</string>
+    <string name="edit_mood_name">Edit mood name.</string>
 </resources>

@@ -2,14 +2,12 @@ package com.minds.great.hueLightProject.core.presenters;
 
 import com.minds.great.hueLightProject.core.domain.LightSystemDomain;
 import com.minds.great.hueLightProject.core.models.Mood;
-import com.minds.great.hueLightProject.userInterface.fragments.Lists.moodListFragment.MoodListFragment;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 
 import java.util.List;
 
 public class MoodListPresenter {
     private LightSystemDomain lightSystemDomain;
-
 
     public MoodListPresenter(LightSystemDomain lightSystemDomain){
         this.lightSystemDomain = lightSystemDomain;

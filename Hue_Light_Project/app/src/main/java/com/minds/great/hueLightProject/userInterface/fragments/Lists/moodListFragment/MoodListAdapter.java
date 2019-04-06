@@ -14,6 +14,8 @@ import com.minds.great.hueLightProject.userInterface.fragments.Lists.EvenOddAdap
 import java.util.Collections;
 import java.util.List;
 
+import static android.view.View.*;
+
 public class MoodListAdapter extends EvenOddAdapter {
     private List<Mood> moodList = Collections.emptyList();
     private Context context;
@@ -44,33 +46,38 @@ public class MoodListAdapter extends EvenOddAdapter {
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         Mood mood = moodList.get(position);
-        int itemViewType = getItemViewType(position);
 
-        View viewItem = inflateView(itemViewType, context);
+        View viewItem = inflateView(getItemViewType(position), context);
         TextView editName = viewItem.findViewById(R.id.editName);
         TextView name = viewItem.findViewById(R.id.name);
+        View deleteIcon = viewItem.findViewById(R.id.moodDeleteIcon);
+        View editIcon = viewItem.findViewById(R.id.moodEditIcon);
+        View saveIcon = viewItem.findViewById(R.id.moodSaveIcon);
+
         name.setText(String.valueOf(mood.getName()));
         editName.setText(String.valueOf(mood.getName()));
-        name.setOnClickListener(view12 -> moodListPresenter.selectSavedMood(mood));
 
-        View deleteIcon = viewItem.findViewById(R.id.moodDeleteIcon);
+        name.setOnClickListener(view0 -> moodListPresenter.selectSavedMood(mood));
+
         deleteIcon.setOnClickListener(view1 ->
                 ((LightProjectActivity) context).getMoodListViewModel().deleteMood(mood));
 
-        View editIcon = viewItem.findViewById(R.id.moodEditIcon);
-        View saveIcon = viewItem.findViewById(R.id.moodSaveIcon);
-        editIcon.setOnClickListener(view13 -> {
-           name.setVisibility(View.GONE);
-           saveIcon.setVisibility(View.VISIBLE);
-           editName.setVisibility(View.VISIBLE);
+        editIcon.setOnClickListener(view2 -> {
+           name.setVisibility(GONE);
+           editIcon.setVisibility(GONE);
+           saveIcon.setVisibility(VISIBLE);
+           editName.setText(name.getText());
+           editName.setVisibility(VISIBLE);
+           editName.requestFocus();
         });
-        saveIcon.setOnClickListener(view14 -> {
+
+        saveIcon.setOnClickListener(view3 -> {
             mood.setName(editName.getText().toString());
             ((LightProjectActivity) context).getMoodListViewModel().updateMood(mood);
-            name.setVisibility(View.VISIBLE);
-            saveIcon.setVisibility(View.GONE);
-            editName.setVisibility(View.GONE);
-            editName.requestFocus();
+            saveIcon.setVisibility(GONE);
+            editName.setVisibility(GONE);
+            editIcon.setVisibility(VISIBLE);
+            name.setVisibility(VISIBLE);
         });
 
         return viewItem;

@@ -28,15 +28,18 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
         android:layout_marginTop="25dp"
+        android:maxLength="20"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/textColor"
         android:textSize="25sp"
         android:visibility="gone"
+        android:hint="@string/edit_mood_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/moodEditIcon"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:inputType="text" />
 
     <ImageView
         android:id="@+id/moodEditIcon"
