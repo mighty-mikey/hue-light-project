@@ -49,7 +49,7 @@ public class LightProjectActivityTest {
         List<Fragment> fragments = supportFragmentManager.getFragments();
 
         assertThat(fragments).isNotEmpty();
-        assertThat(fragments.get(0) instanceof TabFragment).isTrue();
+        assertThat(fragments.get(1) instanceof TabFragment).isTrue();
 
     }
 
@@ -60,6 +60,6 @@ public class LightProjectActivityTest {
         List<Fragment> fragments = supportFragmentManager.getFragments();
 
         assertThat(fragments).isNotEmpty();
-        assertThat(fragments.get(0) instanceof ConnectionFragment).isTrue();
+        assertThat(fragments.get(1) instanceof ConnectionFragment).isTrue();
     }
 }

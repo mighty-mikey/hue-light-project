@@ -51,6 +51,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.robolectric:robolectric:3.8'
     testImplementation "org.robolectric:shadows-support-v4:3.3.2"
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
     annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
     implementation "org.androidannotations:androidannotations-api:$AAVersion"
     //Mockito
