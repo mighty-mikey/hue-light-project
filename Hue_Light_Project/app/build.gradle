@@ -1,5 +1,20 @@
-apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.28.0'
+    }
+}
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
 
 allprojects {
     repositories {
@@ -8,15 +23,15 @@ allprojects {
 }
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '28.0.0'
+    compileSdkVersion 31
+    buildToolsVersion '30.0.3'
     defaultConfig {
         applicationId "com.minds.great.hueLightProject"
-        minSdkVersion 22
-        targetSdkVersion 26
+        minSdkVersion 26
+        targetSdkVersion 31
         versionCode 4
         versionName "4"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
@@ -38,68 +53,55 @@ android {
         sourceCompatibility 1.8
     }
 }
-def AAVersion = '4.3.1'
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.8.1'
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    testImplementation("org.assertj:assertj-core:3.11.1")
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.robolectric:robolectric:3.8'
-    testImplementation "org.robolectric:shadows-support-v4:3.3.2"
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
-    implementation "org.androidannotations:androidannotations-api:$AAVersion"
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    testImplementation('org.assertj:assertj-core:3.22.0')
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.robolectric:robolectric:4.7.3'
+    debugImplementation "androidx.fragment:fragment-testing:1.4.1"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    kapt "org.androidannotations:androidannotations:4.8.0"
+    implementation "org.androidannotations:androidannotations-api:4.8.0"
     //Mockito
     testImplementation 'org.mockito:mockito-core:1.10.19'
-    //Dagger 2 - injection framework
-    implementation 'com.google.dagger:dagger-android:2.11'
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
+    //Hilt - injection framework
+    implementation 'com.google.dagger:hilt-android:2.41'
     //Rxjava
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.1'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    implementation 'com.jakewharton.rxrelay2:rxrelay:2.0.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.1'
     implementation files('libs/huecppsdk-wrapper.jar')
     implementation files('libs/huecppsdk-wrapper-javadoc.jar')
     //color picker
     implementation 'com.github.QuadFlask:colorpicker:0.0.13'
-    implementation('com.crashlytics.sdk.android:crashlytics:2.9.1@aar') {
-        transitive = true
-    }
-    implementation('com.crashlytics.sdk.android:answers:1.4.1@aar') {
-        transitive = true
-    }
 
     // Room components
-    implementation "android.arch.persistence.room:runtime:1.1.1"
-    annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
-    androidTestImplementation "android.arch.persistence.room:testing:1.1.1"
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.0'
+    implementation "androidx.room:room-ktx:2.4.2"
+    implementation 'androidx.room:room-runtime:2.4.2'
+    kapt 'androidx.room:room-compiler:2.4.2'
+    androidTestImplementation 'androidx.room:room-testing:2.4.2'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
 
     // Lifecycle components
-    implementation "android.arch.lifecycle:extensions:1.1.1"
-    annotationProcessor "android.arch.lifecycle:compiler:1.1.1"
-}
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation "androidx.core:core-ktx:1.7.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"
 
-buildscript {
-    repositories {
-        mavenCentral()
-        maven { url 'https://maven.fabric.io/public' }
-    }
 
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.26.1'
-    }
+    implementation 'com.google.dagger:hilt-android:2.41'
+    kapt 'com.google.dagger:hilt-compiler:2.41'
+
 }
 
 repositories {
     mavenCentral()
     maven { url 'https://maven.fabric.io/public' }
 }
-
-apply plugin: 'com.android.application' //or apply plugin: 'java'

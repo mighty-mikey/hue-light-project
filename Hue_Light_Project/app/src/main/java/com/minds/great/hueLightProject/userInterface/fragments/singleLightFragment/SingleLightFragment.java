@@ -1,20 +1,21 @@
 package com.minds.great.hueLightProject.userInterface.fragments.singleLightFragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
+import dagger.hilt.android.AndroidEntryPoint;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.flask.colorpicker.ColorPickerView;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.minds.great.hueLightProject.R;
 import com.minds.great.hueLightProject.core.presenters.SingleLightInterface;
 import com.minds.great.hueLightProject.core.presenters.SingleLightPresenter;
-import com.minds.great.hueLightProject.userInterface.activities.LightProjectActivity;
-import com.minds.great.hueLightProject.utils.dagger.UiConstants;
+import com.minds.great.hueLightProject.userInterface.UiConstants;
 import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 
 import org.androidannotations.annotations.EFragment;
@@ -22,12 +23,13 @@ import org.androidannotations.annotations.EFragment;
 import javax.inject.Inject;
 
 @EFragment
+@AndroidEntryPoint
 public class SingleLightFragment extends Fragment implements SingleLightInterface {
 
     @Inject
     SingleLightPresenter singleLightPresenter;
 
-    Switch onOffSwitch;
+    SwitchMaterial onOffSwitch;
     TextView lightName;
     SeekBar dimmer;
     SeekBar colorTemp;
@@ -35,9 +37,6 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (getActivity() instanceof LightProjectActivity) {
-            ((LightProjectActivity) getActivity()).getInjector().inject(this);
-        }
         return inflater.inflate(R.layout.fragment_single_light, container, false);
     }
 
@@ -51,7 +50,7 @@ public class SingleLightFragment extends Fragment implements SingleLightInterfac
     }
 
     private void initViews() {
-        onOffSwitch = (Switch) getView().findViewById(R.id.onOffSwitch);
+        onOffSwitch = getView().findViewById(R.id.onOffSwitch);
         lightName = (TextView) getView().findViewById(R.id.lightName);
         dimmer = (SeekBar) getView().findViewById(R.id.dimmer);
         colorTemp = (SeekBar) getView().findViewById(R.id.colorTemp);

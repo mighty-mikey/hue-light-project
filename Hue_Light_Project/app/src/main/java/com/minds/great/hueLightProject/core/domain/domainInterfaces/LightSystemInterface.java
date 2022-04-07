@@ -7,6 +7,7 @@ import com.minds.great.hueLightProject.core.models.LightSystem;
 
 import java.util.List;
 
+import javax.inject.Inject;
 
 public interface LightSystemInterface {
     void searchForLightSystems();

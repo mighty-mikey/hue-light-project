@@ -10,6 +10,8 @@ import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.disposables.Disposable;
 
 public class LightListPresenter {
@@ -19,6 +21,7 @@ public class LightListPresenter {
     LightsListInterface view;
     private Disposable heartBeatRelay;
 
+    @Inject
     public LightListPresenter(ConnectionDomain connectionDomain,
                               LightSystemDomain lightSystemDomain) {
         this.connectionDomain = connectionDomain;

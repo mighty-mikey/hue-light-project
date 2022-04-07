@@ -1,22 +1,24 @@
 package com.minds.great.hueLightProject.core.domain;
 
+import com.google.firebase.crashlytics.buildtools.reloc.javax.annotation.Nonnull;
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.LightSystemInterface;
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.MainInterface;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.data.HueDomain;
 
-import javax.annotation.Nonnull;
+import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
 
 public class MainDomain {
 
-    private HueDomain hueDomain;
-    private ConnectionDomain connectionDomain;
+    private final HueDomain hueDomain;
+    private final ConnectionDomain connectionDomain;
     private Disposable connectionSuccessDisposable;
     private Disposable connectionErrorDisposable;
-    private LightSystemInterface lightSystemInterface;
+    private final LightSystemInterface lightSystemInterface;
 
+    @Inject
     public MainDomain(HueDomain hueDomain, ConnectionDomain connectionDomain, LightSystemInterface lightSystemInterface) {
         this.hueDomain = hueDomain;
         this.connectionDomain = connectionDomain;

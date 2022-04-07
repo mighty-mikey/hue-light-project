@@ -1,19 +1,24 @@
 package com.minds.great.hueLightProject.data;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
+import androidx.room.Database;
+import dagger.hilt.android.qualifiers.ApplicationContext;
+
 import android.os.AsyncTask;
 
 import com.minds.great.hueLightProject.core.models.Mood;
 
 import java.util.List;
 
-public class MoodRepository {
-    private MoodDao moodDao;
+import javax.inject.Inject;
 
-    public MoodRepository(Application application) {
-        MoodDatabase db = MoodDatabase.getDatabase(application);
-        moodDao = db.moodDao();
+public class MoodRepository {
+    private final MoodDao moodDao;
+
+    @Inject
+    public MoodRepository(MoodDatabase moodDatabase) {
+        moodDao = moodDatabase.moodDao();
     }
 
     public LiveData<List<Mood>> getAllMoods() {

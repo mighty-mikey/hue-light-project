@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-
+        android:name=".userInterface.HueApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="Mood Magic"
@@ -13,16 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".userInterface.activities.LightProjectActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".userInterface.activities.LightProjectActivity_" />
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="24c4a084454403f37ec895d2bfece7d4afd78925" />
     </application>
-
 </manifest>

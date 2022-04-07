@@ -1,7 +1,9 @@
 package com.minds.great.hueLightProject.userInterface.fragments.Lists.moodListFragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
+import dagger.hilt.android.AndroidEntryPoint;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import com.minds.great.hueLightProject.userInterface.activities.LightProjectActi
 
 import javax.inject.Inject;
 
+@AndroidEntryPoint
 public class MoodListFragment extends Fragment {
 
     @Inject
@@ -21,12 +24,6 @@ public class MoodListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mood_list, container, false);
-
-        if (getActivity() instanceof LightProjectActivity) {
-            ((LightProjectActivity) getActivity()).getInjector().inject(this);
-        }
-
-
         MoodListViewModel moodListViewModel = ((LightProjectActivity) getActivity()).getMoodListViewModel();
 
         ListView moodList = view.findViewById(R.id.savedMoodsList);

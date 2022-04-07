@@ -3,7 +3,7 @@ package com.minds.great.hueLightProject.userInterface.fragments.singleLightFragm
 import android.widget.SeekBar;
 
 import com.minds.great.hueLightProject.core.presenters.SingleLightPresenter;
-import com.minds.great.hueLightProject.utils.dagger.UiConstants;
+import com.minds.great.hueLightProject.userInterface.UiConstants;
 
 import java.util.concurrent.TimeUnit;
 

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.jakewharton.rxrelay2.BehaviorRelay;
 import com.jakewharton.rxrelay2.PublishRelay;
+import com.minds.great.hueLightProject.core.domain.MainDomain;
 import com.minds.great.hueLightProject.core.domain.domainInterfaces.LightSystemInterface;
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.models.LightSystem;
@@ -23,9 +24,15 @@ import com.philips.lighting.hue.sdk.wrapper.domain.ReturnCode;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.Module;
+import dagger.Provides;
+import dagger.hilt.InstallIn;
+import dagger.hilt.android.qualifiers.ApplicationContext;
+
 import static android.content.ContentValues.TAG;
 import static com.minds.great.hueLightProject.core.models.ConnectionError.NO_BRIDGE_FOUND_CODE;
-
 
 public class HueLightSystem implements LightSystemInterface {
 
@@ -36,7 +43,8 @@ public class HueLightSystem implements LightSystemInterface {
     private BehaviorRelay<LightSystem> lightSystemRelay = BehaviorRelay.create();
     private PublishRelay<LightSystem> lightsAndGroupsHeartbeatRelay = PublishRelay.create();
 
-    public HueLightSystem(Context context) {
+    @Inject
+    public HueLightSystem(@ApplicationContext Context context) {
         try {
             System.loadLibrary("huesdk");
             HueLog.setConsoleLogLevel(HueLog.LogLevel.DEBUG);

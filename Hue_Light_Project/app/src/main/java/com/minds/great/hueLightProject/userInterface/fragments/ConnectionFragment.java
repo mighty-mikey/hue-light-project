@@ -2,9 +2,11 @@ package com.minds.great.hueLightProject.userInterface.fragments;
 
 import android.Manifest;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.core.content.ContextCompat;
+import dagger.hilt.android.AndroidEntryPoint;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +23,11 @@ import com.minds.great.hueLightProject.userInterface.activities.LightProjectActi
 
 import javax.inject.Inject;
 
-import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
+import static androidx.core.content.PermissionChecker.PERMISSION_GRANTED;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
+@AndroidEntryPoint
 public class ConnectionFragment extends Fragment implements ConnectionInterface {
 
     @Inject
@@ -39,11 +42,6 @@ public class ConnectionFragment extends Fragment implements ConnectionInterface 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        if(getActivity() instanceof LightProjectActivity) {
-            ((LightProjectActivity) getActivity()).getInjector().inject(this);
-        }
-
         return inflater.inflate(R.layout.fragment_connection, container, false);
     }
 

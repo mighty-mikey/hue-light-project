@@ -8,8 +8,13 @@ import com.philips.lighting.hue.sdk.wrapper.knownbridges.KnownBridges;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
 
 public class HueDomain{
+
+    @Inject
+    public HueDomain() {}
 
     public String getLastConnectedBridgeIpAddress() {
         List<KnownBridge> bridges = null;

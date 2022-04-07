@@ -8,6 +8,8 @@ import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightPoint;
 import com.philips.lighting.hue.sdk.wrapper.domain.device.light.LightState;
 import com.philips.lighting.hue.sdk.wrapper.utilities.HueColor;
 
+import javax.inject.Inject;
+
 import io.reactivex.disposables.Disposable;
 
 public class SingleLightPresenter {
@@ -18,6 +20,7 @@ public class SingleLightPresenter {
     private LightPoint light;
     private LightState lightState;
 
+    @Inject
     public SingleLightPresenter(ConnectionDomain connectionDomain, LightSystemDomain lightSystemDomain) {
         this.connectionDomain = connectionDomain;
         this.lightSystemDomain = lightSystemDomain;

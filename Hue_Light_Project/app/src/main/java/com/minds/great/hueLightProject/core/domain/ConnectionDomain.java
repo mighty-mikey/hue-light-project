@@ -7,14 +7,17 @@ import com.minds.great.hueLightProject.core.domain.domainInterfaces.LightSystemI
 import com.minds.great.hueLightProject.core.models.ConnectionError;
 import com.minds.great.hueLightProject.core.models.LightSystem;
 
+import javax.inject.Inject;
+
 import io.reactivex.disposables.CompositeDisposable;
 
 public class ConnectionDomain {
 
     private CompositeDisposable compositeDisposable;
-    private LightSystemInterface lightSystemInterface;
+    private final LightSystemInterface lightSystemInterface;
     private ConnectionInterface connectionView;
 
+    @Inject
     public ConnectionDomain(LightSystemInterface lightSystemInterface) {
         this.lightSystemInterface = lightSystemInterface;
     }
